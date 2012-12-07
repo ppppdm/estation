@@ -76,6 +76,12 @@ class linesTable(fileTable):
         if line:
             return line[1]
         return None
+    
+    def getIndexByName(self, name):
+        for i in range(len(self.table)):
+            if self.getLineName(i)==name:
+                return i
+        return -1
 
 #格式: stop1 lng1 lat1 stop2 lng2 lat2 [ ... ]
 class lineStopTable(fileTable):
@@ -155,7 +161,7 @@ class elemOfLineDist:
     def setDist(self, dist):
         self.dist=dist
     
-#lng1 lat1 dist1 站标识 lng2 lat2 dist2 站标识 [ ... ]
+# elemOfLineDist lng1 lat1 dist1 站标识 lng2 lat2 dist2 站标识 [ ... ]
 class lineDistTable(fileTable):
     def insertLineWithArr(self, arr):
         line=[]
@@ -267,6 +273,7 @@ def distOfPointToLineSegment(pA, pB, pC):
     #判断过点C作的垂线与直线AB的交点D是否在线段AB上
     #计算线段AD和BD的长度,若AD > AB 或 BD > AB,则交点D在不线段AB上
     ##AD^2+x^2=AC^2
+    ##BD^2+x^2=BC^2
     AD=math.sqrt(c**2-x**2)
     BD=math.sqrt(b**2-x**2)
     if AD > a or BD > a:
