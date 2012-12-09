@@ -1,15 +1,16 @@
+# -*- coding: gbk -*-
 '''
-station.py å…¬äº¤ç«™ä¿¡æ¯åˆ—è¡¨
+station.py ¹«½»Õ¾ÐÅÏ¢ÁÐ±í
 
-å…¬äº¤ç«™ä¿¡æ¯åˆ—è¡¨
-    åŒ…å«æ‰€æœ‰çš„å…¬äº¤ç«™,æ¯ä¸ªå…¬äº¤ç«™åŒ…å«äº†è¯¥ç«™åº”æœ‰çš„çº¿è·¯
-    çº¿è·¯ä¿¡æ¯é€šè¿‡busCalculate.pyè®¡ç®—èŽ·å¾—.
+¹«½»Õ¾ÐÅÏ¢ÁÐ±í
+    °üº¬ËùÓÐµÄ¹«½»Õ¾,Ã¿¸ö¹«½»Õ¾°üº¬ÁË¸ÃÕ¾Ó¦ÓÐµÄÏßÂ·
+    ÏßÂ·ÐÅÏ¢Í¨¹ýbusCalculate.py¼ÆËã»ñµÃ.
     
 '''
 
 
 '''
-å…¬äº¤ç«™ä¿¡æ¯
+¹«½»Õ¾ÐÅÏ¢
 '''
 class stopInfo:
     def __init__(self, id, name, lines):
@@ -29,22 +30,22 @@ class stopInfo:
         return self.lines
 
 '''
-å…¬äº¤è½¦åˆ°ç«™ä¿¡æ¯
-    åˆ°ç«™ä¿¡æ¯åŸºæœ¬è¦æ±‚è¦æœ‰åˆ°ç«™çš„ç«™æ•°,è·ç¦»,è¿è¡Œæƒ…å†µ,å…·ä½“çš„æ˜¯:
-    1.ç¬¬ä¸€ä¸ªåˆ°è¯¥ç«™çš„å…¬äº¤è½¦è·ç¦»çš„ç«™æ•°
-    2.ç¬¬äºŒä¸ªåˆ°è¯¥ç«™çš„å…¬äº¤è½¦è·ç¦»çš„ç«™æ•°
-    3.ç¬¬ä¸€ä¸ªåˆ°è¯¥ç«™çš„å…¬äº¤è½¦è¿è¡Œæƒ…å†µ
-    4.ç¬¬äºŒä¸ªåˆ°è¯¥ç«™çš„å…¬äº¤è½¦è¿è¡Œæƒ…å†µ
-    5.è¯¥çº¿è·¯åˆ°è¯¥ç«™æ˜¯å¦å¼‚å¸¸
-    6.å¼‚å¸¸æƒ…å†µå‘é€çš„ä¿¡æ¯
-    å…¶ä»–æ ¹æ®éœ€æ±‚å¢žåŠ 
+¹«½»³µµ½Õ¾ÐÅÏ¢
+    µ½Õ¾ÐÅÏ¢»ù±¾ÒªÇóÒªÓÐµ½Õ¾µÄÕ¾Êý,¾àÀë,ÔËÐÐÇé¿ö,¾ßÌåµÄÊÇ:
+    1.µÚÒ»¸öµ½¸ÃÕ¾µÄ¹«½»³µ¾àÀëµÄÕ¾Êý
+    2.µÚ¶þ¸öµ½¸ÃÕ¾µÄ¹«½»³µ¾àÀëµÄÕ¾Êý
+    3.µÚÒ»¸öµ½¸ÃÕ¾µÄ¹«½»³µÔËÐÐÇé¿ö
+    4.µÚ¶þ¸öµ½¸ÃÕ¾µÄ¹«½»³µÔËÐÐÇé¿ö
+    5.¸ÃÏßÂ·µ½¸ÃÕ¾ÊÇ·ñÒì³£
+    6.Òì³£Çé¿ö·¢ËÍµÄÐÅÏ¢
+    ÆäËû¸ù¾ÝÐèÇóÔö¼Ó
 '''
 class busToStopInfo():
     def __init__(self):
         self.fisrtNum=0
         self.secondNum=0
-        self.firstStatus='æ­£å¸¸'
-        self.secondStatus='æ­£å¸¸'
+        self.firstStatus='Õý³£'
+        self.secondStatus='Õý³£'
         self.isUnusual=0
         self.unusualInfo=' '
         return

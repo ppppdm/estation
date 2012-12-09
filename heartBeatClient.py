@@ -1,5 +1,6 @@
+# -*- coding: gbk -*-
 '''
-heartBeatClient.py æ¨¡æ‹Ÿå¿ƒè·³åŒ…çš„å®¢æˆ·ç«¯,ç»™æœåŠ¡ç«¯å‘é€å¿ƒè·³åŒ…,å¹¶æ¥æ”¶ä¸€ä¸ª' '
+heartBeatClient.py Ä£ÄâĞÄÌø°üµÄ¿Í»§¶Ë,¸ø·şÎñ¶Ë·¢ËÍĞÄÌø°ü,²¢½ÓÊÕÒ»¸ö' '
 '''
 import socket
 import network

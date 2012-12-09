@@ -1,21 +1,22 @@
+# -*- coding: gbk -*-
 '''
-lineDistence.py è¯»å…¥çº¿è·¯æ–‡ä»¶(lines.txt linestop.txt linepath.txt)ç”Ÿæˆçº¿è·¯é—´çš„è·ç¦»(linedist.txt)
-linedist.txt æ ¼å¼å¦‚ä¸‹:
-    1.æ¯è¡Œè¡¨ç¤ºä¸€æ¡çº¿è·¯,å¯¹åº”lines.txt
-    2.ä¸€è¡Œä¸­åˆ—å‡ºåœ°ç†åæ ‡ç‚¹(ç”±ç»çº¬åº¦è¡¨ç¤º)å’Œè·ç¦»ä¸‹ä¸€ä¸ªçš„è·ç¦»
-        lng1 lat1 dist1 ç«™æ ‡è¯† lng2 lat2 dist2 ç«™æ ‡è¯† [ ... ]
-        (lng -- ç»åº¦, lat -- ç»´åº¦, dist -- è·ç¦»,ç«™æ ‡è¯† -- ç«™åæˆ–ç«™ç¼–å·,éç«™çš„ç”¨-1æ ‡è¯†,è¿™äº›æ•°æ®ä»¥'\t'åˆ†éš”)
+lineDistence.py ¶ÁÈëÏßÂ·ÎÄ¼ş(lines.txt linestop.txt linepath.txt)Éú³ÉÏßÂ·¼äµÄ¾àÀë(linedist.txt)
+linedist.txt ¸ñÊ½ÈçÏÂ:
+    1.Ã¿ĞĞ±íÊ¾Ò»ÌõÏßÂ·,¶ÔÓ¦lines.txt
+    2.Ò»ĞĞÖĞÁĞ³öµØÀí×ø±êµã(ÓÉ¾­Î³¶È±íÊ¾)ºÍ¾àÀëÏÂÒ»¸öµÄ¾àÀë
+        lng1 lat1 dist1 Õ¾±êÊ¶ lng2 lat2 dist2 Õ¾±êÊ¶ [ ... ]
+        (lng -- ¾­¶È, lat -- Î¬¶È, dist -- ¾àÀë,Õ¾±êÊ¶ -- Õ¾Ãû»òÕ¾±àºÅ,·ÇÕ¾µÄÓÃ-1±êÊ¶,ÕâĞ©Êı¾İÒÔ'\t'·Ö¸ô)
 
-lines.txt æ ¼å¼å¦‚ä¸‹:
-    1.æ¯è¡Œæ˜¯ä¸€æ¡çº¿è·¯,æœ‰çº¿è·¯å,ä¸Š/ä¸‹è¡Œ
+lines.txt ¸ñÊ½ÈçÏÂ:
+    1.Ã¿ĞĞÊÇÒ»ÌõÏßÂ·,ÓĞÏßÂ·Ãû,ÉÏ/ÏÂĞĞ
         name up/down
 
-linestop.txt æ ¼å¼å¦‚ä¸‹:
-    1.æ¯è¡Œæ˜¯ä¸€æ¡çº¿è·¯,å†…å®¹æ˜¯ä»èµ·ç‚¹åˆ°ç»ˆç‚¹çš„ç«™å’Œç«™çš„åæ ‡
+linestop.txt ¸ñÊ½ÈçÏÂ:
+    1.Ã¿ĞĞÊÇÒ»ÌõÏßÂ·,ÄÚÈİÊÇ´ÓÆğµãµ½ÖÕµãµÄÕ¾ºÍÕ¾µÄ×ø±ê
         stop1 lng1 lat1 stop2 lng2 lat2 [ ... ]
 
-linepath.txt æ ¼å¼å¦‚ä¸‹:
-    1.æ¯è¡Œæ˜¯ä¸€æ¡çº¿è·¯,å†…å®¹æ˜¯çº¿è·¯åæ ‡ç‚¹
+linepath.txt ¸ñÊ½ÈçÏÂ:
+    1.Ã¿ĞĞÊÇÒ»ÌõÏßÂ·,ÄÚÈİÊÇÏßÂ·×ø±êµã
     lng1 lat1 lng2 lat2 [ ... ]
     
 '''
@@ -63,7 +64,7 @@ class fileTable:
         s+='\n'
         file.write(s)
 
-#æ ¼å¼: name up/down
+#¸ñÊ½: name up/down
 class linesTable(fileTable):
     def getLineName(self, i):
         line=self.index(i)
@@ -83,7 +84,7 @@ class linesTable(fileTable):
                 return i
         return -1
 
-#æ ¼å¼: stop1 lng1 lat1 stop2 lng2 lat2 [ ... ]
+#¸ñÊ½: stop1 lng1 lat1 stop2 lng2 lat2 [ ... ]
 class lineStopTable(fileTable):
     def getOneLineNum(self,  i):
         line=self.index(i)
@@ -112,7 +113,7 @@ class lineStopTable(fileTable):
     def getOneStop(self, line, j):
         return line[j]
 
-#æ ¼å¼:lng1 lat1 lng2 lat2 [ ... ]ï¼š
+#¸ñÊ½:lng1 lat1 lng2 lat2 [ ... ]£º
 class linePathTable(fileTable):    
     def insertLine(self, arr):
         line=[]
@@ -161,7 +162,7 @@ class elemOfLineDist:
     def setDist(self, dist):
         self.dist=dist
     
-# elemOfLineDist lng1 lat1 dist1 ç«™æ ‡è¯† lng2 lat2 dist2 ç«™æ ‡è¯† [ ... ]
+# elemOfLineDist lng1 lat1 dist1 Õ¾±êÊ¶ lng2 lat2 dist2 Õ¾±êÊ¶ [ ... ]
 class lineDistTable(fileTable):
     def insertLineWithArr(self, arr):
         line=[]
@@ -203,8 +204,8 @@ calculate two adjacent point's distence
 at last return a linedist obj
 
 
-ä¸ç»çº¬åº¦çš„è®¡ç®— éœ€è¦å®é™…çš„gpsæ•°æ®(å…¶ä»–æ¥æºçš„æ•°æ®èƒ½å¤Ÿè½¬æ¢ä¹Ÿå¯ä»¥ä½¿ç”¨)
-ç»çº¬åº¦é¢„å…ˆå¤„ç†è¿‡(ä¸œç»ä¸ºæ­£,è¥¿ç»ä¸ºè´Ÿ,åŒ—çº¬ä¸ºæ­£,å—çº¬ä¸ºè´Ÿ)
+Óë¾­Î³¶ÈµÄ¼ÆËã ĞèÒªÊµ¼ÊµÄgpsÊı¾İ(ÆäËûÀ´Ô´µÄÊı¾İÄÜ¹»×ª»»Ò²¿ÉÒÔÊ¹ÓÃ)
+¾­Î³¶ÈÔ¤ÏÈ´¦Àí¹ı(¶«¾­ÎªÕı,Î÷¾­Îª¸º,±±Î³ÎªÕı,ÄÏÎ³Îª¸º)
 
 '''
 import math
@@ -233,7 +234,7 @@ def insertLineStopToPath(stop,  path):
         insertPointToPath(point, pointarr)
         
     #second: calculate distence
-    #æ ¼å¼lng1 lat1 dist1 y/n lng2 lat2 dist2 y/n [ ... ]
+    #¸ñÊ½lng1 lat1 dist1 y/n lng2 lat2 dist2 y/n [ ... ]
     for i in range(1, len(pointarr)):
         dist=distOfPointToPoint(pointarr[i-1].getCoordinate(), pointarr[i].getCoordinate())
         pointarr[i-1].setDist(dist)
@@ -257,21 +258,21 @@ def insertPointToPath(point, pointarr):
     
     return
     
-#è®¡ç®—ç‚¹Cåˆ°çº¿æ®µABçš„è·ç¦»,ç‚¹A,B,Cä¸­çš„å€¼éƒ½æ˜¯ç»çº¬åº¦
+#¼ÆËãµãCµ½Ïß¶ÎABµÄ¾àÀë,µãA,B,CÖĞµÄÖµ¶¼ÊÇ¾­Î³¶È
 def distOfPointToLineSegment(pA, pB, pC):
-    #ç”±äºè®¡ç®—çš„ç‚¹è·ç¦»éƒ½å¾ˆè¿‘,æ‰€ä»¥å°†3ä¸ªç‚¹çœ‹æˆä¸€ä¸ªå¹³é¢ä¸Š
+    #ÓÉÓÚ¼ÆËãµÄµã¾àÀë¶¼ºÜ½ü,ËùÒÔ½«3¸öµã¿´³ÉÒ»¸öÆ½ÃæÉÏ
     dist=0
     a=distOfPointToPoint(pA, pB)
     b=distOfPointToPoint(pC, pB)
     c=distOfPointToPoint(pA, pC)
     
-    #è®¡ç®—ç‚¹Cåˆ°ç›´çº¿ABçš„è·ç¦»
-    ##x=âˆš(2(a^2 b^2+a^2 c^2+b^2 c^2)-(a^4+b^4+c^4))/2a
+    #¼ÆËãµãCµ½Ö±ÏßABµÄ¾àÀë
+    ##x=¡Ì(2(a^2 b^2+a^2 c^2+b^2 c^2)-(a^4+b^4+c^4))/2a
     x=math.sqrt(2*(a**2*b**2 + a**2*c**2 + b**2*c**2) - (a**4 + b**4 + c**4)) / (2 * a)
     #print(x)
     
-    #åˆ¤æ–­è¿‡ç‚¹Cä½œçš„å‚çº¿ä¸ç›´çº¿ABçš„äº¤ç‚¹Dæ˜¯å¦åœ¨çº¿æ®µABä¸Š
-    #è®¡ç®—çº¿æ®µADå’ŒBDçš„é•¿åº¦,è‹¥AD > AB æˆ– BD > AB,åˆ™äº¤ç‚¹Dåœ¨ä¸çº¿æ®µABä¸Š
+    #ÅĞ¶Ï¹ıµãC×÷µÄ´¹ÏßÓëÖ±ÏßABµÄ½»µãDÊÇ·ñÔÚÏß¶ÎABÉÏ
+    #¼ÆËãÏß¶ÎADºÍBDµÄ³¤¶È,ÈôAD > AB »ò BD > AB,Ôò½»µãDÔÚ²»Ïß¶ÎABÉÏ
     ##AD^2+x^2=AC^2
     ##BD^2+x^2=BC^2
     AD=math.sqrt(c**2-x**2)
@@ -282,18 +283,18 @@ def distOfPointToLineSegment(pA, pB, pC):
         dist=x
     return dist
 
-EARTH_RADIUS=6371.004 #å•ä½km
+EARTH_RADIUS=6371.004 #µ¥Î»km
 R=EARTH_RADIUS
 
-#è®¡ç®—ç‚¹Aå’Œç‚¹Bçš„çƒé¢è·ç¦»,ç‚¹A,Bçš„å€¼æ˜¯ç»çº¬åº¦
+#¼ÆËãµãAºÍµãBµÄÇòÃæ¾àÀë,µãA,BµÄÖµÊÇ¾­Î³¶È
 def distOfPointToPoint(pA, pB):
     lngA, latA=float(pA[0]), float(pA[1])
     lngB, latB=float(pB[0]), float(pB[1])
-    #é¢„å¤„ç†
-    #åŒ—çº¬å–90-çº¬åº¦å€¼(90- Latitude)ï¼Œå—çº¬å–90+çº¬åº¦å€¼(90+Latitude)
-    #è¿™é‡Œéƒ½æ˜¯åŒ—çº¬,ä¹Ÿæ²¡æœ‰å—åŒ—çº¬ä¿¡æ¯ç”¨äºå¤„ç†,ä»¥åå¯èƒ½ä¼šæ·»åŠ 
+    #Ô¤´¦Àí
+    #±±Î³È¡90-Î³¶ÈÖµ(90- Latitude)£¬ÄÏÎ³È¡90+Î³¶ÈÖµ(90+Latitude)
+    #ÕâÀï¶¼ÊÇ±±Î³,Ò²Ã»ÓĞÄÏ±±Î³ĞÅÏ¢ÓÃÓÚ´¦Àí,ÒÔºó¿ÉÄÜ»áÌí¼Ó
     
-    ##è§’ C = sin(LatA)*sin(LatB) + cos(LatA)*cos(LatB)*cos(MLonA-MLonB)
+    ##½Ç C = sin(LatA)*sin(LatB) + cos(LatA)*cos(LatB)*cos(MLonA-MLonB)
     C=math.sin(latA)*math.sin(latB)+math.cos(latA)*math.cos(latB)*math.cos(lngA-lngB)
     #print(C)
     dist=R*math.acos(C)*math.pi/180

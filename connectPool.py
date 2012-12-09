@@ -1,21 +1,22 @@
+# -*- coding: gbk -*-
 '''
-conncetPool.py ç”µå­ç«™ç‰Œè¿žæŽ¥æ± è¡¨
-    GPRSæ¨¡å—å¤„äºŽæ— çº¿ç½‘ç»œçš„å†…ç½‘ä¸­,å› æ­¤æœåŠ¡å™¨ä¾¦å¬åˆ°çš„è¿žæŽ¥çš„IPåœ°å€æ˜¯æ— çº¿ç½‘ç»œè·¯ç”±çš„IPåœ°å€.
-æœåŠ¡å™¨æ˜¯æ²¡æ³•ä¸»åŠ¨å»ºç«‹ä¸Žç”µå­ç«™ç‰Œçš„è¿žæŽ¥çš„.
-    æ‰€ä»¥ç”µå­ç«™ç‰ŒæœåŠ¡ä¾¦å¬åˆ°è¿žæŽ¥åŽéœ€è¦å°†è¿žæŽ¥ä¿æŒåˆ°è¿žæŽ¥æ± ä¸­,ä½¿ç”¨æ—¶ä»Žè¿žæŽ¥æ± ä¸­å–å‡ºè¿žæŽ¥ä¸Žç”µå­ç«™ç‰Œé€šä¿¡.
-    å› æ­¤table_IP.py(å°†è¿žæŽ¥çš„IPåœ°å€å†™åˆ°æ–‡ä»¶ä¸­)å’ŒmaintainIP.pyæ²¡æœ‰ç”¨äº†.
+conncetPool.py µç×ÓÕ¾ÅÆÁ¬½Ó³Ø±í
+    GPRSÄ£¿é´¦ÓÚÎÞÏßÍøÂçµÄÄÚÍøÖÐ,Òò´Ë·þÎñÆ÷ÕìÌýµ½µÄÁ¬½ÓµÄIPµØÖ·ÊÇÎÞÏßÍøÂçÂ·ÓÉµÄIPµØÖ·.
+·þÎñÆ÷ÊÇÃ»·¨Ö÷¶¯½¨Á¢Óëµç×ÓÕ¾ÅÆµÄÁ¬½ÓµÄ.
+    ËùÒÔµç×ÓÕ¾ÅÆ·þÎñÕìÌýµ½Á¬½ÓºóÐèÒª½«Á¬½Ó±£³Öµ½Á¬½Ó³ØÖÐ,Ê¹ÓÃÊ±´ÓÁ¬½Ó³ØÖÐÈ¡³öÁ¬½ÓÓëµç×ÓÕ¾ÅÆÍ¨ÐÅ.
+    Òò´Ëtable_IP.py(½«Á¬½ÓµÄIPµØÖ·Ð´µ½ÎÄ¼þÖÐ)ºÍmaintainIP.pyÃ»ÓÐÓÃÁË.
     
-æ•°æ®ç»“æž„:
-    ç¼–å· è¿žæŽ¥
+Êý¾Ý½á¹¹:
+    ±àºÅ Á¬½Ó
     
-åŠŸèƒ½:
-    1.å°†ä¸€å¯¹è¿žæŽ¥åŠ å…¥åˆ°è¿žæŽ¥æ± ä¸­
-    2.æ ¹æ®ç¼–å·ä»Žè¿žæŽ¥æ± ä¸­å–å‡ºè¿žæŽ¥
+¹¦ÄÜ:
+    1.½«Ò»¶ÔÁ¬½Ó¼ÓÈëµ½Á¬½Ó³ØÖÐ
+    2.¸ù¾Ý±àºÅ´ÓÁ¬½Ó³ØÖÐÈ¡³öÁ¬½Ó
 
-æ³¨æ„:
-    è°ƒç”¨çš„ä¸Šå±‚åº”è¯¥åˆ¤æ–­è¯¥è¿žæŽ¥æ˜¯å¦ä¸ºå¯ç”¨è¿žæŽ¥,ä¸å¯ç”¨è¿žæŽ¥å°†ä¸å†åŠ å…¥è¿žæŽ¥æ± ä¸­.
+×¢Òâ:
+    µ÷ÓÃµÄÉÏ²ãÓ¦¸ÃÅÐ¶Ï¸ÃÁ¬½ÓÊÇ·ñÎª¿ÉÓÃÁ¬½Ó,²»¿ÉÓÃÁ¬½Ó½«²»ÔÙ¼ÓÈëÁ¬½Ó³ØÖÐ.
     
-    æ˜¾ç„¶è¿žæŽ¥å¤±æ•ˆåªæœ‰åœ¨è¿žæŽ¥æ± ä¸­å‘ç”Ÿ,æ‰€ä»¥è¿”å›žç»™ä¸Šå±‚çš„è¿žæŽ¥å¯èƒ½æ˜¯æ— æ•ˆçš„è¿žæŽ¥
+    ÏÔÈ»Á¬½ÓÊ§Ð§Ö»ÓÐÔÚÁ¬½Ó³ØÖÐ·¢Éú,ËùÒÔ·µ»Ø¸øÉÏ²ãµÄÁ¬½Ó¿ÉÄÜÊÇÎÞÐ§µÄÁ¬½Ó
 '''
 
 class connectPool:
@@ -29,8 +30,8 @@ class connectPool:
     def getConn(self, num):
         try:
             return self.pool.pop(num)
-            #ä½¿ç”¨pop å°†coonç§»å‡º,ä»¥é˜²å‡ºé”™æ—¶æ›´æ–°äº†æ­£åœ¨ä½¿ç”¨çš„è¿žæŽ¥
-            #è™½ç„¶æŒ‰ç…§æ­£å¸¸æƒ…å†µä½¿ç”¨ä¸­çš„è¿žæŽ¥ä¸ä¼šæ›´æ–°
+            #Ê¹ÓÃpop ½«coonÒÆ³ö,ÒÔ·À³ö´íÊ±¸üÐÂÁËÕýÔÚÊ¹ÓÃµÄÁ¬½Ó
+            #ËäÈ»°´ÕÕÕý³£Çé¿öÊ¹ÓÃÖÐµÄÁ¬½Ó²»»á¸üÐÂ
         except KeyError:
             print('connectPool key error')
             return None
