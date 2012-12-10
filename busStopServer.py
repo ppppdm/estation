@@ -1,7 +1,8 @@
+# -*- coding: gbk -*-
 '''
-busStopServer é…ç½®æœåŠ¡
-busStopServer.py æ¥æ”¶busStop Info,å¹¶å°†busStop Infoå‚¨å­˜åˆ°busStopTableä¸­.
-busStopTableçš„å®šä¹‰è§table_busStop.py
+busStopServer ÅäÖÃ·şÎñ
+busStopServer.py ½ÓÊÕbusStop Info,²¢½«busStop Info´¢´æµ½busStopTableÖĞ.
+busStopTableµÄ¶¨Òå¼ûtable_busStop.py
 '''
 
 import socket
@@ -38,10 +39,10 @@ def busStopServer(t_stop):
             sdata=data.decode('utf8')
             print(sdata)
             arr=sdata.split()
-            info=busStopInfo(arr[0], int(arr[1])) #ç›´æ¥å°†linesä½œä¸ºç¬¬ä¸‰ä¸ªå‚æ•°ä¼ å…¥ä¼šå‡ºé—®é¢˜,ä½¿ç”¨setLines
+            info=busStopInfo(arr[0], int(arr[1])) #Ö±½Ó½«lines×÷ÎªµÚÈı¸ö²ÎÊı´«Èë»á³öÎÊÌâ,Ê¹ÓÃsetLines
             info.setLines(arr[2:])
             t_stop.add(info)
-            #æµ‹è¯•æ—¶å°†tableå†™å…¥åˆ°æ–‡ä»¶ä¸­,éæµ‹è¯•æ—¶æ³¨é‡Šæ‰
+            #²âÊÔÊ±½«tableĞ´Èëµ½ÎÄ¼şÖĞ,·Ç²âÊÔÊ±×¢ÊÍµô
             t_stop.writToFile()
             conn.sendall(network.NET_RET_OK)
         print(RUNNING)

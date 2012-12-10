@@ -1,27 +1,28 @@
+# -*- coding: gbk -*-
 '''
-公交站信息表:
-    表中的一个公交站的信息包含:
-    公交站名(或公交站id) 电子站牌编号 线路1 [线路2, ...]
+����վ��Ϣ��:
+    ���е�һ������վ����Ϣ����:
+    ����վ��(�򹫽�վid) ����վ�Ʊ�� ��·1 [��·2, ...]
     
-    公交站名(或公交站id):
-    唯一标识该公交站,建议使用站名(原因是在现场配置电子站牌时公交站名较直接)
-    同名的站可以用上行,下行来区别
+    ����վ��(�򹫽�վid):
+    Ψһ��ʶ�ù���վ,����ʹ��վ��(ԭ�������ֳ����õ���վ��ʱ����վ����ֱ��)
+    ͬ����վ����������,����������
     
-    电子站牌编号:
-    电子站牌的唯一标识,见table_IP.py的电子站牌说明
+    ����վ�Ʊ��:
+    ����վ�Ƶ�Ψһ��ʶ,��table_IP.py�ĵ���վ��˵��
     
-    线路1 [线路2, ...]:
-    这里线路的数量等于线路总数.
-    列出各条线路的名字.线路名字需要在4个字节范围内.即最多4个字母数字或最多2个汉字或最多2个字母数字和1个汉字组合.
+    ��·1 [��·2, ...]:
+    ������·������������·����.
+    �г�������·������.��·������Ҫ��4���ֽڷ�Χ��.�����4����ĸ���ֻ����2�����ֻ����2����ĸ���ֺ�1���������.
     
-    示例:
-    市政府(上行) 1192 1路 7路 302 游5
+    ʾ��:
+    ������(����) 1192 1· 7· 302 ��5
     
-    提供的操作:
-    1.添加一个公交车站信息
-    2.通过名字查找一个公交车站的信息
-    3.通过编号查找一个公交车站的信息
-    4.通过名字修改一个公交车站的编号
+    �ṩ�Ĳ���:
+    1.����һ��������վ��Ϣ
+    2.ͨ�����ֲ���һ��������վ����Ϣ
+    3.ͨ����Ų���һ��������վ����Ϣ
+    4.ͨ�������޸�һ��������վ�ı��
 '''
 
 BUSSTOPFILE='busStopTable.txt'
@@ -68,7 +69,7 @@ class table_busStop:
         return self.table[index]
     
     def add(self, info):
-        ##!!以后需要修改,有同编号的应该覆盖
+        ##!!�Ժ���Ҫ�޸�,��ͬ��ŵ�Ӧ�ø���
         self.table.append(info)
         return
     
@@ -122,7 +123,7 @@ class table_busStop:
             else:
                 arr=s.split('\t')
                 print(arr)
-                info=busStopInfo(arr[0], int(arr[1])) #直接将lines作为第三个参数传入会出问题,使用setLines
+                info=busStopInfo(arr[0], int(arr[1])) #ֱ�ӽ�lines��Ϊ��������������������,ʹ��setLines
                 info.setLines(arr[2:])
                 self.add(info)
         infile.close()
@@ -131,11 +132,11 @@ class table_busStop:
 if __name__=='__main__':
     def test():
         print('test')
-        info = busStopInfo('市政府', 1, '1路', '2路', '302', '游4')
+        info = busStopInfo('������', 1, '1·', '2·', '302', '��4')
         print(info.getLines())
-        info.setLines(('1路', '5路'))
+        info.setLines(('1·', '5·'))
         print(info.getLines())
-        info.setLines(('1路', '4路'))
+        info.setLines(('1·', '4·'))
         print(info.getLines())
         
         busstoptable=table_busStop()

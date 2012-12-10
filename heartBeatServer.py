@@ -1,13 +1,14 @@
+# -*- coding: gbk -*-
 '''
-æœåŠ¡å™¨æŽ¥æ”¶ç”µå­ç«™ç‰Œçš„å¿ƒè·³åŒ…
-    æœåŠ¡å™¨æ ¹æ®åè®®åœ¨æŒ‡å®šç«¯å£ä¾¦å¬å¿ƒè·³åŒ…,åŒæ—¶èŽ·å–å‘é€å¿ƒè·³åŒ…çš„ç”µå­ç«™ç‰Œè®¾å¤‡çš„IPåœ°å€
-    å°†å¿ƒè·³åŒ…å’ŒIPåœ°å€ä»¥æ•°æ®å¯¹çš„å½¢å¼å‘é€ç»™IPè¡¨ç»´æŠ¤æ¨¡å—
+·þÎñÆ÷½ÓÊÕµç×ÓÕ¾ÅÆµÄÐÄÌø°ü
+    ·þÎñÆ÷¸ù¾ÝÐ­ÒéÔÚÖ¸¶¨¶Ë¿ÚÕìÌýÐÄÌø°ü,Í¬Ê±»ñÈ¡·¢ËÍÐÄÌø°üµÄµç×ÓÕ¾ÅÆÉè±¸µÄIPµØÖ·
+    ½«ÐÄÌø°üºÍIPµØÖ·ÒÔÊý¾Ý¶ÔµÄÐÎÊ½·¢ËÍ¸øIP±íÎ¬»¤Ä£¿é
     
-å¿ƒè·³åŒ…æ ¼å¼
-    é•¿åº¦ä¸º4ä¸ªå­—èŠ‚, ä¾‹å¦‚:
-    ç¬¬1åˆ°ç¬¬4ä¸ªå­—èŠ‚çš„0x30 0x30 0x30 0x31 ä»£è¡¨ç»ˆç«¯ç¼–å·æ˜¯0001
+ÐÄÌø°ü¸ñÊ½
+    ³¤¶ÈÎª4¸ö×Ö½Ú, ÀýÈç:
+    µÚ1µ½µÚ4¸ö×Ö½ÚµÄ0x30 0x30 0x30 0x31 ´ú±íÖÕ¶Ë±àºÅÊÇ0001
     
-æœåŠ¡æŽ¥æ”¶å‚æ•°pæ‰“å°iptableåˆ°æ–‡ä»¶ä¸­
+·þÎñ½ÓÊÕ²ÎÊýp´òÓ¡iptableµ½ÎÄ¼þÖÐ
 '''
 
 
@@ -40,8 +41,8 @@ if __name__=='__main__':
     import netConfigServer
     import _thread
     '''
-    æµ‹è¯•ç¨‹åºç”³è¯·ä¸€ä¸ªip table, å¹¶å¯åŠ¨æŽ¥æ”¶reciveHeartBeatæœåŠ¡
-    æœåŠ¡å°†æŽ¥æ”¶åˆ°çš„ip å†™å…¥åˆ°ip tableä¸­
+    ²âÊÔ³ÌÐòÉêÇëÒ»¸öip table, ²¢Æô¶¯½ÓÊÕreciveHeartBeat·þÎñ
+    ·þÎñ½«½ÓÊÕµ½µÄip Ð´Èëµ½ip tableÖÐ
     '''
     def test():
         #iptable=table_IP()

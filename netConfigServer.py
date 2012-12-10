@@ -1,16 +1,17 @@
+# -*- coding: gbk -*-
 '''
-netConfigServer.py æ¥æ”¶æ§åˆ¶å®¢æˆ·ç«¯çš„æ§åˆ¶å‘½ä»¤,æ ¹æ®å‘½ä»¤é…ç½®å¯¹äºçš„ç”µå­ç«™ç‰Œå®¢æˆ·ç«¯.
-æ§åˆ¶å‘½ä»¤ç»„æˆ:
-    ç”µå­ç«™ç‰Œçš„ç¼–å·
-é…ç½®æ–¹æ³•:
-    æ ¹æ®æ§åˆ¶å‘½ä»¤ä¸­çš„ç¼–å·åˆ°busStop tableä¸­æ‰¾åˆ°ç›¸åº”çš„busStop info.
-    å¹¶æ ¹æ®ç¼–å·åœ¨IP tableä¸­æ‰¾åˆ°å¯¹åº”çš„IPåœ°å€
-    å‘è¯¥IPåœ°å€å‘é€é…ç½®å‘½ä»¤
-    1.é…ç½®çº¿è·¯æ€»æ•°
-    æ ¹æ®busStopä¸­çº¿è·¯æ€»æ•°å’Œç”µå­ç«™ç‰ŒLEDé€šä¿¡åè®®é…ç½®ç”µå­ç«™ç‰Œ
+netConfigServer.py ½ÓÊÕ¿ØÖÆ¿Í»§¶ËµÄ¿ØÖÆÃüÁî,¸ù¾İÃüÁîÅäÖÃ¶ÔÓÚµÄµç×ÓÕ¾ÅÆ¿Í»§¶Ë.
+¿ØÖÆÃüÁî×é³É:
+    µç×ÓÕ¾ÅÆµÄ±àºÅ
+ÅäÖÃ·½·¨:
+    ¸ù¾İ¿ØÖÆÃüÁîÖĞµÄ±àºÅµ½busStop tableÖĞÕÒµ½ÏàÓ¦µÄbusStop info.
+    ²¢¸ù¾İ±àºÅÔÚIP tableÖĞÕÒµ½¶ÔÓ¦µÄIPµØÖ·
+    Ïò¸ÃIPµØÖ··¢ËÍÅäÖÃÃüÁî
+    1.ÅäÖÃÏßÂ·×ÜÊı
+    ¸ù¾İbusStopÖĞÏßÂ·×ÜÊıºÍµç×ÓÕ¾ÅÆLEDÍ¨ĞÅĞ­ÒéÅäÖÃµç×ÓÕ¾ÅÆ
     
     
-    éœ€è¦ä¿®æ”¹,ipåœ°å€å‚æ•°ä¸éœ€è¦,æ”¹ä¸ºæ ¹æ®ç¼–å·å»è·å–è¿æ¥
+    ĞèÒªĞŞ¸Ä,ipµØÖ·²ÎÊı²»ĞèÒª,¸ÄÎª¸ù¾İ±àºÅÈ¥»ñÈ¡Á¬½Ó
 '''
 
 import socket
@@ -45,13 +46,13 @@ def crc_check(b_data):
         crc^=i
     return crc
 
-#æ ¹æ®è®¾å¤‡ç¼–å·åˆ°è¿æ¥æ± ä¸­æ‰¾åˆ°è¯¥è¿æ¥
+#¸ù¾İÉè±¸±àºÅµ½Á¬½Ó³ØÖĞÕÒµ½¸ÃÁ¬½Ó
 def send_cmd_TCP(data, No, pool):
     try:
         print(data)
         #sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #sock.connect((ip,  network.TCP_PORT_OF_LED))
-        #ä»è¿æ¥æ± ä¸­è·å–è¿æ¥,è¿æ¥å¯èƒ½å·²ç»å¤±æ•ˆ
+        #´ÓÁ¬½Ó³ØÖĞ»ñÈ¡Á¬½Ó,Á¬½Ó¿ÉÄÜÒÑ¾­Ê§Ğ§
         sock=pool.getConn(No)
         if sock==None:
             return
@@ -62,7 +63,7 @@ def send_cmd_TCP(data, No, pool):
         re=sock.recv(1024)
         print('recive OK')
         
-        #è¿æ¥æœªå¤±æ•ˆå°†è¿æ¥æ”¾å›è¿æ¥æ± ä¸­
+        #Á¬½ÓÎ´Ê§Ğ§½«Á¬½Ó·Å»ØÁ¬½Ó³ØÖĞ
         pool.addConn(No, sock)
         return re
     except socket.error:
@@ -126,7 +127,7 @@ def send_clear_text(R_No, No, pool):
     print(re)
     return
 
-#æ˜¾ç¤ºæ–¹å¼,é€Ÿåº¦,åœç•™æ—¶é—´è®¾ç½®
+#ÏÔÊ¾·½Ê½,ËÙ¶È,Í£ÁôÊ±¼äÉèÖÃ
 def send_speed(type, speed, stop, No, pool):
     print('send_speed')
     data=bytearray(8)
@@ -143,7 +144,7 @@ def send_speed(type, speed, stop, No, pool):
     print(re)
     return
 
-#æ¸…é™¤å±å¹•
+#Çå³ıÆÁÄ»
 def send_clear():
     return
 

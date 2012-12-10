@@ -1,7 +1,8 @@
+# -*- coding: gbk -*-
 '''
-network.pyå®šä¹‰äº†æœåŠ¡å™¨å¯¹å¤–çš„æŽ¥å£å’Œåè®®
+network.py¶¨ÒåÁË·þÎñÆ÷¶ÔÍâµÄ½Ó¿ÚºÍÐ­Òé
 '''
-#host,æ³¨æ„è¿™é‡Œçš„hostä¸èƒ½æ˜¯'localhost'æˆ–'127.0.0.1'
+#host,×¢ÒâÕâÀïµÄhost²»ÄÜÊÇ'localhost'»ò'127.0.0.1'
 HOST='192.168.1.201'
 #remote host
 REMOTE_HOST='pdm1987.vicp.cc'

@@ -1,13 +1,14 @@
+# -*- coding: gbk -*-
 '''
-busStopClient.py æŽ¥æ”¶æ ‡å‡†è¾“å…¥ä¸­çš„busStopInfoå‘æœåŠ¡å™¨å‘é€busStopInfo.
+busStopClient.py ½ÓÊÕ±ê×¼ÊäÈëÖÐµÄbusStopInfoÏò·þÎñÆ÷·¢ËÍbusStopInfo.
 
-busStopClient å¯åŠ¨åŽæŽ¥æ”¶æ ‡å‡†è¾“å…¥ä¸­çš„å‘½ä»¤
--i info          æŽ¥æ”¶info,æ ¼å¼:ç«™å ç¼–å· çº¿è·¯1 [çº¿è·¯2 ...]
--q               é€€å‡º
--h               æ˜¾ç¤ºå¸®åŠ©
+busStopClient Æô¶¯ºó½ÓÊÕ±ê×¼ÊäÈëÖÐµÄÃüÁî
+-i info          ½ÓÊÕinfo,¸ñÊ½:Õ¾Ãû ±àºÅ ÏßÂ·1 [ÏßÂ·2 ...]
+-q               ÍË³ö
+-h               ÏÔÊ¾°ïÖú
 
-å¯¹äºŽbusStopInfoä¿¡æ¯å°†åˆ¤æ–­è¾“å…¥æ˜¯å¦ç¬¦åˆè¦æ±‚.
-ç¬¦åˆè¦æ±‚å°†æŠŠä¿¡æ¯å‘é€ç»™æœåŠ¡ç«¯.
+¶ÔÓÚbusStopInfoÐÅÏ¢½«ÅÐ¶ÏÊäÈëÊÇ·ñ·ûºÏÒªÇó.
+·ûºÏÒªÇó½«°ÑÐÅÏ¢·¢ËÍ¸ø·þÎñ¶Ë.
 '''
 
 import socket
@@ -42,7 +43,7 @@ def exit_client(arr):
     
 def print_help(arr):
     print('busStopClient help:')
-    print('-i info          æŽ¥æ”¶info,æ ¼å¼:ç«™å ç¼–å· çº¿è·¯1 [çº¿è·¯2 ...]')
+    print('-i info          ½ÓÊÕinfo,¸ñÊ½:Õ¾Ãû ±àºÅ ÏßÂ·1 [ÏßÂ·2 ...]')
     return
 
 cmd_list=[

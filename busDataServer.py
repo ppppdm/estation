@@ -1,14 +1,15 @@
+# -*- coding: gbk -*-
 '''
-busDataServer.py æŽ¥æ”¶å…¬äº¤å…¬å¸çš„å…¬äº¤è½¦GPSæ•°æ®.
-æœåŠ¡æŽ¥å£éœ€è¦å¯¹å…¬äº¤æ•°æ®ä¸­å¿ƒå…¬å¸ƒ,æ–¹ä¾¿å°†æ•°æ®å‘é€è¿‡æ¥.
+busDataServer.py ½ÓÊÕ¹«½»¹«Ë¾µÄ¹«½»³µGPSÊý¾Ý.
+·þÎñ½Ó¿ÚÐèÒª¶Ô¹«½»Êý¾ÝÖÐÐÄ¹«²¼,·½±ã½«Êý¾Ý·¢ËÍ¹ýÀ´.
 
-busDataServer.py å¯åŠ¨åŽä¸€ç›´è¯»å–æœåŠ¡ç«¯å£ä¼ æ¥çš„æ•°æ®.
-å¹¶å°†æ•°æ®
-    1.å†™å…¥åˆ°æ–‡ä»¶ä¸­
-    2.è°ƒç”¨åŽå°å¤„ç†ç¨‹åºå¤„ç†
+busDataServer.py Æô¶¯ºóÒ»Ö±¶ÁÈ¡·þÎñ¶Ë¿Ú´«À´µÄÊý¾Ý.
+²¢½«Êý¾Ý
+    1.Ð´Èëµ½ÎÄ¼þÖÐ
+    2.µ÷ÓÃºóÌ¨´¦Àí³ÌÐò´¦Àí
     
-busDataServer.py å¯åŠ¨ç›´åˆ°ç”µå­ç«™ç‰Œä¸»æŽ§ç¨‹åºé€šçŸ¥å…¶å…³é—­æˆ–ç³»ç»Ÿå½“æœº.
-æ‰€ä»¥è¿žæŽ¥ busDataServer çš„ç¨‹åºåœ¨ busDataServer å…³é—­åŽå¯¹å¼‚å¸¸å¿½ç•¥å¹¶å†æ¬¡å‘èµ·è¿žæŽ¥è¯·æ±‚.
+busDataServer.py Æô¶¯Ö±µ½µç×ÓÕ¾ÅÆÖ÷¿Ø³ÌÐòÍ¨ÖªÆä¹Ø±Õ»òÏµÍ³µ±»ú.
+ËùÒÔÁ¬½Ó busDataServer µÄ³ÌÐòÔÚ busDataServer ¹Ø±Õºó¶ÔÒì³£ºöÂÔ²¢ÔÙ´Î·¢ÆðÁ¬½ÓÇëÇó.
 
 '''
 
@@ -34,8 +35,8 @@ def write_to_file(data):
 funclist=[write_to_file]
 
 '''
-å‚æ•°:
-    flag:0 å†™åˆ°æ–‡ä»¶ 1.è°ƒç”¨å‡½æ•°
+²ÎÊý:
+    flag:0 Ð´µ½ÎÄ¼þ 1.µ÷ÓÃº¯Êý
 '''
 def busDataServer(flag):
     global file

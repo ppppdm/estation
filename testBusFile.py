@@ -1,5 +1,6 @@
+# -*- coding: gbk -*-
 '''
-璇诲彇busone.txt鏂囦欢涓殑bus淇℃伅鐢ㄤ簬娴嬭瘯
+读取busone.txt文件中的bus信息用于测试
 
 '''
 
