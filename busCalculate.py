@@ -187,18 +187,18 @@ def distOfBusToSegmentEnd(bus, pA, pB):
 '''
 
 def calculateBusNextStation(lineDist, busPoint):
-    minp2s=0
+    minp2s=float('Infinity')
     bias=0
     dist=0
     for i in range(len(lineDist)-1):
-        print(i)
+        #print(i)
         pA=lineDist[i].getCoordinate()
         pB=lineDist[i+1].getCoordinate()
         
         #函数返回一个元组(点到线段的距离,公交车到线段终点的距离)
         ret=distOfBusToSegmentEnd(busPoint, pA, pB)
         p2s=ret[0]
-        
+        #print(ret)
         #compare method of judge weather the bus in this segment,two way
         #1.the minimun dist
         #2.when the dist less than 
