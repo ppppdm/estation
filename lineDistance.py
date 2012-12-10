@@ -162,12 +162,17 @@ class elemOfLineDist:
     def setDist(self, dist):
         self.dist=dist
     
+    def printElem(self):
+        s=''
+        s+=str(self.lng)+'\t'+str(self.lat)+'\t'+str(self.dist)+'\t'+str(self.isStaion)
+        print(s)
+    
 # elemOfLineDist lng1 lat1 dist1 站标识 lng2 lat2 dist2 站标识 [ ... ]
 class lineDistTable(fileTable):
     def insertLineWithArr(self, arr):
         line=[]
         for i in range(0, len(arr), 4):
-            elem=elemOfLineDist(arr[i], arr[i+1], int(arr[i+2]), arr[i+3])
+            elem=elemOfLineDist(arr[i], arr[i+1], float(arr[i+2]), arr[i+3])
             line.append(elem)
         self.table.append(line)
         return
@@ -189,8 +194,7 @@ class lineDistTable(fileTable):
         s=''
         for elem in arr:
             s+=elem.getLng()+'\t'+elem.getLat()+'\t'+str(elem.getDist())+'\t'+elem.getStationId()+'\t'
-        s.rstrip('\t')
-        print('s')
+        s=s.rstrip('\t')
         s+='\n'
         file.write(s)
         return
