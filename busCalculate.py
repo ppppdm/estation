@@ -294,8 +294,9 @@ if __name__=='__main__':
     print('test func calculateBusNextStation()')
     ldt=lineDistTable()
     ldt.read_from_file('linedist.txt')
+    line=ldt.index(0)
     for i in bus1.path:
-        pos=calculateBusNextStation(ldt, i)
+        pos=calculateBusNextStation(line, i)
         print(pos)
     
     print('exit')
