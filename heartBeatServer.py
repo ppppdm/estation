@@ -14,23 +14,30 @@
 
 import socket
 import network
+import _thread
 
 
-HOST='localhost'
-
+def handleConnect(conn, pool):
+    data=conn.recv(1024)
+    print(data)
+    num=0
+    try:
+        num=int(data[:4])
+    except ValueError:
+        print('handle Connect error, data %s'%(data[:4]))
+    pool.addConn(num, conn)
+    return
 
 def reciveHeartBeat(pool):
+    print(network.HOST_OF_HEARTBEAT)
     s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((network.HOST_OF_HEARTBEAT, network.PORT_OF_HEARTBEAT))
     s.listen(1)
     while True:
         conn, addr=s.accept()
         print('HeartBeat Connected by',  addr)
-        data=conn.recv(1024)
-        if data:
-            print(int(data[:4]))
-            pool.addConn(int(data[:4]), conn)
-            #Don't close conn
+        t_id=_thread.start_new_thread(handleConnect, (conn, pool))
+        print('handle connect thread id %d'%(t_id))
     return
 
 
@@ -39,16 +46,18 @@ if __name__=='__main__':
     #from table_IP import table_IP
     from connectPool import connectPool
     import netConfigServer
-    import _thread
     '''
     测试程序申请一个ip table, 并启动接收reciveHeartBeat服务
     服务将接收到的ip 写入到ip table中
     '''
+    
     def test():
         #iptable=table_IP()
         #mip=maintainIP(iptable)
         pool=connectPool()
-        _thread.start_new_thread(netConfigServer.netConfigServer, (pool, None, ))
+        #conn=None
+        #_thread.start_new_thread(handleConnect, (conn, pool))
+        _thread.start_new_thread(netConfigServer.netConfigServer, (pool, ))
         
         reciveHeartBeat(pool)
     

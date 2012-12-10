@@ -55,10 +55,11 @@ class busInfo:
         return self.lineName
 
 class busInfo_cal():
-    def __init__(self, id, line, station):
+    def __init__(self, id, line, station, dist):
         self.id=id
         self.line=line
         self.station=station
+        self.dist=dist
     
     def getLine(self):
         return self.line
@@ -66,11 +67,19 @@ class busInfo_cal():
     def getStation(self):
         return self.station
     
+    def getDist(self):
+        return self.dist
+    
     def setLine(self, line):
         self.line=line
     
     def setStation(self, station):
         self.station=station
+    
+    def set(self, info):
+        self.line=info.line
+        self.station=info.station
+        self.dist=info.dist
 
 #用于记录公交车信息的表
 class busInfoTable():
@@ -98,7 +107,7 @@ class elemOfLineBus:
     def __init__(self, name, dist):
         self.name=name
         self.dist=dist
-        self.buses=[] ##list中存放的是businfo的下标
+        self.buses=[] ##list中存放的是businfo的busId(or busindex in businfo)
         return
 '''
 元素是一条line,每条line中的元素是elemOfLineBus
@@ -106,6 +115,24 @@ class elemOfLineBus:
 class lineBusTable:
     def __init__(self):
         self.table=[]
+    
+    def addbus(self, busId, lineIndex, station):
+        line=self.table[lineIndex]
+        for st in line:
+            if st.name==station:
+                st.buses.append(busId)
+                break
+        return
+    
+    def delbus(self, busId, lineIndex, station):
+        line=self.table[lineIndex]
+        for st in line:
+            if st.name==station:
+                for bus in st.buses:
+                    if bus==busId:
+                        st.buses.remove(bus)
+        return
+
 ###############################################
 import lineDistance
 import math
@@ -160,21 +187,25 @@ def distOfBusToSegmentEnd(bus, pA, pB):
 '''
 
 def calculateBusNextStation(lineDist, busPoint):
-    mindist=0
+    minp2s=0
     bias=0
+    dist=0
     for i in range(len(lineDist)-1):
         print(i)
         pA=lineDist[i].getCoordinate()
         pB=lineDist[i+1].getCoordinate()
         
-        dist=distOfBusToSegmentEnd(busPoint, pA, pB)
+        #函数返回一个元组(点到线段的距离,公交车到线段终点的距离)
+        ret=distOfBusToSegmentEnd(busPoint, pA, pB)
+        p2s=ret[0]
         
         #compare method of judge weather the bus in this segment,two way
         #1.the minimun dist
         #2.when the dist less than 
-        if dist < mindist:
-            mindist=dist
+        if p2s < minp2s:
+            minp2s=p2s
             bias=i
+            dist=ret[1]
     return (bias, dist)
 
 
@@ -190,12 +221,35 @@ def busPositionCalculate(lineDist, busInfo):
     position=calculateBusNextStation(lineDist, busPoint)
     return position
 
-def updateTheLine(position, lineDist, lineBusTable, busInfoTable):
-    #first update the lineBusTable
+'''
+参数说明:
+1.position ---- 在该线路上的偏移量,到下一站距离
+2.lineDist ---- 该线路的站点距离
+3.lineIndex ----该线路在线路表中的偏移
+4.lineBusTable ---- 线路公交表,需要根据lineIndex找到车现在所在的线路
+5.busInfoTable ---- 公交信息表,包含公交车原来所在的线路
+'''
+def updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInfo, busInfoTable):
+    #first update the lineBusTable,del old position,add new position
+    busId=busInfo.id
+    oldbus=busInfoTable.findById(busId)
+    oldline=oldbus.getLine()
+    oldstation=oldbus.getStation()
+    oldlineIndex=lineTable.getIndexByName(oldline)
+    
+    newline=lineDistTable.index(lineIndex)
+    newstation=newline[position[0]].getStationId()
+
+    lineBusTable.delbus(busId, oldlineIndex, oldstation)
+    lineBusTable.addbus(busId, lineIndex, newstation)
     
     #second get all station need update sending informateion and add to stationInfo
+    ##call stationInfo func
+    
     
     #third update busInfoTable
+    bus_cal=busInfo_cal(busId, newline, newstation, position[1])
+    busInfoTable.update(bus_cal)
     return
 '''
 根据公交车信息更新线路公交车表和计算后的公交车信息表
@@ -218,10 +272,11 @@ def updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
     lineDist=lineDistTable.index(lineIndex)
     #lineBus=lineBusTable(lineIndex)
     
+    #函数返回一个元组(到下一站的偏移量,到下一站距离)
     position=busPositionCalculate(lineDist, busInfo)
     
     #update line
-    updateTheLine(position, lineDist, lineBusTable, busInfoTable)
+    updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInfo, busInfoTable)
     return
 
 ###############################################
