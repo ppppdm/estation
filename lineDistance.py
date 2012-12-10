@@ -189,9 +189,10 @@ class lineDistTable(fileTable):
         file=open(filename, 'w')
         line=self.index(i)
         s=''
-        for elem in line:
-            s+=elem.getLng()+'\t'+elem.getLat()+'\t'+str(elem.getDist())+'\t'+elem.getStationId()+'\n'
         
+        for elem in line:
+            s+='['+elem.getLng()+','+elem.getLat()+','+str(elem.getDist())+',\"'+elem.getStationId()+'\"],'+'\n'
+        file.write(s)
         file.close()
 
 #################################################
@@ -340,5 +341,10 @@ if __name__=='__main__':
     oneline=insertLineStopToPath(lst.index(0), lp.index(0))
     ldt.insertLine(oneline)
     ldt.write_to_file('linedist.txt', 'w')
+    
+    print(ldt.getNum())
+    for i in range(ldt.getNum()):
+        filename='line_'+str(i)+'.txt'
+        ldt.writeOneLine(filename, i)
     
     print('exit')
