@@ -67,8 +67,8 @@ def send_cmd_TCP(data, No, pool):
         pool.addConn(No, sock)
         return re
     except socket.error:
-        print(sock)
-        return
+        print('error')
+        return None
 
 def send_line(num, No, pool):
     print('send_line')
@@ -86,9 +86,9 @@ def send_line(num, No, pool):
 
 def send_text(R_No, name, msg1, msg2, No, pool):
     print('send_txt')
-    m1len=len(msg1)
-    m2len=len(msg2)
-    nlen=len(name)
+    m1len=len(bytes(msg1, 'gbk'))
+    m2len=len(bytes(msg2, 'gbk'))
+    nlen=len(bytes(name, 'gbk'))
     tlen=m1len+m2len+4+4
     #len of name should less than 4
     if nlen < 4:
@@ -100,11 +100,11 @@ def send_text(R_No, name, msg1, msg2, No, pool):
     data[1]=CODE_TEXT
     data[2]=tlen
     data[3]=R_No
-    data[4:8]=bytes(name, 'utf8')
+    data[4:8]=bytes(name, 'gbk')
     data[8]=m1len
-    data[9:9+m1len]=bytes(msg1, 'utf8')
+    data[9:9+m1len]=bytes(msg1, 'gbk')
     data[9+m1len]=m2len
-    data[10+m1len:-3]=bytes(msg2, 'utf8')
+    data[10+m1len:-3]=bytes(msg2, 'gbk')
     data[-3]=0x1
     data[-2]=crc_check(data[:-2])
     data[-1]=CODE_FRAME_END
@@ -148,8 +148,7 @@ def send_speed(type, speed, stop, No, pool):
 def send_clear():
     return
 
-import time
-def netConfigServer(pool, bustop):
+def netConfigServer(pool):
     sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind((network.HOST, network.PORT_OF_NETCONFIG))
     sock.listen(1)
@@ -160,21 +159,19 @@ def netConfigServer(pool, bustop):
         if data:
             print(data)
             conn.sendall(network.NET_RET_OK)
-            s=str(data, 'utf8')
-            arr=s.split()
+            s=str(data, 'GBK')
+            arr=s.split(',')#ÔÝÊ±ÓÃ¶ººÅ
+            
+            No=int(arr[1])
             if arr[0]=='1':
                 #test code here
-                send_line(int(arr[1]), 1, pool)
-                time.sleep(5)
+                send_line(int(arr[2]), No, pool)
             if arr[0]=='2':
-                arr[2]=arr[2].strip('\'')
-                arr[3]=arr[3].strip('\'')
-                arr[4]=arr[4].strip('\'')
-                send_text(int(arr[1]), arr[2],arr[3], arr[4], 1,  pool)
+                send_text(int(arr[2]), arr[3],arr[4], arr[5], No,  pool)
             if arr[0]=='3':
-                 send_clear_text(int(arr[1]), 1, pool)
+                 send_clear_text(int(arr[2]), 1, pool)
             if arr[0]=='4':
-                 send_speed(int(arr[1]), int(arr[2]), int(arr[3]), 1, pool)
+                 send_speed(int(arr[2]), int(arr[3]), int(arr[4]), No, pool)
         conn.close()
     return
 
@@ -183,12 +180,11 @@ if __name__=='__main__':
     print('test')
     #from table_busStop import table_busStop
     #from table_IP import table_IP
-    #from connectPool import coonectPool
-    #pool=connectPool()
+    from connectPool import connectPool
     #ip_table=table_IP()
     #ip_table.readFromFile()
     #eNo=1
-    
+    pool=connectPool()
     #busstop_table=table_busStop()
     #busstop_table.readFromFile()
     #netConfigServer(ip_table, busstop_table)
@@ -196,6 +192,5 @@ if __name__=='__main__':
     #ip=ip_table.getIP(1)
     #send_line(3, eNo, pool)
     #send_text(R_No, name, msg1, msg2, No, pool):
-    send_text(1, '104', 'fff', 'xxx', 1, None)
-
-    
+    send_text(1, '104', 'fff', 'xxx', 1, pool)
+    netConfigServer(pool)
