@@ -17,3 +17,6 @@ tmp*.txt
 
 # Py cache
 *.pyc
+
+# vim temple file
+*.swp

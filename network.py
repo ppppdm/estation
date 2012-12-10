@@ -2,8 +2,11 @@
 '''
 network.py定义了服务器对外的接口和协议
 '''
+import socket
 #host,注意这里的host不能是'localhost'或'127.0.0.1'
-HOST='192.168.1.201'
+#HOST 是本机地址,由服务端和测试客户端使用
+#REMOTE_HOST 由客户端使用
+HOST=socket.gethostbyname(socket.gethostname())
 #remote host
 REMOTE_HOST='pdm1987.vicp.cc'
 

@@ -172,7 +172,16 @@ class lineDistTable(fileTable):
         self.table.append(line)
         return
     
-    def insertLine(self, line):
+    def insertOneLine(self, line):
+        self.table.append(line)
+        return
+    
+    def insertLine(self, arr):
+        line=[]
+        print(len(arr))
+        for i in range(0, len(arr), 4):
+            elem=elemOfLineDist(arr[i], arr[i+1], float(arr[i+2]), arr[i+3])
+            line.append(elem)
         self.table.append(line)
         return
     
@@ -181,6 +190,7 @@ class lineDistTable(fileTable):
         for elem in arr:
             s+=elem.getLng()+'\t'+elem.getLat()+'\t'+str(elem.getDist())+'\t'+elem.getStationId()+'\t'
         s.rstrip('\t')
+        print('s')
         s+='\n'
         file.write(s)
         return
@@ -189,9 +199,10 @@ class lineDistTable(fileTable):
         file=open(filename, 'w')
         line=self.index(i)
         s=''
-        for elem in line:
-            s+=elem.getLng()+'\t'+elem.getLat()+'\t'+str(elem.getDist())+'\t'+elem.getStationId()+'\n'
         
+        for elem in line:
+            s+='['+elem.getLng()+','+elem.getLat()+','+str(elem.getDist())+',\"'+elem.getStationId()+'\"],'+'\n'
+        file.write(s)
         file.close()
 
 #################################################
@@ -338,7 +349,16 @@ if __name__=='__main__':
     #need test insertLineStopToPath
     ldt=lineDistTable()
     oneline=insertLineStopToPath(lst.index(0), lp.index(0))
-    ldt.insertLine(oneline)
+    ldt.insertOneLine(oneline)
     ldt.write_to_file('linedist.txt', 'w')
+    
+    print(ldt.getNum())
+    for i in range(ldt.getNum()):
+        filename='line_'+str(i)+'.txt'
+        ldt.writeOneLine(filename, i)
+    
+    ldt2=lineDistTable()
+    ldt2.read_from_file('linedist.txt')
+    ldt2.write_to_file('tmp4.txt', 'w')
     
     print('exit')
