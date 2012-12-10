@@ -34,9 +34,10 @@ CODE_PERH1	       =0xCD
 CODE_FRAME_HEAD =0xF1
 CODE_FRAME_END   =0xAA
 
-LEN_OF_CODE_LINE=0X1
+LEN_OF_CODE_LINE=0x1
 LEN_OF_CODE_CLEAR_TEXT=0x1
 LEN_OF_CODE_SPEED=0x3
+LEN_OF_CODE_CLEAR=0x0
 
 def crc_check(b_data):
     if len(b_data)==0:
@@ -145,7 +146,17 @@ def send_speed(type, speed, stop, No, pool):
     return
 
 #Çå³ýÆÁÄ»
-def send_clear():
+def send_clear(No, pool):
+    print('send_clear')
+    data=bytearray(5)
+    data[0]=CODE_FRAME_HEAD
+    data[1]=CODE_CLEAR
+    data[2]=LEN_OF_CODE_CLEAR
+    data[-2]=crc_check(data[:-2])
+    data[-1]=CODE_FRAME_END
+    
+    re=send_cmd_TCP(data, No, pool)
+    print(re)
     return
 
 def netConfigServer(pool):
@@ -169,7 +180,7 @@ def netConfigServer(pool):
             if arr[0]=='2':
                 send_text(int(arr[2]), arr[3],arr[4], arr[5], No,  pool)
             if arr[0]=='3':
-                 send_clear_text(int(arr[2]), 1, pool)
+                 send_clear_text(int(arr[2]), No, pool)
             if arr[0]=='4':
                  send_speed(int(arr[2]), int(arr[3]), int(arr[4]), No, pool)
         conn.close()
