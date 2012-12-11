@@ -153,29 +153,48 @@ def distOfBusToSegmentEnd(bus, pA, pB):
     a=lineDistance.distOfPointToPoint(pA, pB)
     b=lineDistance.distOfPointToPoint(bus, pB)
     c=lineDistance.distOfPointToPoint(pA, bus)
-    
-    #计算点C到直线AB的距离
-    ##x=√(2(a^2 b^2+a^2 c^2+b^2 c^2)-(a^4+b^4+c^4))/2a
-    x=math.sqrt(2*(a**2*b**2 + a**2*c**2 + b**2*c**2) - (a**4 + b**4 + c**4)) / (2 * a)
-    
-    #判断过点C作的垂线与直线AB的交点D是否在线段AB上
-    #计算线段AD和BD的长度,若AD > AB 或 BD > AB,则交点D在不线段AB上
-    ##AD^2+x^2=AC^2
-    ##BD^2+x^2=BC^2
-    AD=math.sqrt(c**2-x**2)
-    BD=math.sqrt(b**2-x**2)
-    if AD > a or BD > a:
-        onAB=False
-    else:
-        onAB=True
-    
-    #根据AD,BD大小判断公交车到有向线段的末端距离
-    if onAB:
-        bed=BD
-        dist=x
-    else:
+    print(a, b, c)
+    '''
+    考虑到计算精度的问题,当a,b,c任意一个小于r(r接近0),则不计算x,AD,BD
+    这里r暂时取0.0001
+    '''
+    r=0.0001
+    if a < r:
+        print(a)
+        bed=a
+        dist=b
+    elif b < r:
+        print(b)
         bed=b
-        dist=min((b, c))
+        dist=b
+    elif c < r:
+        print(c)
+        bed=a
+        dist=c
+    else :
+        #计算点C到直线AB的距离
+        ##x=√(2(a^2 b^2+a^2 c^2+b^2 c^2)-(a^4+b^4+c^4))/2a
+        x=math.sqrt(2*(a**2*b**2 + a**2*c**2 + b**2*c**2) - (a**4 + b**4 + c**4)) / (2 * a)
+        print(x)
+        #判断过点C作的垂线与直线AB的交点D是否在线段AB上
+        #计算线段AD和BD的长度,若AD > AB 或 BD > AB,则交点D在不线段AB上
+        ##AD^2+x^2=AC^2
+        ##BD^2+x^2=BC^2
+        AD=math.sqrt(c**2-x**2)
+        BD=math.sqrt(b**2-x**2)
+        if AD > a or BD > a:
+            onAB=False
+        else:
+            onAB=True
+    
+        #根据AD,BD大小判断公交车到有向线段的末端距离
+        if onAB:
+            bed=BD
+            dist=x
+        else:
+            bed=b
+            dist=min((b, c))
+    
     return bed, dist
 '''
 计算公交车在线路上行驶的下一站
@@ -291,6 +310,11 @@ if __name__=='__main__':
     bus1.readFromFile('busone.txt')
     bus1.writeTofile('tmp3.txt')
     
+    print("test distOfBusToSegmentEnd")
+    ret=distOfBusToSegmentEnd((118.216117,33.963728), (118.214824,33.960854), (118.214824,33.960854))
+    print(ret)
+    
+    '''
     print('test func calculateBusNextStation()')
     ldt=lineDistTable()
     ldt.read_from_file('linedist.txt')
@@ -298,5 +322,5 @@ if __name__=='__main__':
     for i in bus1.path:
         pos=calculateBusNextStation(line, i)
         print(pos)
-    
+    '''
     print('exit')
