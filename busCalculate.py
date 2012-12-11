@@ -58,7 +58,7 @@ class busInfo_cal():
     def __init__(self, id, line, station, dist):
         self.id=id
         self.line=line
-        self.station=station
+        self.station=station #it could be the bias of the station in the line
         self.dist=dist
     
     def getLine(self):
@@ -81,8 +81,8 @@ class busInfo_cal():
         self.station=info.station
         self.dist=info.dist
     
-    def pirntInfo(self):
-        s=str(self.id)+'\t'+self.line+'\t'+self.station+'\t'+str(self.dist)+'\t'
+    def toString(self):
+        s=str(self.id)+'\t'+str(self.line)+'\t'+str(self.station)+'\t'+str(self.dist)
         return s
 
 #用于记录公交车信息的表
@@ -99,7 +99,7 @@ class busInfoTable():
     #add a businfo to table if the id of businfo not in table,
     #if not update the businfo status
     def update(self, info):
-        oldinfo=self.findById(info)
+        oldinfo=self.findById(info.id)
         if oldinfo:
             oldinfo.set(info)
         else:
@@ -111,7 +111,7 @@ class busInfoTable():
         file=open(filename, 'w')
         s=''
         for info in self.table:
-            s+=info.printInfo()
+            s+=info.toString()+'\n'
         file.write(s)
         file.close()
         return
@@ -391,7 +391,9 @@ def updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInf
 '''
 def updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo):
     lineName=busInfo.getLineName()
+    print('linename:', lineName)
     lineIndex=lineTable.getIndexByFullName(lineName)
+    print('line index', lineIndex)
     lineDist=lineDistTable.index(lineIndex)
     #lineBus=lineBusTable(lineIndex)
     
@@ -432,7 +434,7 @@ if __name__=='__main__':
     
     
     print('test busPositionCalculate')
-    bi1=busInfo(7132, '302', 118.216046, 33.95997)
+    bi1=busInfo(7132, ['302', '下行'], 118.216046, 33.95997)
     ret=busPositionCalculate(ldt.index(0), bi1)
     print(ret)
     
@@ -449,8 +451,9 @@ if __name__=='__main__':
     lbt2.writeOneLine('tmp6.txt', 0)
     
     print('test busInfo_cal')
-    bic=busInfo_cal(7132, ['302', '上行'], )
-    #not over
+    bic=busInfo_cal(7132, ['302', '下行'], 12, 0.0)
+    s=bic.toString()
+    print(s)
     
     
     print('test updateLineBus')
@@ -459,10 +462,11 @@ if __name__=='__main__':
     bit=busInfoTable()
     #updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
     updateLineBus(lt, ldt, lbt,bit,bi1)
+    bit.write_to_file('tmp7.txt')
     #need to print bit
     
     
-    bi2=busInfo(7132, '302', 118.222567, 33.954176)
+    bi2=busInfo(7132, ['302', '下行'], 118.222567, 33.954176)
     updateLineBus(lt, ldt, lbt,bit,bi2)
-    
+    bit.write_to_file('tmp8.txt')
     print('exit')
