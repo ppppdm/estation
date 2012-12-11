@@ -78,9 +78,9 @@ class linesTable(fileTable):
             return line[1]
         return None
     
-    def getIndexByName(self, name):
+    def getIndexByFullName(self, fullname):
         for i in range(len(self.table)):
-            if self.getLineName(i)==name:
+            if self.table[i]==fullname:
                 return i
         return -1
 
@@ -309,9 +309,19 @@ def distOfPointToPoint(pA, pB):
     #北纬取90-纬度值(90- Latitude)，南纬取90+纬度值(90+Latitude)
     #这里都是北纬,也没有南北纬信息用于处理,以后可能会添加
     
-    ##角 C = sin(LatA)*sin(LatB) + cos(LatA)*cos(LatB)*cos(MLonA-MLonB)
+    '''
+    ##角C余弦值 = sin(LatA)*sin(LatB) + cos(LatA)*cos(LatB)*cos(MLonA-MLonB)
+    '''
     C=math.sin(latA)*math.sin(latB)+math.cos(latA)*math.cos(latB)*math.cos(lngA-lngB)
-    #print(C)
+    
+    '''
+    ##注意:C的值被实际问题和计算精度影响,C的值是否在arcos的定义域取值范围内[-1,1]
+    '''
+    if C > 1:
+        C=1
+    if C < -1:
+        C=-1
+    
     dist=R*math.acos(C)*math.pi/180
     return dist
 

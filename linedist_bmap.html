@@ -63,6 +63,10 @@ body,html,#allmap {
 
 var map = new BMap.Map("l-map");            // ´´½¨MapÊµÀý
 map.centerAndZoom("ËÞÇ¨", 14);
+map.addEventListener("click", function(e) {
+	document.getElementById("coordinate").innerHTML = e.point.lng+ ", " + e.point.lat;
+	document.getElementById("r").innerHTML += e.point.lng+ "," + e.point.lat+'\n';
+	});
 
 LINEDISTARRY=[
 [118.215781,33.962576,0.0008106356570020192,"-1"],

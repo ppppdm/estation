@@ -80,6 +80,10 @@ class busInfo_cal():
         self.line=info.line
         self.station=info.station
         self.dist=info.dist
+    
+    def pirntInfo(self):
+        s=str(self.id)+'\t'+self.line+'\t'+self.station+'\t'+str(self.dist)+'\t'
+        return s
 
 #用于记录公交车信息的表
 class busInfoTable():
@@ -103,9 +107,18 @@ class busInfoTable():
             self.table.append(info)
         return
 
+    def write_to_file(self, filename):
+        file=open(filename, 'w')
+        s=''
+        for info in self.table:
+            s+=info.printInfo()
+        file.write(s)
+        file.close()
+        return
+    
 class elemOfLineBus:
     def __init__(self, name, dist):
-        self.name=name
+        self.name=name ##station name
         self.dist=dist
         self.buses=[] ##list中存放的是businfo的busId(or busindex in businfo)
         return
@@ -132,10 +145,87 @@ class lineBusTable:
                     if bus==busId:
                         st.buses.remove(bus)
         return
-
+    
+    def read_from_dist_file(self, filename):
+        file=open(filename, 'r')
+        #读取的是linedist的文件,格式:lng  lat dist    标识  ...
+        while True:
+            line=file.readline()
+            line=line.rstrip('\n')
+            if line=='':
+                break
+            else:
+                arr=line.split('\t')
+                self._insertDistLine(arr)
+        file.close()
+        return
+    
+    def read_from_file(self, filename):
+        file=open(filename, 'r')
+        #读取的是linedist的文件,格式:lng  lat dist    标识  ...
+        while True:
+            line=file.readline()
+            line=line.rstrip('\n')
+            if line=='':
+                break
+            else:
+                arr=line.split('\t')
+                self._insertLine(arr)
+        file.close()
+        return
+    
+    def _insertDistLine(self, arr):
+        line=[]
+        for i in range(0, len(arr), 4):
+            elem=elemOfLineBus(arr[i+3], float(arr[i+2]))
+            line.append(elem)
+        self.table.append(line)
+        return
+    
+    def _insertLine(self, arr):
+        line=[]
+        for i in range(0, len(arr), 2):
+            elem=elemOfLineBus(arr[i], float(arr[i+1]))
+            line.append(elem)
+        self.table.append(line)
+        return
+    
+    def write_to_file(self, filename):
+        file=open(filename, 'w')
+        s=''
+        for line in self.table:
+            for elem in line:
+                s+=elem.name+'\t'+str(elem.dist)+'\t'
+            s=s.rstrip('\t')
+            s+='\n'
+        file.write(s)
+        file.close()
+        return
+    
+    def writeOneLine(self, filename, index):
+        file=open(filename, 'w')
+        s=''
+        line=self.table[index]
+        for elem in line:
+            s+=elem.name+'\t'+str(elem.dist)+'\n'
+        file.write(s)
+        file.close()
+        return
 ###############################################
 import lineDistance
 import math
+
+
+def maxAngleCos(a, b, c):
+    sides=[a, b, c]
+    maxs=max(sides)
+    sides.remove(max(sides))
+    e, f=0, 2
+    for i in sides:
+        e+=i**2
+        f*=i
+    C=(e-maxs**2)/f
+    return C
 
 '''
 定义公交车到有向线段AB的末端B最短距离bed
@@ -153,29 +243,59 @@ def distOfBusToSegmentEnd(bus, pA, pB):
     a=lineDistance.distOfPointToPoint(pA, pB)
     b=lineDistance.distOfPointToPoint(bus, pB)
     c=lineDistance.distOfPointToPoint(pA, bus)
-    
-    #计算点C到直线AB的距离
-    ##x=√(2(a^2 b^2+a^2 c^2+b^2 c^2)-(a^4+b^4+c^4))/2a
-    x=math.sqrt(2*(a**2*b**2 + a**2*c**2 + b**2*c**2) - (a**4 + b**4 + c**4)) / (2 * a)
-    
-    #判断过点C作的垂线与直线AB的交点D是否在线段AB上
-    #计算线段AD和BD的长度,若AD > AB 或 BD > AB,则交点D在不线段AB上
-    ##AD^2+x^2=AC^2
-    ##BD^2+x^2=BC^2
-    AD=math.sqrt(c**2-x**2)
-    BD=math.sqrt(b**2-x**2)
-    if AD > a or BD > a:
-        onAB=False
-    else:
-        onAB=True
-    
-    #根据AD,BD大小判断公交车到有向线段的末端距离
-    if onAB:
-        bed=BD
-        dist=x
-    else:
+    #print(a, b, c)
+    '''
+    考虑到计算精度的问题,当a,b,c任意一个小于r(r接近0),则不计算x,AD,BD
+    另外当x的值小于r(即bus接近AB所在的直线),计算开方也将由于精度导致问题
+    这里r暂时取0.0001
+    '''
+    r=0.0001
+    d=maxAngleCos(a, b, c)
+    #print(a, b, c, d+1)
+    if a < r:
+        #print(1, a)
+        bed=a
+        dist=b
+    elif b < r:
+        #print(2, b)
         bed=b
-        dist=min((b, c))
+        dist=b
+    elif c < r:
+        #print(3, c)
+        bed=a
+        dist=c
+    ##最大角接近180即最大角的cos值接近-1
+    elif d - (-1)< r:
+        #print(4, d+1)
+        bed=b
+        if a > b and a > c:
+            dist=0
+        else :
+            dist=min(b, c)
+    else :
+        #计算点C到直线AB的距离
+        ##x=√(2(a^2 b^2+a^2 c^2+b^2 c^2)-(a^4+b^4+c^4))/2a
+        x=math.sqrt(2*(a**2*b**2 + a**2*c**2 + b**2*c**2) - (a**4 + b**4 + c**4)) / (2 * a)
+        #print(5, x)
+        #判断过点C作的垂线与直线AB的交点D是否在线段AB上
+        #计算线段AD和BD的长度,若AD > AB 或 BD > AB,则交点D在不线段AB上
+        ##AD^2+x^2=AC^2
+        ##BD^2+x^2=BC^2
+        AD=math.sqrt(c**2-x**2)
+        BD=math.sqrt(b**2-x**2)
+        if AD > a or BD > a:
+            onAB=False
+        else:
+            onAB=True
+    
+        #根据AD,BD大小判断公交车到有向线段的末端距离
+        if onAB:
+            bed=BD
+            dist=x
+        else:
+            bed=b
+            dist=min((b, c))
+    
     return bed, dist
 '''
 计算公交车在线路上行驶的下一站
@@ -195,18 +315,19 @@ def calculateBusNextStation(lineDist, busPoint):
         pA=lineDist[i].getCoordinate()
         pB=lineDist[i+1].getCoordinate()
         
-        #函数返回一个元组(点到线段的距离,公交车到线段终点的距离)
+        #函数返回一个元组(公交车到线段终点的距离,点到线段的距离)
         ret=distOfBusToSegmentEnd(busPoint, pA, pB)
-        p2s=ret[0]
-        #print(ret)
+        p2s=ret[1]
+        #print(ret, bias)
         #compare method of judge weather the bus in this segment,two way
         #1.the minimun dist
         #2.when the dist less than 
         if p2s < minp2s:
             minp2s=p2s
             bias=i
-            dist=ret[1]
-    return (bias, dist)
+            dist=ret[0]
+    #bias+1表明到下一站
+    return (bias+1, dist)
 
 
 '''
@@ -233,14 +354,16 @@ def updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInf
     #first update the lineBusTable,del old position,add new position
     busId=busInfo.id
     oldbus=busInfoTable.findById(busId)
-    oldline=oldbus.getLine()
-    oldstation=oldbus.getStation()
-    oldlineIndex=lineTable.getIndexByName(oldline)
+    if oldbus != None:
+        oldline=oldbus.getLine()
+        oldstation=oldbus.getStation()
+        oldlineIndex=lineTable.getIndexByFullName(oldline)
+        lineBusTable.delbus(busId, oldlineIndex, oldstation)
     
-    newline=lineDistTable.index(lineIndex)
-    newstation=newline[position[0]].getStationId()
-
-    lineBusTable.delbus(busId, oldlineIndex, oldstation)
+    print(lineIndex)
+    newline=lineTable.index(lineIndex)
+    print(newline)
+    newstation=position[0]#lineDist[position[0]].getStationId()# error 用在路线中的偏移量来确定站,id为-1可能重复
     lineBusTable.addbus(busId, lineIndex, newstation)
     
     #second get all station need update sending informateion and add to stationInfo
@@ -268,13 +391,13 @@ def updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInf
 '''
 def updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo):
     lineName=busInfo.getLineName()
-    lineIndex=lineTable.getIndexByName(lineName)
+    lineIndex=lineTable.getIndexByFullName(lineName)
     lineDist=lineDistTable.index(lineIndex)
     #lineBus=lineBusTable(lineIndex)
     
     #函数返回一个元组(到下一站的偏移量,到下一站距离)
     position=busPositionCalculate(lineDist, busInfo)
-    
+    print(position)
     #update line
     updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInfo, busInfoTable)
     return
@@ -286,17 +409,60 @@ def updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
 if __name__=='__main__':
     from testBusFile import bus
     from lineDistance import lineDistTable
+    from lineDistance import linesTable
     print('test')
     bus1=bus()
     bus1.readFromFile('busone.txt')
     bus1.writeTofile('tmp3.txt')
     
+    print("test distOfBusToSegmentEnd")
+    ret=distOfBusToSegmentEnd((118.216117,33.963728), (118.214824,33.960854), (118.214824,33.960854))
+    print(ret)
+    
+    
     print('test func calculateBusNextStation()')
+    bus2=bus()
+    bus2.readFromFile('bus2.txt')
     ldt=lineDistTable()
     ldt.read_from_file('linedist.txt')
     line=ldt.index(0)
     for i in bus1.path:
         pos=calculateBusNextStation(line, i)
         print(pos)
+    
+    
+    print('test busPositionCalculate')
+    bi1=busInfo(7132, '302', 118.216046, 33.95997)
+    ret=busPositionCalculate(ldt.index(0), bi1)
+    print(ret)
+    
+    
+    print('test lineBusTable')
+    #lineBusTable 的构造成与lineDistTable相同
+    lbt=lineBusTable()
+    lbt.read_from_dist_file('linedist.txt')
+    lbt.write_to_file('linebus.txt')
+    
+    lbt2=lineBusTable()
+    lbt2.read_from_file('linebus.txt')
+    lbt2.write_to_file('tmp5.txt')
+    lbt2.writeOneLine('tmp6.txt', 0)
+    
+    print('test busInfo_cal')
+    bic=busInfo_cal(7132, ['302', '上行'], )
+    #not over
+    
+    
+    print('test updateLineBus')
+    lt=linesTable()
+    lt.read_from_file('lines.txt')
+    bit=busInfoTable()
+    #updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
+    updateLineBus(lt, ldt, lbt,bit,bi1)
+    #need to print bit
+    
+    
+    bi2=busInfo(7132, '302', 118.222567, 33.954176)
+    updateLineBus(lt, ldt, lbt,bit,bi2)
     
     print('exit')
