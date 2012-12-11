@@ -137,6 +137,18 @@ class lineBusTable:
 import lineDistance
 import math
 
+
+def maxAngleCos(a, b, c):
+    sides=[a, b, c]
+    maxs=max(sides)
+    sides.remove(max(sides))
+    e, f=0, 2
+    for i in sides:
+        e+=i**2
+        f*=i
+    C=(e-maxs**2)/f
+    return C
+
 '''
 定义公交车到有向线段AB的末端B最短距离bed
     1.若过公交车C做直线AB的垂线交于点D,若D在线段AB上,则DB即为所求
@@ -153,29 +165,40 @@ def distOfBusToSegmentEnd(bus, pA, pB):
     a=lineDistance.distOfPointToPoint(pA, pB)
     b=lineDistance.distOfPointToPoint(bus, pB)
     c=lineDistance.distOfPointToPoint(pA, bus)
-    print(a, b, c)
+    #print(a, b, c)
     '''
     考虑到计算精度的问题,当a,b,c任意一个小于r(r接近0),则不计算x,AD,BD
+    另外当x的值小于r(即bus接近AB所在的直线),计算开方也将由于精度导致问题
     这里r暂时取0.0001
     '''
     r=0.0001
+    d=maxAngleCos(a, b, c)
+    #print(a, b, c, d+1)
     if a < r:
-        print(a)
+        #print(1, a)
         bed=a
         dist=b
     elif b < r:
-        print(b)
+        #print(2, b)
         bed=b
         dist=b
     elif c < r:
-        print(c)
+        #print(3, c)
         bed=a
         dist=c
+    ##最大角接近180即最大角的cos值接近-1
+    elif d - (-1)< r:
+        #print(4, d+1)
+        bed=b
+        if a > b and a > c:
+            dist=0
+        else :
+            dist=min(b, c)
     else :
         #计算点C到直线AB的距离
         ##x=√(2(a^2 b^2+a^2 c^2+b^2 c^2)-(a^4+b^4+c^4))/2a
         x=math.sqrt(2*(a**2*b**2 + a**2*c**2 + b**2*c**2) - (a**4 + b**4 + c**4)) / (2 * a)
-        print(x)
+        #print(5, x)
         #判断过点C作的垂线与直线AB的交点D是否在线段AB上
         #计算线段AD和BD的长度,若AD > AB 或 BD > AB,则交点D在不线段AB上
         ##AD^2+x^2=AC^2
@@ -214,18 +237,19 @@ def calculateBusNextStation(lineDist, busPoint):
         pA=lineDist[i].getCoordinate()
         pB=lineDist[i+1].getCoordinate()
         
-        #函数返回一个元组(点到线段的距离,公交车到线段终点的距离)
+        #函数返回一个元组(公交车到线段终点的距离,点到线段的距离)
         ret=distOfBusToSegmentEnd(busPoint, pA, pB)
-        p2s=ret[0]
-        #print(ret)
+        p2s=ret[1]
+        #print(ret, bias)
         #compare method of judge weather the bus in this segment,two way
         #1.the minimun dist
         #2.when the dist less than 
         if p2s < minp2s:
             minp2s=p2s
             bias=i
-            dist=ret[1]
-    return (bias, dist)
+            dist=ret[0]
+    #bias+1表明到下一站
+    return (bias+1, dist)
 
 
 '''
@@ -314,13 +338,15 @@ if __name__=='__main__':
     ret=distOfBusToSegmentEnd((118.216117,33.963728), (118.214824,33.960854), (118.214824,33.960854))
     print(ret)
     
-    '''
+    
     print('test func calculateBusNextStation()')
+    bus2=bus()
+    bus2.readFromFile('bus2.txt')
     ldt=lineDistTable()
     ldt.read_from_file('linedist.txt')
     line=ldt.index(0)
     for i in bus1.path:
         pos=calculateBusNextStation(line, i)
         print(pos)
-    '''
+    
     print('exit')

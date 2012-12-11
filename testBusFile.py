@@ -36,4 +36,7 @@ if __name__=='__main__':
     bus1.readFromFile('busone.txt')
     bus1.writeTofile('tmp3.txt')
     
+    bus2=bus()
+    bus2.readFromFile('bus2.txt')
+    bus2.writeTofile('tmp4.txt')
     print('exit')
