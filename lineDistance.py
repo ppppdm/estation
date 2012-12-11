@@ -78,9 +78,9 @@ class linesTable(fileTable):
             return line[1]
         return None
     
-    def getIndexByName(self, name):
+    def getIndexByFullName(self, fullname):
         for i in range(len(self.table)):
-            if self.getLineName(i)==name:
+            if self.table[i]==fullname:
                 return i
         return -1
 

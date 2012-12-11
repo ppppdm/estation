@@ -80,6 +80,10 @@ class busInfo_cal():
         self.line=info.line
         self.station=info.station
         self.dist=info.dist
+    
+    def pirntInfo(self):
+        s=str(self.id)+'\t'+self.line+'\t'+self.station+'\t'+str(self.dist)+'\t'
+        return s
 
 #用于记录公交车信息的表
 class busInfoTable():
@@ -103,9 +107,18 @@ class busInfoTable():
             self.table.append(info)
         return
 
+    def write_to_file(self, filename):
+        file=open(filename, 'w')
+        s=''
+        for info in self.table:
+            s+=info.printInfo()
+        file.write(s)
+        file.close()
+        return
+    
 class elemOfLineBus:
     def __init__(self, name, dist):
-        self.name=name
+        self.name=name ##station name
         self.dist=dist
         self.buses=[] ##list中存放的是businfo的busId(or busindex in businfo)
         return
@@ -132,7 +145,72 @@ class lineBusTable:
                     if bus==busId:
                         st.buses.remove(bus)
         return
-
+    
+    def read_from_dist_file(self, filename):
+        file=open(filename, 'r')
+        #读取的是linedist的文件,格式:lng  lat dist    标识  ...
+        while True:
+            line=file.readline()
+            line=line.rstrip('\n')
+            if line=='':
+                break
+            else:
+                arr=line.split('\t')
+                self._insertDistLine(arr)
+        file.close()
+        return
+    
+    def read_from_file(self, filename):
+        file=open(filename, 'r')
+        #读取的是linedist的文件,格式:lng  lat dist    标识  ...
+        while True:
+            line=file.readline()
+            line=line.rstrip('\n')
+            if line=='':
+                break
+            else:
+                arr=line.split('\t')
+                self._insertLine(arr)
+        file.close()
+        return
+    
+    def _insertDistLine(self, arr):
+        line=[]
+        for i in range(0, len(arr), 4):
+            elem=elemOfLineBus(arr[i+3], float(arr[i+2]))
+            line.append(elem)
+        self.table.append(line)
+        return
+    
+    def _insertLine(self, arr):
+        line=[]
+        for i in range(0, len(arr), 2):
+            elem=elemOfLineBus(arr[i], float(arr[i+1]))
+            line.append(elem)
+        self.table.append(line)
+        return
+    
+    def write_to_file(self, filename):
+        file=open(filename, 'w')
+        s=''
+        for line in self.table:
+            for elem in line:
+                s+=elem.name+'\t'+str(elem.dist)+'\t'
+            s=s.rstrip('\t')
+            s+='\n'
+        file.write(s)
+        file.close()
+        return
+    
+    def writeOneLine(self, filename, index):
+        file=open(filename, 'w')
+        s=''
+        line=self.table[index]
+        for elem in line:
+            s+=elem.name+'\t'+str(elem.dist)+'\n'
+        file.write(s)
+        file.close()
+        return
 ###############################################
 import lineDistance
 import math
@@ -276,14 +354,16 @@ def updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInf
     #first update the lineBusTable,del old position,add new position
     busId=busInfo.id
     oldbus=busInfoTable.findById(busId)
-    oldline=oldbus.getLine()
-    oldstation=oldbus.getStation()
-    oldlineIndex=lineTable.getIndexByName(oldline)
+    if oldbus != None:
+        oldline=oldbus.getLine()
+        oldstation=oldbus.getStation()
+        oldlineIndex=lineTable.getIndexByFullName(oldline)
+        lineBusTable.delbus(busId, oldlineIndex, oldstation)
     
-    newline=lineDistTable.index(lineIndex)
-    newstation=newline[position[0]].getStationId()
-
-    lineBusTable.delbus(busId, oldlineIndex, oldstation)
+    print(lineIndex)
+    newline=lineTable.index(lineIndex)
+    print(newline)
+    newstation=position[0]#lineDist[position[0]].getStationId()# error 用在路线中的偏移量来确定站,id为-1可能重复
     lineBusTable.addbus(busId, lineIndex, newstation)
     
     #second get all station need update sending informateion and add to stationInfo
@@ -311,13 +391,13 @@ def updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInf
 '''
 def updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo):
     lineName=busInfo.getLineName()
-    lineIndex=lineTable.getIndexByName(lineName)
+    lineIndex=lineTable.getIndexByFullName(lineName)
     lineDist=lineDistTable.index(lineIndex)
     #lineBus=lineBusTable(lineIndex)
     
     #函数返回一个元组(到下一站的偏移量,到下一站距离)
     position=busPositionCalculate(lineDist, busInfo)
-    
+    print(position)
     #update line
     updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInfo, busInfoTable)
     return
@@ -329,6 +409,7 @@ def updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
 if __name__=='__main__':
     from testBusFile import bus
     from lineDistance import lineDistTable
+    from lineDistance import linesTable
     print('test')
     bus1=bus()
     bus1.readFromFile('busone.txt')
@@ -348,5 +429,40 @@ if __name__=='__main__':
     for i in bus1.path:
         pos=calculateBusNextStation(line, i)
         print(pos)
+    
+    
+    print('test busPositionCalculate')
+    bi1=busInfo(7132, '302', 118.216046, 33.95997)
+    ret=busPositionCalculate(ldt.index(0), bi1)
+    print(ret)
+    
+    
+    print('test lineBusTable')
+    #lineBusTable 的构造成与lineDistTable相同
+    lbt=lineBusTable()
+    lbt.read_from_dist_file('linedist.txt')
+    lbt.write_to_file('linebus.txt')
+    
+    lbt2=lineBusTable()
+    lbt2.read_from_file('linebus.txt')
+    lbt2.write_to_file('tmp5.txt')
+    lbt2.writeOneLine('tmp6.txt', 0)
+    
+    print('test busInfo_cal')
+    bic=busInfo_cal(7132, ['302', '上行'], )
+    #not over
+    
+    
+    print('test updateLineBus')
+    lt=linesTable()
+    lt.read_from_file('lines.txt')
+    bit=busInfoTable()
+    #updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
+    updateLineBus(lt, ldt, lbt,bit,bi1)
+    #need to print bit
+    
+    
+    bi2=busInfo(7132, '302', 118.222567, 33.954176)
+    updateLineBus(lt, ldt, lbt,bit,bi2)
     
     print('exit')
