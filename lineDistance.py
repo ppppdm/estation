@@ -281,17 +281,34 @@ def distOfPointToLineSegment(pA, pB, pC):
     b=distOfPointToPoint(pC, pB)
     c=distOfPointToPoint(pA, pC)
     
+    if a == 0:
+        dist=b
+        return dist
+    
     #计算点C到直线AB的距离
     ##x=√(2(a^2 b^2+a^2 c^2+b^2 c^2)-(a^4+b^4+c^4))/2a
-    x=math.sqrt(2*(a**2*b**2 + a**2*c**2 + b**2*c**2) - (a**4 + b**4 + c**4)) / (2 * a)
+    tmp=2*(a**2*b**2 + a**2*c**2 + b**2*c**2) - (a**4 + b**4 + c**4)
+    if tmp < 0:
+        x=0
+    else:
+        x=math.sqrt(tmp) / (2 * a)
     #print(x)
     
     #判断过点C作的垂线与直线AB的交点D是否在线段AB上
     #计算线段AD和BD的长度,若AD > AB 或 BD > AB,则交点D在不线段AB上
     ##AD^2+x^2=AC^2
     ##BD^2+x^2=BC^2
-    AD=math.sqrt(c**2-x**2)
-    BD=math.sqrt(b**2-x**2)
+    tmp=c**2-x**2
+    if tmp < 0:
+        AD=0
+    else:
+        AD=math.sqrt(tmp)
+    tmp=b**2-x**2
+    if tmp < 0:
+        BD=0
+    else:
+        BD=math.sqrt(tmp)
+    
     if AD > a or BD > a:
         dist=min((b, c))
     else:
@@ -358,7 +375,6 @@ if __name__=='__main__':
         print(lp.index(i))
     lp.write_to_file('tmp3.txt', 'w')
     
-    
     ##########################################
     #need test insertLineStopToPath
     ldt=lineDistTable()
@@ -374,5 +390,17 @@ if __name__=='__main__':
     ldt2=lineDistTable()
     ldt2.read_from_file('linedist.txt')
     ldt2.write_to_file('tmp4.txt', 'w')
+    
+    print('test for calculat all line dist')
+    ldt3=lineDistTable()
+    print(lst.getNum())
+    for i in range(lst.getNum()):
+        line=insertLineStopToPath(lst.index(i), lp.index(i))
+        ldt3.insertOneLine(line)
+    ldt3.write_to_file('linedist.txt', 'w')
+    
+    for i in range(ldt3.getNum()):
+        filename='line_'+str(i)+'.txt'
+        ldt3.writeOneLine(filename, i)
     
     print('exit')

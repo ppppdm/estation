@@ -120,7 +120,7 @@ class elemOfLineBus:
     def __init__(self, name, dist):
         self.name=name ##station name
         self.dist=dist
-        self.buses=[] ##list中存放的是businfo的busId(or busindex in businfo)
+        self.buses=[] ##list中存放的是businfo的busId(or busindex in businfo)或者是到该站的距离,需要修改!!!
         return
 '''
 元素是一条line,每条line中的元素是elemOfLineBus
