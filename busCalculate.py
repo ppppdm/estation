@@ -122,28 +122,32 @@ class elemOfLineBus:
         self.dist=dist
         self.buses=[] ##list中存放的是businfo的busId(or busindex in businfo)或者是到该站的距离,需要修改!!!
         return
+    
+    def toString(self):
+        return self.name+'\t'+str(self.dist)+str(self.buses)
 '''
 元素是一条line,每条line中的元素是elemOfLineBus
 '''
 class lineBusTable:
     def __init__(self):
         self.table=[]
-    
+    '''
+    argument:
+    busId ----
+    lineIndex ----
+    station ----  bias of the station in this line
+    '''
     def addbus(self, busId, lineIndex, station):
         line=self.table[lineIndex]
-        for st in line:
-            if st.name==station:
-                st.buses.append(busId)
-                break
+        line[station].buses.append(busId)
         return
     
     def delbus(self, busId, lineIndex, station):
         line=self.table[lineIndex]
-        for st in line:
-            if st.name==station:
-                for bus in st.buses:
-                    if bus==busId:
-                        st.buses.remove(bus)
+        st=line[station]
+        for bus in st.buses:
+            if bus==busId:
+                st.buses.remove(bus)
         return
     
     def read_from_dist_file(self, filename):
@@ -364,7 +368,12 @@ def updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInf
     newline=lineTable.index(lineIndex)
     print(newline)
     newstation=position[0]#lineDist[position[0]].getStationId()# error 用在路线中的偏移量来确定站,id为-1可能重复
+    print(newstation)
     lineBusTable.addbus(busId, lineIndex, newstation)
+    
+    line=lineBusTable.table[lineIndex]
+    for i in line:
+        print(i.toString())
     
     #second get all station need update sending informateion and add to stationInfo
     ##call stationInfo func

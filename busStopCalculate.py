@@ -17,7 +17,7 @@ class bus:
 class stopBus:
     def __init__(self):
         self.name=''
-        self.buses=[None]*2 #buses中元素仅记录bus到站的距离
+        self.buses=[] #buses中元素仅记录bus到站的距离
         return
     
     def setName(self, name):
@@ -31,6 +31,12 @@ class stopBus:
     
     def getBus(self):
         return self.buses
+    
+    def toString(self):
+        s=self.name+'\t'
+        for bus in self.buses:
+            s+=str(bus)+'\t'
+        return s
 
 class busQueue:
     def __init__(self, len):
@@ -51,7 +57,9 @@ class busQueue:
     
     def setNth(self, n, v):
         self.queue[(self.bias-n)%self.len]=v
-
+    
+    def getLen(self):
+        return self.len
 
 
 ####################################################
@@ -65,7 +73,7 @@ def getBusDist(buses, bustable):
 def addBuses(buses, bq):
     #首先对buses进行排序,距离大的排在前面
     buses.sort(reverse=True)
-    print(buses)
+    #print(buses)
     #将buses加入到bq中
     for bus in buses:
         bq.insert(bus)
@@ -84,7 +92,7 @@ def updateLineStopBus(lineBus, bustable):
     bq=busQueue(2)
     
     for stop in lineBus:
-        print(stop)
+        #print(stop)
         #buses中是id,通过id在bustable中找到该bus距离!!!!
         #简化,buses中存有距离
         busdist=getBusDist(stop.buses, bustable)
@@ -97,11 +105,22 @@ def updateLineStopBus(lineBus, bustable):
             sbus.setBus(bus)
             mlineStopBus.append(sbus)
 
-        for v in bq.queue:
-            v+=stop.dist
+        for i in range(bq.getLen()):
+            dist=bq.getNth(i)
+            if dist !=None:
+                bq.setNth(i, dist+stop.dist)
+            
+        
     return mlineStopBus
 
 if __name__=='__main__':
+    from lineDistance import linesTable
+    from lineDistance import lineDistTable
+    from busCalculate import busInfoTable
+    from busCalculate import lineBusTable
+    from busCalculate import busInfo
+    import busCalculate
+    
     print('test')
     print('test busQueue')
     bq=busQueue(2)
@@ -121,6 +140,29 @@ if __name__=='__main__':
     
     
     print('test updateLineStopBus')
-    #lsb = updateLineStopBus()
+    bit=busInfoTable()
+    lt=linesTable()
+    lt.read_from_file('lines.txt')
     
+    ldt=lineDistTable()
+    ldt.read_from_file('linedist.txt')
+    
+    lbt=lineBusTable()
+    lbt.read_from_dist_file('linedist.txt')
+    
+    bi2=busInfo(7132, ['302', '下行'], 118.222567, 33.954176)
+    
+    busCalculate.updateLineBus(lt, ldt, lbt,bit,bi2)
+    
+    for i in lbt.table[0]:
+        print(i.buses)
+    
+    linebus=lbt.table[0]
+    
+    lsb = updateLineStopBus(linebus, bit)
+    
+    for i in lsb:
+        print(i.toString())
+    '''
+    '''
     print('exit')
