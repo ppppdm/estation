@@ -151,8 +151,10 @@ if __name__=='__main__':
     lbt.read_from_dist_file('linedist.txt')
     
     bi2=busInfo(7132, ['302', '下行'], 118.222567, 33.954176)
+    bi3=busInfo(7133, ['302', '下行'], 118.292437, 33.95726)
     
     busCalculate.updateLineBus(lt, ldt, lbt,bit,bi2)
+    busCalculate.updateLineBus(lt, ldt, lbt,bit,bi3)
     
     for i in lbt.table[0]:
         print(i.buses)
