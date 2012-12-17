@@ -15,7 +15,6 @@ busDataServer.py 启动直到电子站牌主控程序通知其关闭或系统当机.
 
 import socket
 import network
-import atexit
 import _thread
 from busCalculate import busInfo
 
@@ -29,9 +28,18 @@ def exit_server():
     return
 
 
-def write_to_file(data):
-    file.write(data)
+def write_to_file(businfo):
+    try:
+        file=open(FILENAME, 'a')
+    except IOError:
+        print('open file error')
+    else:
+        print('open file ok')
+    s=''
+    s+=businfo.id+'\t'+businfo.lineName+'\t'+businfo.lng+'\t'+businfo.lat+'\n'
+    file.write(s)
     file.flush()
+    file.close()
     return
 
 funclist=[write_to_file]
@@ -96,7 +104,7 @@ def handleBusData(conn, addr, dofunc):
     '''
     ret=check_data(data)
     if ret != None:
-        dofunc(data)
+        dofunc(ret)
     conn.close()
     return
 
@@ -109,14 +117,6 @@ def busDataServer(flag):
     running=True
     
     dofunc=funclist[flag]
-    
-    try:
-        file=open(FILENAME, 'ab')
-    except IOError:
-        print('open file error')
-    else:
-        print('open file ok')
-        atexit.register(exit_server)
     
     sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind((network.HOST_OF_BUSGPS, network.PORT_OF_BUSGPS))
