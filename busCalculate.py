@@ -41,7 +41,7 @@ elemOfLineBus:
 '''
 
 class busInfo:
-    def __init__(self, id, lineName, lng, lat):
+    def __init__(self, id=None, lineName=None, lng=None, lat=None):
         self.id=id
         self.lineName=lineName
         self.lng=lng
