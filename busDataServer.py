@@ -31,6 +31,7 @@ def exit_server():
 
 def write_to_file(data):
     file.write(data)
+    file.flush()
     return
 
 funclist=[write_to_file]
@@ -110,7 +111,7 @@ def busDataServer(flag):
     dofunc=funclist[flag]
     
     try:
-        file=open(FILENAME, 'a')
+        file=open(FILENAME, 'ab')
     except IOError:
         print('open file error')
     else:
@@ -118,7 +119,7 @@ def busDataServer(flag):
         atexit.register(exit_server)
     
     sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind((network.HOST_OF_BUSDATA, network.PORT_OF_BUSGPS))
+    sock.bind((network.HOST_OF_BUSGPS, network.PORT_OF_BUSGPS))
     sock.listen(1)
     while running:
         conn, addr=sock.accept()
