@@ -1,6 +1,6 @@
 #  -*- conding: gbk -*-
 '''
-¸ù¾İÏßÂ·ÉÏ¹«½»³µÇé¿ö,¸üĞÂ¸ÃÏßÂ·¹«½»Õ¾µÄĞÅÏ¢
+æ ¹æ®çº¿è·¯ä¸Šå…¬äº¤è½¦æƒ…å†µ,æ›´æ–°è¯¥çº¿è·¯å…¬äº¤ç«™çš„ä¿¡æ¯
 '''
 class bus:
     def __init__(self, bias, dist):
@@ -17,7 +17,7 @@ class bus:
 class stopBus:
     def __init__(self):
         self.name=''
-        self.buses=[] #busesÖĞÔªËØ½ö¼ÇÂ¼busµ½Õ¾µÄ¾àÀë
+        self.buses=[] #busesä¸­å…ƒç´ ä»…è®°å½•busåˆ°ç«™çš„è·ç¦»
         return
     
     def setName(self, name):
@@ -51,7 +51,7 @@ class busQueue:
             self.bias=0
 
     
-    #N ´ú±íµÚ¼¸¸ö,µÚÒ»¸ö´Ó1¿ªÊ¼
+    #N ä»£è¡¨ç¬¬å‡ ä¸ª,ç¬¬ä¸€ä¸ªä»1å¼€å§‹
     def getNth(self, n):
         return self.queue[(self.bias-n)%self.len]
     
@@ -71,21 +71,21 @@ def getBusDist(buses, bustable):
     return dist
 
 def addBuses(buses, bq):
-    #Ê×ÏÈ¶Ôbuses½øĞĞÅÅĞò,¾àÀë´óµÄÅÅÔÚÇ°Ãæ
+    #é¦–å…ˆå¯¹busesè¿›è¡Œæ’åº,è·ç¦»å¤§çš„æ’åœ¨å‰é¢
     buses.sort(reverse=True)
     #print(buses)
-    #½«buses¼ÓÈëµ½bqÖĞ
+    #å°†busesåŠ å…¥åˆ°bqä¸­
     for bus in buses:
         bq.insert(bus)
     return
 '''
-updateLineStopBus ¸ù¾İÖ®Ç°µÄlineBus¼ÆËã½á¹û»ñÈ¡ÏßÂ·ÉÏÃ¿¸ö¹«½»Õ¾µÄµ½ÆäµÄ
-Ç°Á½Á¾¹«½»³µ¾àÀë¸ÃÕ¾µÄ¾àÀë
-´ÓÏßÂ·µÄÆğÊ¼Õ¾¿ªÊ¼,ÕÒµ½Á½Á¾¹«½»³µ,²¢¼ÆËãÕâÁ½Á¾¹«½»³µµ½¸ÃÕ¾µÄ¾àÀë.
-ÈôÒÑ¾­ÓĞÁ½Á¾¹«½»³µ,ÓÖÕÒµ½ÁËÒ»Á¾ĞÂµÄ¹«½»³µ,ÔòĞÂ¹«½»³µÎªÊ×Á¾µ½´ïµÄ¹«½»³µ
-Ô­À´Ê×Á¾µ½´ïµÄ¹«½»³µ±äÎª´Îµ½´ï´ËÕ½µÄ¹«½»³µ.
+updateLineStopBus æ ¹æ®ä¹‹å‰çš„lineBusè®¡ç®—ç»“æœè·å–çº¿è·¯ä¸Šæ¯ä¸ªå…¬äº¤ç«™çš„åˆ°å…¶çš„
+å‰ä¸¤è¾†å…¬äº¤è½¦è·ç¦»è¯¥ç«™çš„è·ç¦»
+ä»çº¿è·¯çš„èµ·å§‹ç«™å¼€å§‹,æ‰¾åˆ°ä¸¤è¾†å…¬äº¤è½¦,å¹¶è®¡ç®—è¿™ä¸¤è¾†å…¬äº¤è½¦åˆ°è¯¥ç«™çš„è·ç¦».
+è‹¥å·²ç»æœ‰ä¸¤è¾†å…¬äº¤è½¦,åˆæ‰¾åˆ°äº†ä¸€è¾†æ–°çš„å…¬äº¤è½¦,åˆ™æ–°å…¬äº¤è½¦ä¸ºé¦–è¾†åˆ°è¾¾çš„å…¬äº¤è½¦
+åŸæ¥é¦–è¾†åˆ°è¾¾çš„å…¬äº¤è½¦å˜ä¸ºæ¬¡åˆ°è¾¾æ­¤æˆ˜çš„å…¬äº¤è½¦.
 
-¶ÔÓÚÕ¾µã±êÊ¶Îª'-1'µÄ²»½«Æä¼ÓÈëµ½linestopbusÖĞ
+å¯¹äºç«™ç‚¹æ ‡è¯†ä¸º'-1'çš„ä¸å°†å…¶åŠ å…¥åˆ°linestopbusä¸­
 '''
 def updateLineStopBus(lineBus, bustable):
     mlineStopBus=[]
@@ -93,8 +93,8 @@ def updateLineStopBus(lineBus, bustable):
     
     for stop in lineBus:
         #print(stop)
-        #busesÖĞÊÇid,Í¨¹ıidÔÚbustableÖĞÕÒµ½¸Ãbus¾àÀë!!!!
-        #¼ò»¯,busesÖĞ´æÓĞ¾àÀë
+        #busesä¸­æ˜¯id,é€šè¿‡idåœ¨bustableä¸­æ‰¾åˆ°è¯¥busè·ç¦»!!!!
+        #ç®€åŒ–,busesä¸­å­˜æœ‰è·ç¦»
         busdist=getBusDist(stop.buses, bustable)
         addBuses(busdist, bq)
         
@@ -127,6 +127,9 @@ if __name__=='__main__':
     from busCalculate import lineBusTable
     from busCalculate import busInfo
     import busCalculate
+    import stopTable
+    from stopTable import readBusStopTable
+    from stopTable import BUSSTOPLIST
     
     print('test')
     print('test busQueue')
@@ -157,8 +160,8 @@ if __name__=='__main__':
     lbt=lineBusTable()
     lbt.read_from_dist_file('linedist.txt')
     
-    bi2=busInfo(7132, ['302', 'ÏÂĞĞ'], 118.222567, 33.954176)
-    bi3=busInfo(7133, ['302', 'ÏÂĞĞ'], 118.292437, 33.95726)
+    bi2=busInfo(7132, ['302', 'ä¸‹è¡Œ'], 118.222567, 33.954176)
+    bi3=busInfo(7133, ['302', 'ä¸‹è¡Œ'], 118.292437, 33.95726)
     
     busCalculate.updateLineBus(lt, ldt, lbt,bit,bi2)
     busCalculate.updateLineBus(lt, ldt, lbt,bit,bi3)
@@ -167,12 +170,15 @@ if __name__=='__main__':
         print(i.buses)
     
     linebus=lbt.table[0]
-    '''
     lsb = updateLineStopBus(linebus, bit)
     
     for i in lsb:
         print(i.toString())
-    '''
-    '''
-    '''
+    
+    readBusStopTable('stopTable.txt', BUSSTOPLIST)
+    
+    for i in lsb:
+        print(i.toString()) 
+        print(stopTable.getSerialNumber(i.name,'302','ä¸‹è¡Œ'))
+    
     print('exit')
