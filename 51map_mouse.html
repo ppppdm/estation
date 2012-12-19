@@ -1,0 +1,200 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=gbk" />
+		<title>我要地图－地图API－范例－ 地图鼠标事件</title>
+        <script type="text/javascript" src="http://api.51ditu.com/js/maps.js"></script>
+		<script language="javascript">
+     		//保存地图核心对象
+			var map;
+			//保存地图双击事件监听
+			var dblclickListener=null;
+			//保存地图单击事件监听
+			var clickListener=null;
+			//保存地图鼠标按下事件监听
+			var mousedownListener=null;
+			//保存地图鼠标弹起事件监听
+			var mouseupListener=null;
+			//保存地图鼠标拖拽事件监听
+			var mousedragListener=null;
+			/*
+			* 初始化地图对象
+			*new LTPoint(11640969,3994940)
+			*/
+			function onLoad()
+			{
+				map=new LTMaps(document.getElementById("mapDiv"));
+				map.centerAndZoom('suqian',5);
+				map.addControl(new LTStandMapControl());
+				//启用鼠标滚轮功能支持，参数true代表使用鼠标指向点位置不变模式
+				map.handleMouseScroll(true);
+			}	
+			 /*
+			 *  添加地图的双击事件监听  dbclickCallBack为回调函数
+			 */
+			function addDblclickEvent()
+			{
+			 	if(dblclickListener==null)
+				      dblclickListener=LTEvent.addListener(map,"dblclick",dbclickCallBack);
+			}
+			/*
+			* 添加地图的单击事件监听   clickCallBack为回调函数
+			*/
+			function addClickEvent()
+			{
+			 	if(clickListener==null)
+				      clickListener=LTEvent.addListener(map,"click",clickCallBack);
+			}
+			/*
+			* 添加地图的鼠标按下事件监听   mousedownCallBack为回调函数
+			*/
+			function addMousedownEvent()
+			{
+			 	if(mousedownListener==null)
+				      mousedownListener=LTEvent.addListener(map,"mousedown",mousedownCallBack);
+			}
+			/*
+			* 添加地图的鼠标弹起事件监听   mouseupCallBack为回调函数
+			*/
+			function addMouseupEvent()
+			{
+			 	if(mouseupListener==null)
+				      mouseupListener=LTEvent.addListener(map,"mouseup",mouseupCallBack);
+			}
+			/*
+			* 添加地图的鼠标拖拽事件监听   mousedragCallBack为回调函数
+			*/
+			function addMousedragEvent()
+			{
+			 	if(mousedragListener==null)
+				      mousedragListener=LTEvent.addListener(map,"mousedrag",mousedragCallBack);
+			}
+			/*
+			* 删除双击事件监听
+			*/
+			function removeDblclickEvent()
+			{
+			 	    LTEvent.removeListener(dblclickListener);
+			 	    dblclickListener=null;
+			 	    document.getElementById("showResult").innerHTML ="";
+			}
+			/*
+			* 删除单击事件监听
+			*/
+			function removeClickEvent()
+			{
+			 	    LTEvent.removeListener(clickListener);
+			 	    clickListener=null;
+			 	    document.getElementById("showResult").innerHTML ="";
+			}
+			/*
+			* 删除鼠标按下事件监听
+			*/
+			function removeMousedownEvent()
+			{
+			 	    LTEvent.removeListener(mousedownListener);
+			 	    mousedownListener=null;
+			 	    document.getElementById("showResult").innerHTML ="";
+			}
+			/**
+			*  删除鼠标弹起事件监听
+			*/
+			function removeMouseupEvent()
+			{
+			 	    LTEvent.removeListener(mouseupListener);
+			 	    mouseupListener=null;
+			 	    document.getElementById("showResult").innerHTML ="";
+			}
+			/*
+			* 删除鼠标拖拽事件
+			*/
+			function removeMousedragEvent()
+			{
+			 	    LTEvent.removeListener(mousedragListener);
+			 	    mousedragListener=null;
+			 	    document.getElementById("showResult").innerHTML ="";
+			}
+			/*
+			*  双击事件监听
+			* @param{Array} point 鼠标双击的位置相对于地图左上角的像素坐标，
+			*				point[0]代表横向距离，point[1]代表纵向距离，
+			*				如果要转化为地理坐标，请使用LTMaps的getPointLatLng方法转化为地理NTU经纬度
+			*/
+			function dbclickCallBack(point)
+			{
+				document.getElementById("showResult").innerHTML ="双击事件  像素坐标是:"+point[0]+","+point[1];
+			}
+			/*
+			*  单击事件监听
+			* @param{Array} point 鼠标双击的位置相对于地图左上角的像素坐标，
+			*				point[0]代表横向距离，point[1]代表纵向距离，
+			*				如果要转化为地理坐标，请使用LTMaps的getPointLatLng方法转化为地理NTU经纬度
+			*/
+			function clickCallBack(point)
+			{
+				p=map.getPointLatLng(point,map.getCenterPoint());
+				document.getElementById("showResult").innerHTML ="单击事件  坐标是: "+p.getLongitude()+','+p.getLatitude();
+			}
+			/*
+			* 鼠标按下事件监听
+			* @param{Array} point 鼠标双击的位置相对于地图左上角的像素坐标，
+			*                  point[0]代表横向距离，point[1]代表纵向距离，
+			*                  如果要转化为地理坐标，请使用LTMaps的getPointLatLng方法转化为地理NTU经纬度
+			*/
+			function mousedownCallBack(point)
+			{
+				document.getElementById("showResult").innerHTML ="按下事件  像素坐标是:"+point[0]+","+point[1];
+			}
+			/*
+			*
+			*  鼠标弹起事件监听
+			* @param{Array} point 鼠标双击的位置相对于地图左上角的像素坐标，
+			*				point[0]代表横向距离，point[1]代表纵向距离，
+			*				如果要转化为地理坐标，请使用LTMaps的getPointLatLng方法转化为地理NTU经纬度
+			*/
+			function mouseupCallBack(point)
+			{
+				document.getElementById("showResult").innerHTML ="弹起事件  像素坐标是:"+point[0]+","+point[1];
+			}
+			/*
+			*  鼠标拖拽事件
+			* @param{Array} point 鼠标双击的位置相对于地图左上角的像素坐标，
+			*				point[0]代表横向距离，point[1]代表纵向距离，
+			*				如果要转化为地理坐标，请使用LTMaps的getPointLatLng方法转化为地理NTU经纬度
+			*/
+			function mousedragCallBack(point)
+			{
+				document.getElementById("showResult").innerHTML ="拖拽事件  像素坐标是:"+point[0]+","+point[1];
+			}
+			
+		</script>
+	</head>
+	<body onLoad="onLoad()">
+	   <div id="mapDiv" style="position:absolute;width:1000px; height:600px;left:0px;top:0px;"></div>
+	   <div id="showResult" style="position:absolute;height:600px;left:1020px;top:400px;"></div>
+	   <div style="position:absolute;left:0px;top:620px;width:800px;">
+	           <table  style="table-layout:fixed" >
+	           	<tr>
+					<td align="center" colspan="3">
+
+					</td>
+				</tr>
+				 <tr>
+					   <td>
+				 		<input  type="button" class=btnButon  value="添加双击事件" onclick="addDblclickEvent();">
+				 	  </td>
+				 	   <td>
+				 		<input  type="button" class=btnButon  value="添加单击事件" onclick="addClickEvent();">
+				 	  </td>
+				 </tr>
+				 	<tr>
+					 <td>
+				 		<input  type="button" class=btnButon  value="移除双击事件" onclick="removeDblclickEvent();">
+				 	  </td>
+				 	   <td>
+				 		<input  type="button" class=btnButon  value="移除单击事件" onclick="removeClickEvent();">
+				 	  </td>
+				 </tr>
+			   </table>
+	    </div>
+	</body>
+</html>
