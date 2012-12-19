@@ -22,12 +22,6 @@ FILENAME='busData.txt'
 file=None
 
 
-def exit_server():
-    global file
-    file.close()
-    return
-
-
 def write_to_file(businfo):
     try:
         file=open(FILENAME, 'a')
@@ -41,8 +35,6 @@ def write_to_file(businfo):
     file.flush()
     file.close()
     return
-
-funclist=[write_to_file]
 
 def crc_check(b_data):
     if len(b_data)==0:
@@ -93,7 +85,7 @@ def check_data(data):
 预处理判断数据校验和是否正确
 '''
 BUS_DATA_LEN=27
-def handleBusData(conn, addr, dofunc):
+def handleBusData(conn, addr):
     print('Connected by ',  addr)
     '''
     接收数据
@@ -104,26 +96,17 @@ def handleBusData(conn, addr, dofunc):
     '''
     ret=check_data(data)
     if ret != None:
-        dofunc(ret)
+        write_to_file(ret)
     conn.close()
     return
 
-'''
-参数:
-    flag:0 写到文件 1.调用函数
-'''
 def busDataServer(flag):
-    global file
-    running=True
-    
-    dofunc=funclist[flag]
-    
     sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind((network.HOST_OF_BUSGPS, network.PORT_OF_BUSGPS))
     sock.listen(1)
-    while running:
+    while True:
         conn, addr=sock.accept()
-        _thread.start_new_thread(handleBusData, (conn, addr, dofunc))
+        _thread.start_new_thread(handleBusData, (conn, addr))
     return
 
 
