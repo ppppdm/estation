@@ -92,6 +92,37 @@ def getLineNoInStop(sn, line):
         No+=1
     return -1
 
+def writeBusStopTable(filename, busstoplist):
+
+    file=open(filename, 'wt')
+    s=''
+    for i in busstoplist:
+        s+=i.name+'\t'
+        for j in i.lines:
+            s+=j[0]+'\t'+j[1]+'\t'
+        s.strip('\t')
+        s+='\n'
+    file.write(s)
+    file.close()
+    return
+
+def readBusStopTable(filename, busstoplist):
+    file=open(filename, 'r')
+    
+    while True:
+        s=file.readline()
+        s=s.strip('\n')
+        if s=='':
+            break
+        else:
+            arr=s.split('\t')
+            bs=busStop(arr[0])
+            for i in range(1, len(arr[1:]) , 2):
+                bsl=(arr[i], arr[i+1])
+                bs.lines.append(bsl)
+            busstoplist.append(bs)
+    file.close()
+    return
 
 if __name__=='__main__':
     print('test')
@@ -116,6 +147,9 @@ if __name__=='__main__':
     file.write(s)
     file.close()
     
+    tmp=[]
+    readBusStopTable('stopTable.txt', tmp)
+    writeBusStopTable('tmp8.txt', tmp)
     
     print(getSerialNumber('市公交调度中心', '202', '下行'))
     print(getSerialNumber('市公交调度中心', '202', '上行'))

@@ -40,6 +40,8 @@ elemOfLineBus:
     
 '''
 
+from busStopCalculate import updateLineStopBus
+
 class busInfo:
     def __init__(self, id=None, lineName=None, lng=None, lat=None):
         self.id=id
@@ -380,13 +382,13 @@ def updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInf
     for i in line:
         print(i.toString())
     
-    #second get all station need update sending informateion and add to stationInfo
-    ##call stationInfo func
-    
-    
-    #third update busInfoTable
+    #second update busInfoTable
     bus_cal=busInfo_cal(busId, newline, newstation, position[1])
     busInfoTable.update(bus_cal)
+    
+    #third get all station need update sending informateion and add to stationInfo
+    ##call stationInfo func
+    updateLineStopBus(line, busInfoTable)
     return
 '''
 根据公交车信息更新线路公交车表和计算后的公交车信息表
