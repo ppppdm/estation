@@ -17,12 +17,12 @@ import socket
 import network
 import _thread
 from busCalculate import busInfo
-'''from busCalculate import updateLineBus
+from busCalculate import updateLineBus
 from busCalculate import lineBusTable
 from busCalculate import busInfoTable
 from lineDistance import lineDistTable
 from lineDistance import linesTable
-'''
+
 from globalValues import BUS_DATA_LEN
 
 FILENAME='busData.txt'
@@ -31,7 +31,7 @@ file=None
 
 def write_to_file(businfo):
     try:
-        file=open(FILENAME, 'a')
+        file=open(FILENAME, 'w')
     except IOError:
         print('open file error')
     else:
@@ -96,7 +96,7 @@ def check_data(data):
     数据尾：长度1字节，0xaa
 数据总长度为27个字节
 预处理判断数据校验和是否正确
-
+'''
 
 lt=linesTable()
 lt.read_from_file('lines.txt')
@@ -108,7 +108,7 @@ lbt=lineBusTable()
 lbt.read_from_dist_file('linedist.txt')
 
 bit=busInfoTable()
-'''
+
 def handleBusData(conn, addr):
     print('Connected by ',  addr)
     '''
@@ -124,7 +124,7 @@ def handleBusData(conn, addr):
         write_to_file(ret)
         printRet(ret)
         #updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
-        #updateLineBus(lt, ldt, lbt,bit,ret)
+        updateLineBus(lt, ldt, lbt,bit,ret)
     conn.close()
     return
 
