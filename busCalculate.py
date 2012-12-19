@@ -51,7 +51,7 @@ class busInfo:
         #根据dataPackage 中的数据格式来确定读取的方法
         #参数dataPack是已经去到数据包头尾的数据
         self.id=str(dataPack[0:4], 'gbk')
-        self.lineName=[str(dataPack[4:8], 'gbk'), str(dataPack[8:12], 'gbk')]
+        self.lineName=[str(dataPack[4:8], 'gbk').strip(), str(dataPack[8:12], 'gbk')]
         self.lng=float(str(dataPack[12:20], 'gbk'))/600000
         self.lat=float(str(dataPack[20:28], 'gbk'))/600000
         return
@@ -252,7 +252,7 @@ def distOfBusToSegmentEnd(bus, pA, pB):
     a=lineDistance.distOfPointToPoint(pA, pB)
     b=lineDistance.distOfPointToPoint(bus, pB)
     c=lineDistance.distOfPointToPoint(pA, bus)
-    print(a, b, c)
+    #print(a, b, c)
     '''
     考虑到计算精度的问题,当a,b,c任意一个小于r(r接近0),则不计算x,AD,BD
     另外当x的值小于r(即bus接近AB所在的直线),计算开方也将由于精度导致问题
