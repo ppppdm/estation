@@ -6,14 +6,16 @@
     数据头：长度1字节,0x55
     公交车ID：长度4字节，ASCII表示
     所属线路：长度4字节，ASCII表示
+    线路上下行：长度4字节
     经纬度：16字节，前8个字节为经度，后8个字节为纬度
     校验和：长度1字节，公交车ID，所属线路和经纬度按位异或的结果
     数据尾：长度1字节，0xaa
-数据总长度为27个字节
+数据总长度为31个字节
 '''
 
 import socket
 import network
+from globalValues import BUS_DATA_LEN
 
 def crc_check(b_data):
     if len(b_data)==0:
@@ -24,19 +26,21 @@ def crc_check(b_data):
     return crc
 
 def busDataClient():
-    bus_id=bytes(str(7023), 'utf8')
-    line=bytes(str(303).rjust(4), 'utf8')
-    lng=bytes(str(70922263), 'utf8')
-    lat=bytes(str(20374106), 'utf8')
+    bus_id=bytes(str(7023), 'gbk')
+    line=bytes(str('303').rjust(4), 'gbk')
+    stream=bytes('上行', 'gbk')
+    lng=bytes(str(70922263), 'gbk')
+    lat=bytes(str(20374106), 'gbk')
     
-    data=bytearray(27)
+    data=bytearray(BUS_DATA_LEN)
     data[0]=0x55
     data[1:5]=bus_id
     data[5:9]=line
-    data[9:17]=lng
-    data[17:25]=lat
-    data[25]=crc_check(data[1:25])
-    data[26]=0xaa
+    data[9:13]=stream
+    data[13:21]=lng
+    data[21:29]=lat
+    data[-2]=crc_check(data[1:-2])
+    data[-1]=0xaa
     
     print(data)
     print(data[1:25])

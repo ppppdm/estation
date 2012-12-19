@@ -50,10 +50,10 @@ class busInfo:
     def readDataPackage(self, dataPack):
         #根据dataPackage 中的数据格式来确定读取的方法
         #参数dataPack是已经去到数据包头尾的数据
-        self.id=str(dataPack[0:4], 'utf8')
-        self.lineName=str(dataPack[4:8], 'utf8')
-        self.lng=str(dataPack[8:16], 'utf8')
-        self.lat=str(dataPack[16:24], 'utf8')
+        self.id=str(dataPack[0:4], 'gbk')
+        self.lineName=[str(dataPack[4:8], 'gbk'), str(dataPack[8:12], 'gbk')]
+        self.lng=float(str(dataPack[12:20], 'gbk'))/600000
+        self.lat=float(str(dataPack[20:28], 'gbk'))/600000
         return
     
     def getLineName(self):

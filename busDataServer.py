@@ -17,6 +17,13 @@ import socket
 import network
 import _thread
 from busCalculate import busInfo
+'''from busCalculate import updateLineBus
+from busCalculate import lineBusTable
+from busCalculate import busInfoTable
+from lineDistance import lineDistTable
+from lineDistance import linesTable
+'''
+from globalValues import BUS_DATA_LEN
 
 FILENAME='busData.txt'
 file=None
@@ -30,11 +37,15 @@ def write_to_file(businfo):
     else:
         print('open file ok')
     s=''
-    s+=businfo.id+'\t'+businfo.lineName+'\t'+businfo.lng+'\t'+businfo.lat+'\n'
+    s+=businfo.id+'\t'+str(businfo.lineName)+'\t'+str(businfo.lng)+'\t'+str(businfo.lat)+'\n'
     file.write(s)
     file.flush()
     file.close()
     return
+
+def printRet(businfo):
+    s=businfo.id+'\t'+str(businfo.lineName)+'\t'+str(businfo.lng)+'\t'+str(businfo.lat)
+    print(s)
 
 def crc_check(b_data):
     if len(b_data)==0:
@@ -64,11 +75,13 @@ def check_data(data):
                     bus.readDataPackage(data[i+1:i+BUS_DATA_LEN-2])
                     return bus
                 else:
+                    print('error data checksum')
                     return None
             else:
+                print('error data end')
                 return None
         i+=1
-    
+    print('data no head 0x55')
     return None
 
 '''
@@ -83,20 +96,35 @@ def check_data(data):
     数据尾：长度1字节，0xaa
 数据总长度为27个字节
 预处理判断数据校验和是否正确
+
+
+lt=linesTable()
+lt.read_from_file('lines.txt')
+
+ldt=lineDistTable()
+ldt.read_from_file('linedist.txt')
+
+lbt=lineBusTable()
+lbt.read_from_dist_file('linedist.txt')
+
+bit=busInfoTable()
 '''
-BUS_DATA_LEN=27
 def handleBusData(conn, addr):
     print('Connected by ',  addr)
     '''
     接收数据
     '''
     data=conn.recv(2048)
+    print(data)
     '''
     检查数据
     '''
     ret=check_data(data)
     if ret != None:
         write_to_file(ret)
+        printRet(ret)
+        #updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
+        #updateLineBus(lt, ldt, lbt,bit,ret)
     conn.close()
     return
 
