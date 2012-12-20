@@ -78,44 +78,45 @@ map.addEventListener("click", function(e) {
 	});
 
 wuyao_Point=[
-new BMap.Point(118.21633,33.95965),
-new BMap.Point(118.23959,33.96029),
-new BMap.Point(118.25053,33.96075),
-new BMap.Point(118.25869,33.96097),
-new BMap.Point(118.26521,33.96053),
-new BMap.Point(118.27113,33.95998),
-new BMap.Point(118.27292,33.95986),
-new BMap.Point(118.27496,33.95971),
-new BMap.Point(118.27478,33.95751),
-new BMap.Point(118.27457,33.95591),
-new BMap.Point(118.27422,33.95203),
-new BMap.Point(118.27383,33.94868),
-new BMap.Point(118.27706,33.94833),
-new BMap.Point(118.27772,33.94890),
-new BMap.Point(118.27815,33.94861),
-new BMap.Point(118.28341,33.95045),
-new BMap.Point(118.28931,33.95200),
-new BMap.Point(118.29114,33.95196),
-new BMap.Point(118.29194,33.95201),
-new BMap.Point(118.29384,33.95200),
-new BMap.Point(118.29888,33.95146),
-new BMap.Point(118.30030,33.95132),
-new BMap.Point(118.29991,33.95406),
-new BMap.Point(118.29978,33.95678),
-new BMap.Point(118.30308,33.95648),
-new BMap.Point(118.30633,33.95605),
-new BMap.Point(118.30860,33.95530),
-new BMap.Point(118.30986,33.95811),
-new BMap.Point(118.30974,33.95872),
-new BMap.Point(118.30900,33.95885),
-new BMap.Point(118.30925,33.96385),
-new BMap.Point(118.30465,33.96438),
-new BMap.Point(118.30051,33.96485),
-new BMap.Point(118.30144,33.97013),
-new BMap.Point(118.30221,33.97438),
-new BMap.Point(118.30216,33.97489),
-new BMap.Point(118.29984,33.97507),
-new BMap.Point(118.29568,33.97588)
+new BMap.Point(118.20945,33.95705), 
+
+new BMap.Point(118.20384,33.95781),
+new BMap.Point(118.21765,33.96116),
+new BMap.Point(118.22239,33.96129),
+new BMap.Point(118.22759,33.96139),
+new BMap.Point(118.23314,33.96163),
+new BMap.Point(118.23874,33.96182),
+new BMap.Point(118.24448,33.96197),
+new BMap.Point(118.25008,33.96215),
+new BMap.Point(118.25495,33.96211),
+new BMap.Point(118.25824,33.96189),
+new BMap.Point(118.26173,33.96164),
+new BMap.Point(118.26417,33.96146),
+new BMap.Point(118.26897,33.96114),
+new BMap.Point(118.26920,33.95956),
+new BMap.Point(118.26887,33.95532),
+new BMap.Point(118.26862,33.95233),
+new BMap.Point(118.26825,33.94876),
+new BMap.Point(118.27056,33.94902),
+new BMap.Point(118.27493,33.95072),
+new BMap.Point(118.28014,33.95236),
+new BMap.Point(118.28513,33.95336),
+new BMap.Point(118.29154,33.95291),
+new BMap.Point(118.29391,33.95295),
+new BMap.Point(118.29491,33.95389),
+new BMap.Point(118.29423,33.95758),
+new BMap.Point(118.29746,33.95775),
+new BMap.Point(118.30356,33.95770),
+new BMap.Point(118.30356,33.96165),
+new BMap.Point(118.30372,33.96474),
+new BMap.Point(118.30190,33.96538),
+new BMap.Point(118.29696,33.96607),
+new BMap.Point(118.29572,33.96966),
+new BMap.Point(118.29625,33.97283),
+new BMap.Point(118.29659,33.97499),
+new BMap.Point(118.29376,33.97651),
+new BMap.Point(118.29021,33.97879)
+
 ];
 
 
@@ -146,13 +147,14 @@ translateCallback = function (point){
 
 //单点转换顺序不正确，但能够看到点是正确的
 //51地图的坐标系和google坐标系相同，应该是GCJ-02加密后的
-//宿迁公交公司提供的站点坐标
+//宿迁公交公司提供的站点坐标是WGS84
+//直接使用google 地图的实验室获取坐标是GCJ-02加密的
 function convert_wuyao()
 {
 	bconv_path=[]
 	remove_overlays()
 	for(var i=0; i<wuyao_Point.length; i++){
-		//BMap.Convertor.translate(wuyao_Point[i],2,translateCallback);     //真实经纬度转成百度坐标参数0, googel 坐标参数2
+		//BMap.Convertor.translate(wuyao_Point[i],0,translateCallback);     //真实经纬度转成百度坐标参数0, googel 坐标参数2
 	}
 	
 }
@@ -175,7 +177,7 @@ function convert_more()
 {
 	bconv_path=[]
 	remove_overlays()
-	BMap.Convertor.transMore(wuyao_Point,2,callback);
+	BMap.Convertor.transMore(wuyao_Point,2,callback); //真实经纬度转成百度坐标参数0, googel 坐标参数2
 }
 
 
