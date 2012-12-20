@@ -16,9 +16,15 @@
 			var mouseupListener=null;
 			//保存地图鼠标拖拽事件监听
 			var mousedragListener=null;
+			
+			//保存线对象
+			var polyLine;
+			//参数对象
+			var option;
+			//折线点数组
 			/*
 			* 初始化地图对象
-			*new LTPoint(11640969,3994940)
+			*
 			*/
 			function onLoad()
 			{
@@ -27,6 +33,23 @@
 				map.addControl(new LTStandMapControl());
 				//启用鼠标滚轮功能支持，参数true代表使用鼠标指向点位置不变模式
 				map.handleMouseScroll(true);
+
+				//创建参数对象
+				option = new LTLineOptions();
+				//生成折线的点数组 
+        var points = new Array(); 
+        points.push( map.getCenterPoint()); 
+        option.points = points;
+				//根据点数组创建一条折线
+				polyLine = new LTLineOverlay(option);
+				//将折线添加到地图
+				map.overlayManager.addOverLay(polyLine);
+				
+				polyLine.addPoints(map.getCenterPoint());
+				polyLine.setEditable(true);
+				
+				points=[]
+        polyLine.setPoints(points)
 			}	
 			 /*
 			 *  添加地图的双击事件监听  dbclickCallBack为回调函数
@@ -121,7 +144,7 @@
 			*/
 			function dbclickCallBack(point)
 			{
-				document.getElementById("showResult").innerHTML ="双击事件  像素坐标是:"+point[0]+","+point[1];
+				//document.getElementById("showResult").innerHTML ="双击事件  像素坐标是:"+point[0]+","+point[1];
 			}
 			/*
 			*  单击事件监听
@@ -133,6 +156,7 @@
 			{
 				p=map.getPointLatLng(point,map.getCenterPoint());
 				document.getElementById("showResult").innerHTML ="单击事件  坐标是: "+p.getLongitude()+','+p.getLatitude();
+				polyLine.addPoints(p);
 			}
 			/*
 			* 鼠标按下事件监听
@@ -165,13 +189,32 @@
 			{
 				document.getElementById("showResult").innerHTML ="拖拽事件  像素坐标是:"+point[0]+","+point[1];
 			}
+			/*
+			*  删除折线
+			*/
+			function delLine()
+			{
+				points=[]
+        polyLine.setPoints(points)
+			}
 			
+			function getPoints()
+			{
+				var obj = polyLine.getAttributes();
+				pp=obj.points
+				var txt='折线坐标:'+'</br>'
+				for(var i=0;i<pp.length;i++)
+				{
+					txt+=pp[i][0]+'\t'+pp[i][1]+'</br>'
+				}
+				document.getElementById("showResult").innerHTML=txt
+			}
 		</script>
 	</head>
 	<body onLoad="onLoad()">
-	   <div id="mapDiv" style="position:absolute;width:1000px; height:600px;left:0px;top:0px;"></div>
-	   <div id="showResult" style="position:absolute;height:600px;left:1020px;top:400px;"></div>
-	   <div style="position:absolute;left:0px;top:620px;width:800px;">
+	   <div id="mapDiv" style="position:absolute;width:1000px;height:900px;left:0px;top:0px;"></div>
+	   <div id="showResult" style="position:absolute;height:400px;left:1020px;top:400px;"></div>
+	   <div style="position:absolute;height:300px;left:1020px;top:0px;">
 	           <table  style="table-layout:fixed" >
 	           	<tr>
 					<td align="center" colspan="3">
@@ -179,20 +222,20 @@
 					</td>
 				</tr>
 				 <tr>
-					   <td>
-				 		<input  type="button" class=btnButon  value="添加双击事件" onclick="addDblclickEvent();">
-				 	  </td>
 				 	   <td>
 				 		<input  type="button" class=btnButon  value="添加单击事件" onclick="addClickEvent();">
 				 	  </td>
+				 	  <td>
+				 		<input  type="button" class=btnButon  value="获取坐标" onclick="getPoints();">
+				 	  </td>
 				 </tr>
 				 	<tr>
-					 <td>
-				 		<input  type="button" class=btnButon  value="移除双击事件" onclick="removeDblclickEvent();">
-				 	  </td>
 				 	   <td>
 				 		<input  type="button" class=btnButon  value="移除单击事件" onclick="removeClickEvent();">
 				 	  </td>
+				 	  <td>
+				 		<input  type="button" class=btnButon  value="移除折线" onclick="delLine();">
+				 	  </td>		 	  
 				 </tr>
 			   </table>
 	    </div>
