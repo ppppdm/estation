@@ -54,7 +54,7 @@ def handleGoogleFile(filename):
         line=line.strip('\n')
         if line=='':
             break
-        arr=line.split('\t')
+        arr=line.split(',')
         arr=(arr[1], arr[0])
         print(arr)
         lines.append(arr)

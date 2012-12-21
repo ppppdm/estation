@@ -11,7 +11,7 @@
 
 命令格式为
 
-formCoordinate -i [sq|51] -f filename -t [formate]
+formCoordinate -i [sq|51|ge] -f filename -t [formate]
 
 formate的格式是 *lng*lat*
 例如：
@@ -22,7 +22,7 @@ formate的格式是 *lng*lat*
 
 def handleError():
     print('cmd arg error')
-    print('usage:formCoordinate -i [sq|51] -f filename -t [formate]')
+    print('usage:formCoordinate -i [sq|51|ge] -f filename -t [formate]')
     print('-i    : input data file form')
     print('-f    : input data file name')
     print('-t    : output formate, should be formate like this *lng*lat*,')
@@ -63,18 +63,30 @@ def handleSQfile(file):
         lines.append(arr)
     return lines
 
+def handleGEfile(file):
+    lines=[]
+    file.readline()
+    while True:
+        line=file.readline()
+        line=line.strip('\n')
+        if line=='':
+            break
+        arr=line.split(',')
+        arr=(arr[1], arr[0])
+        print(arr)
+        lines.append(arr)
+    return lines
 
-HANDLE_FUNC=[handleError, handle51file, handleSQfile]
+HANDLE_FUNC=[handle51file, handleSQfile, handleGEfile]
+IN_FORM_LIST=['51', 'sq', 'ge']
 
 
 
 def judge_i_arg(arg):
-    if arg=='51':
-        return 1
-    elif arg=='sq':
-        return 2
-    else:
-        return 0
+    try:
+        return IN_FORM_LIST.index(arg)
+    except:
+        handleError()
 
 def judge_f_arg(arg):
     return arg
