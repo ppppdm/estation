@@ -1,0 +1,139 @@
+﻿<html>
+<head>
+	<style type="text/css">
+		#map3d {height: 100%;width: 75%;float: left;border-right: 2px solid #bcbcbc;}
+		#result {height: 95%;width: 23%;float: left;border-bottom: 2px solid #bcbcbc;}
+		#buttons {height: 5%;width: 23%;float: left;border-bottom: 2px solid #bcbcbc;}
+	</style>
+  <title>Sample</title>
+  <script type="text/javascript" src="https://www.google.com/jsapi"> </script>
+  <script type="text/javascript">
+    var ge;
+    var placeMarkerActive=false;
+    
+		var lineStringPlacemark;
+		var lineString;
+    google.load("earth", "1");
+
+    function init() {
+      google.earth.createInstance('map3d', initCB, failureCB);
+    }
+
+    function initCB(instance) {
+      ge = instance;
+      ge.getWindow().setVisibility(true);
+      ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
+      ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
+      ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS_LOW_RESOLUTION,true);//###
+      
+      
+      ge.getNavigationControl().setVisibility(ge.VISIBILITY_SHOW);
+      google.earth.addEventListener(ge.getWindow(), 'click', eventHandler);
+      createIineMaker()
+      
+      // Get the current view
+			var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+			// Set new latitude and longitude values 33.943931579589844,118.2777328491211
+			lookAt.setLatitude(33.943931579589844);
+			lookAt.setLongitude(118.2777328491211);
+			
+			// Zoom out to twice the current range
+			lookAt.setRange(10000);
+
+			// Update the view in Google Earth
+			ge.getView().setAbstractView(lookAt);
+      
+    }
+
+    function failureCB(errorCode) {
+    }
+    
+    function createIineMaker(){
+    	// Create the placemark
+      lineStringPlacemark = ge.createPlacemark('');
+      // Create the LineString
+      lineString = ge.createLineString('');
+      lineStringPlacemark.setGeometry(lineString);
+			// Add the feature to Earth
+			
+			// Create a style and set width and color of line
+			lineStringPlacemark.setStyleSelector(ge.createStyle(''));
+			var lineStyle = lineStringPlacemark.getStyleSelector().getLineStyle();
+			lineStyle.setWidth(5);
+			lineStyle.getColor().set('99ff0000');  // aabbggrr format
+			
+      ge.getFeatures().appendChild(lineStringPlacemark);
+    }
+    
+    function eventHandler(event){ 
+    	document.getElementById("result").innerHTML=event.getLatitude()+","+event.getLongitude()
+    	
+    	if(placeMarkerActive){
+    		// Create the placemark.
+				var placemark = ge.createPlacemark('');
+
+				// Set the placemark's location.  
+				var point = ge.createPoint('');
+				point.setLatitude(event.getLatitude());
+				point.setLongitude(event.getLongitude());
+				placemark.setGeometry(point);
+
+				// Add the placemark to Earth.
+				ge.getFeatures().appendChild(placemark);
+				
+				// Add LineString points
+				lineString.getCoordinates().pushLatLngAlt(event.getLatitude(),event.getLongitude(),0)	
+			}
+    }
+    
+    function enablePlaceMarker()
+    {
+    	placeMarkerActive=true;
+    }
+    function disablePlaceMarker()
+    {
+    	placeMarkerActive=false;
+    }
+		function clearMarkers()
+		{
+			var features = ge.getFeatures();
+			while (features.getFirstChild()){
+   			features.removeChild(features.getFirstChild());
+   		}
+   		createIineMaker()
+		}
+		function showLngLat(){
+			line=lineString.getCoordinates();
+			document.getElementById("result").innerHTML=''
+			for(var i=0;i< line.getLength();i++){
+				point=line.get(i);
+				document.getElementById("result").innerHTML+=point.getLatitude()+','+point.getLongitude()+'</br>';
+			}
+		}
+		
+		
+    google.setOnLoadCallback(init);
+  </script>
+
+</head>
+<body>
+  <div id="map3d"></div>
+  <div id="result"></div>
+  <div id="buttons">
+  <td>
+			<input  type="button" class=btnButon  value="En" onclick="enablePlaceMarker();">
+	</td>
+	<td>
+			<input  type="button" class=btnButon  value="Dis" onclick="disablePlaceMarker();">
+	</td>
+	<td>
+			<input  type="button" class=btnButon  value="Clear" onclick="clearMarkers();">
+	</td>
+	<td>
+			<input  type="button" class=btnButon  value="Show" onclick="showLngLat();">
+	</td>
+	
+	</div>
+</body>
+</html>
