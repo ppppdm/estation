@@ -177,7 +177,7 @@ function convert_more()
 {
 	bconv_path=[]
 	remove_overlays()
-	BMap.Convertor.transMore(wuyao_Point,2,callback); //真实经纬度转成百度坐标参数0, googel 坐标参数2
+	BMap.Convertor.transMore(wuyao_Point,0,callback); //真实经纬度WGS84转成百度坐标参数0, 中国境内地图GCJ02转百度参数2
 }
 
 

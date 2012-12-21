@@ -1,26 +1,34 @@
+# -*- coding: gbk -*-
 '''
-è¯»å–çš„å½¢å¼å¯ä»¥æ˜¯
-1.å…¬äº¤å…¬å¸æä¾›çš„å…¬äº¤ç«™æ–‡ä»¶ï¼Œlinesæ–‡ä»¶å¤¹ä¸‹
-2.51åœ°å›¾æ•°æ®ï¼Œpathsæ–‡ä»¶å¤¹ä¸‹
+¶ÁÈ¡µÄÐÎÊ½¿ÉÒÔÊÇ
+1.¹«½»¹«Ë¾Ìá¹©µÄ¹«½»Õ¾ÎÄ¼þ£¬linesÎÄ¼þ¼ÐÏÂ
+2.51µØÍ¼Êý¾Ý£¬pathsÎÄ¼þ¼ÐÏÂ
 
-è½¬æ¢åæ ‡çš„æ ¼å¼å¯ä»¥æ˜¯
-1.ç»åº¦,ç»´åº¦
-2.new BMap.Point(ç»åº¦,ç»´åº¦)
+×ª»»×ø±êµÄ¸ñÊ½¿ÉÒÔÊÇ
+1.¾­¶È,Î¬¶È
+2.new BMap.Point(¾­¶È,Î¬¶È)
 
 
-å‘½ä»¤æ ¼å¼ä¸º
+ÃüÁî¸ñÊ½Îª
 
 formCoordinate -i [sq|51] -f filename -t [formate]
 
-formateçš„æ ¼å¼æ˜¯ *lng*lat*
-ä¾‹å¦‚ï¼š
+formateµÄ¸ñÊ½ÊÇ *lng*lat*
+ÀýÈç£º
     -t lng,lat
     -t new BMap.Point(lng,lat)
 '''
 
 
 def handleError():
-    print('-i arg error')
+    print('cmd arg error')
+    print('usage:formCoordinate -i [sq|51] -f filename -t [formate]')
+    print('-i    : input data file form')
+    print('-f    : input data file name')
+    print('-t    : output formate, should be formate like this *lng*lat*,')
+    print('        this option should at last')
+    print('example:')
+    print('formCoordinate -i sq -f ../lines/303.txt -t new BMap.Point(lng,lat)')
     exit()
     return
 
@@ -74,11 +82,9 @@ def judge_f_arg(arg):
 def getArgument(args):
     index=0
     if '-i' not in args:
-        print('cmd Error')
-        exit()
+        handleError()
     if '-f' not in args:
-        print('cmd Error')
-        exit()
+        handleError()
     
     index=args.index('-i')
     inform=judge_i_arg(args[index+1])
@@ -95,12 +101,12 @@ def getArgument(args):
         print('format=', s)
         if 'lng' not in s or 'lat' not in s:
             print('No have lng lat ')
-            exit()
+            handleError()
         midindex=s.index('lng')
         proindex=s.index('lat')
         if midindex > proindex:
             print('lng should left at lat')
-            exit()
+            handleError()
         
         print(midindex, proindex)
         pre=s[:midindex]
@@ -116,7 +122,9 @@ def write_to_file(lines, form):
     for i in lines:
         s+=form[0]+i[0]+form[1]+i[1]+form[2]+'\n'
     file.write(s)
+    print(s)
     file.close()
+    print('output write to tmp.txt')
     return
 
 
@@ -135,6 +143,6 @@ if __name__=='__main__':
     print(sys.argv)
     ret=getArgument(sys.argv)
     dealFile(ret[1], ret[2], ret[0])
-    print('done exit')
+    print('Done Exit')
 
 
