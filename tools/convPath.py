@@ -19,8 +19,8 @@ convPath [51|google|sq|baidu]
 import os
 import sys
 
-INPUT_DIR='E:\work\estation\origin_paths'
-OUTPUT_DIR='E:\work\estation\paths'
+INPUT_DIR='..\..\origin_paths'
+OUTPUT_DIR='..\..\paths'
 
 
 
