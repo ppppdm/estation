@@ -23,16 +23,15 @@
 import socket
 import network
 from globalValues import BUS_DATA_LEN
-
-def crc_check(b_data):
-    if len(b_data)==0:
-        return 0
-    crc=b_data[0]
-    for i in b_data[1:]:
-        crc^=i
-    return crc
+from utils import crc_check
+from globalValues import USE_DATA
+from globalValues import NO_HEAD
+from globalValues import NO_END
+from globalValues import LEN_ERR
+from globalValues import CHK_ERR
 
 def sendDataTCP(b_data):
+    return
     try:
         sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print('socket')
@@ -63,25 +62,91 @@ def busDataClient():
     data[-1]=0xaa
     
     print(data)
-    print(data[1:25])
+    print(data[1:-2])
     
-    try:
-        sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print('socket')
-        sock.connect((network.REMOTE_HOST, network.PORT_OF_BUSGPS))
-        print('connect')
-        sock.send(data)
-        print('send')
-        sock.close()
-    except:
-        print('error')
+    sendDataTCP(data)
     print('exit')
     return
-
-def constructData():
-    '''从文件中读取测试数据并构造要发送的数据'''
+#################TEST####################
+TEST_FILE='test/busGPS_test.txt'
     
+
+def constructData(id, line, stream, lng, lat):
+    if len(id)!=4:
+        print('bus id len should be 4')
+        return ''
+    if len(line)>4:
+        print('line name should less than 5')
+        return ''
+    if len(stream)!=2:
+        print('line stream should be 上行 or 下行')
+        return ''
+    if len(lng)!=8 or len(lat)!=8:
+        print('len of lng/lat should be 8')
+        return ''
+    
+    b_id=bytes(id, 'gbk')
+    b_line=bytes(line.rjust(4), 'gbk')
+    b_stream=bytes(stream, 'gbk')
+    b_lng=bytes(lng, 'gbk')
+    b_lat=bytes(lat, 'gbk')
+    
+    data=bytearray(BUS_DATA_LEN)
+    data[0]=0x55
+    data[1:5]=b_id
+    data[5:9]=b_line
+    data[9:13]=b_stream
+    data[13:21]=b_lng
+    data[21:29]=b_lat
+    data[-2]=crc_check(data[1:-2])
+    data[-1]=0xaa
+    return data
+
+def switchByArg(arr):
+    arg=arr[0]
+    b_data=b''
+    if arg==USE_DATA:
+        print(USE_DATA)
+        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
+        sendDataTCP(b_data)
+        print(b_data)
+    elif arg== NO_HEAD:
+        print(NO_HEAD)
+        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
+        sendDataTCP(b_data[1:])
+        print(b_data[1:])
+    elif arg==NO_END:
+        print(NO_END)
+        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
+        sendDataTCP(b_data[:-1])
+        print(b_data[:-1])
+    elif arg==LEN_ERR:
+        print(LEN_ERR)
+        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
+        b_data+=b'x'
+        sendDataTCP(b_data)
+        print(b_data)
+    elif arg==CHK_ERR:
+        print(CHK_ERR)
+        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
+        b_data[-2]^=1
+        sendDataTCP(b_data)
+        print(b_data)
+    return
+
+def readTestFile():
+    '''从文件中读取测试数据并构造要发送的数据'''
+    file =open(TEST_FILE, 'r')
+    while True:
+        ss=file.readline()
+        ss=ss.strip('\n')
+        if ss=='':
+            break
+        arr=ss.split('\t')
+        switchByArg(arr)
+    file.close()
     return
 
 if __name__=='__main__':
-    busDataClient()
+    readTestFile()
+    ##busDataClient()
