@@ -13,6 +13,13 @@
 数据总长度为31个字节
 '''
 
+'''
+数据测试
+完整性：正确(ud)，无数据头(nh)，无数据尾(ne)，数据长度不对(le)
+正确性：正确(ud)，校验和出错(ce)
+有效性：正确(ud)，线路号(ud)，上下行(ud)，经纬度超范围(ud)
+'''
+
 import socket
 import network
 from globalValues import BUS_DATA_LEN
@@ -24,6 +31,19 @@ def crc_check(b_data):
     for i in b_data[1:]:
         crc^=i
     return crc
+
+def sendDataTCP(b_data):
+    try:
+        sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        print('socket')
+        sock.connect((network.REMOTE_HOST, network.PORT_OF_BUSGPS))
+        print('connect')
+        sock.send(b_data)
+        print('send')
+        sock.close()
+    except:
+        print('error')
+    return
 
 def busDataClient():
     bus_id=bytes(str(7023), 'gbk')
@@ -56,6 +76,11 @@ def busDataClient():
     except:
         print('error')
     print('exit')
+    return
+
+def constructData():
+    '''从文件中读取测试数据并构造要发送的数据'''
+    
     return
 
 if __name__=='__main__':
