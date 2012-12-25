@@ -23,15 +23,11 @@
 import socket
 import network
 from globalValues import BUS_DATA_LEN
+from globalValues import BUS_DATA_HEAD
+from globalValues import BUS_DATA_END
 from utils import crc_check
-from globalValues import USE_DATA
-from globalValues import NO_HEAD
-from globalValues import NO_END
-from globalValues import LEN_ERR
-from globalValues import CHK_ERR
 
 def sendDataTCP(b_data):
-    return
     try:
         sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print('socket')
@@ -44,63 +40,60 @@ def sendDataTCP(b_data):
         print('error')
     return
 
-def busDataClient():
-    bus_id=bytes(str(7023), 'gbk')
-    line=bytes(str('303').rjust(4), 'gbk')
-    stream=bytes('上行', 'gbk')
-    lng=bytes(str(70922263), 'gbk')
-    lat=bytes(str(20374106), 'gbk')
-    
-    data=bytearray(BUS_DATA_LEN)
-    data[0]=0x55
-    data[1:5]=bus_id
-    data[5:9]=line
-    data[9:13]=stream
-    data[13:21]=lng
-    data[21:29]=lat
-    data[-2]=crc_check(data[1:-2])
-    data[-1]=0xaa
-    
-    print(data)
-    print(data[1:-2])
-    
-    sendDataTCP(data)
-    print('exit')
-    return
-#################TEST####################
-TEST_FILE='test/busGPS_test.txt'
-    
-
 def constructData(id, line, stream, lng, lat):
-    if len(id)!=4:
-        print('bus id len should be 4')
-        return ''
-    if len(line)>4:
-        print('line name should less than 5')
-        return ''
-    if len(stream)!=2:
-        print('line stream should be 上行 or 下行')
-        return ''
-    if len(lng)!=8 or len(lat)!=8:
-        print('len of lng/lat should be 8')
-        return ''
-    
     b_id=bytes(id, 'gbk')
     b_line=bytes(line.rjust(4), 'gbk')
     b_stream=bytes(stream, 'gbk')
     b_lng=bytes(lng, 'gbk')
     b_lat=bytes(lat, 'gbk')
     
+    if len(b_id)!=4:
+        print('bus id len should be 4')
+        return b''
+    if len(b_line)>4:
+        print('line name should less than 5')
+        return b''
+    if len(b_stream)!=4:
+        print('line stream should be 上行 or 下行')
+        return b''
+    if len(b_lng)!=8 or len(b_lat)!=8:
+        print('len of lng/lat should be 8')
+        return b''
+    
     data=bytearray(BUS_DATA_LEN)
-    data[0]=0x55
+    data[0]=BUS_DATA_HEAD
     data[1:5]=b_id
     data[5:9]=b_line
     data[9:13]=b_stream
     data[13:21]=b_lng
     data[21:29]=b_lat
     data[-2]=crc_check(data[1:-2])
-    data[-1]=0xaa
+    data[-1]=BUS_DATA_END
     return data
+
+def busDataClient():
+    bus_id=str(7023)
+    line='303'
+    stream='上行'
+    lng=str(70922263)
+    lat=str(20374106)
+    
+    data=constructData(bus_id, line, stream, lng, lat)
+    
+    print(data)
+    
+    sendDataTCP(data)
+    print('exit')
+    return
+
+#################TEST####################
+from globalValues import USE_DATA
+from globalValues import NO_HEAD
+from globalValues import NO_END
+from globalValues import LEN_ERR
+from globalValues import CHK_ERR
+
+TEST_FILE='test/busGPS_test.txt'
 
 def switchByArg(arr):
     arg=arr[0]
@@ -146,7 +139,14 @@ def readTestFile():
         switchByArg(arr)
     file.close()
     return
+#########################################
 
 if __name__=='__main__':
-    readTestFile()
-    ##busDataClient()
+    import os
+    try:
+        test=os.environ['TEST_GPS']
+    except KeyError:
+        test=0
+    if test:
+        readTestFile()
+    busDataClient()

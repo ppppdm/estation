@@ -15,13 +15,15 @@ busDataServer.py 启动直到电子站牌主控程序通知其关闭或系统当机.
 
 import socket
 import network
-import _thread
+import threading
 from busCalculate import busInfo
+'''
 from busCalculate import updateLineBus
 from busCalculate import lineBusTable
 from busCalculate import busInfoTable
 from lineDistance import lineDistTable
 from lineDistance import linesTable
+'''
 
 from globalValues import BUS_DATA_LEN
 
@@ -98,7 +100,7 @@ def check_data(data):
 数据总长度为27个字节
 预处理判断数据校验和是否正确
 '''
-
+'''
 lt=linesTable()
 lt.read_from_file('lines.txt')
 
@@ -112,22 +114,33 @@ bit=busInfoTable()
 
 def handleBusData(conn, addr):
     print('Connected by ',  addr)
-    '''
-    接收数据
-    '''
     data=conn.recv(2048)
     print(data)
-    '''
-    检查数据
-    '''
     ret=check_data(data)
     if ret != None:
         write_to_file(ret)
         printRet(ret)
         #updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
-        updateLineBus(lt, ldt, lbt,bit,ret)
+        #updateLineBus(lt, ldt, lbt,bit,ret)
     conn.close()
     return
+'''
+class handleBusData(threading.Thread):
+    def __init__(self, conn, addr):
+        threading.Thread.__init__(self)
+        self.conn=conn
+        self.addr=addr
+    
+    def run(self):
+        print('Connected by', self.addr)
+        
+        data=self.conn.recv(2048)
+        print(data)
+        ret=check_data(data)
+        if ret!=None:
+            printRet(ret)
+        self.conn.close()
+        return
 
 def busDataServer(flag):
     sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -135,7 +148,7 @@ def busDataServer(flag):
     sock.listen(1)
     while True:
         conn, addr=sock.accept()
-        _thread.start_new_thread(handleBusData, (conn, addr))
+        handleBusData(conn, addr).start()
     return
 
 
