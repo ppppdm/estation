@@ -16,6 +16,7 @@ busDataServer.py 启动直到电子站牌主控程序通知其关闭或系统当机.
 import socket
 import network
 import threading
+from utils import crc_check
 from busCalculate import busInfo
 '''
 from busCalculate import updateLineBus
@@ -26,6 +27,8 @@ from lineDistance import linesTable
 '''
 
 from globalValues import BUS_DATA_LEN
+from globalValues import BUS_DATA_HEAD
+from globalValues import BUS_DATA_END
 
 FILENAME='busData.txt'
 file=None
@@ -49,42 +52,43 @@ def printRet(businfo):
     s=businfo.id+'\t'+str(businfo.lineName)+'\t'+str(businfo.lng)+'\t'+str(businfo.lat)
     print(s)
 
-def crc_check(b_data):
-    if len(b_data)==0:
-        return 0
-    crc=b_data[0]
-    for i in b_data[1:]:
-        crc^=i
-    return crc
-
 '''
-判断数据完整性和校验和的正确性
+判断数据完整性和校验,的正确性和数据有效性
 '''
 def check_data(data):
-    '''
-    先找到数据头
-    '''
-    i=0
-    while i < len(data):
-        if data[i]==0x55:
-            '''再找数据尾'''
-            if data[i+BUS_DATA_LEN-1]==0xaa:
-                '''判断校验和'''
-                checksum=data[i+BUS_DATA_LEN-2]
-                cc=crc_check(data[i+1:i+BUS_DATA_LEN-2])
-                if cc == checksum:
-                    bus=busInfo()
-                    bus.readDataPackage(data[i+1:i+BUS_DATA_LEN-2])
-                    return bus
-                else:
-                    print('error data checksum')
-                    return None
-            else:
-                print('error data end')
-                return None
-        i+=1
-    print('data no head 0x55')
-    return None
+    if len(data)!=BUS_DATA_LEN:
+        print('error data len')
+        return
+    if data[0]!=BUS_DATA_HEAD:
+        print('error data head')
+        return
+    if data[-1]!=BUS_DATA_END:
+        print('error data end')
+        return
+    if data[-2]!=crc_check(data[1:BUS_DATA_LEN-2]):
+        print('error data checksum')
+        return
+    #公交车id判断
+    #id=str(data[1:5],'gbk')
+    #公交车线路判断
+    #line=str(data[5:9],'gbk').strip()
+    stream=str(data[9:13], 'gbk')
+    if stream !='上行' and stream!='下行':
+        print('line stream error, should be 上行 or 下行')
+        return
+    #公交车经纬度判断
+    lng=float(str(data[13:21], 'gbk'))/600000
+    if lng < 110 or lng > 120:
+        print('lng %f error,out bound [110,120]'%lng)
+        return
+    lat=float(str(data[21:29], 'gbk'))/600000
+    if lat < 30 or lat >40:
+        print('lat %f error,out bound [30,40]'%lat)
+        return
+    
+    bus=busInfo()
+    bus.readDataPackage(data[1:BUS_DATA_LEN-2])
+    return bus
 
 '''
 接收并预处理公交车GPS数据,不向发送发返回结果
@@ -148,9 +152,14 @@ def busDataServer(flag):
     sock.listen(1)
     while True:
         conn, addr=sock.accept()
-        handleBusData(conn, addr).start()
+        new_t=handleBusData(conn, addr)
+        new_t.start()
+        #print(new_t)
     return
 
+class busDataServer(threading.Thread):
+    def __init__(self, ):
+        return
 
 if __name__=='__main__':
     busDataServer(0)

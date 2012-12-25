@@ -28,13 +28,14 @@ from globalValues import BUS_DATA_END
 from utils import crc_check
 
 def sendDataTCP(b_data):
+    print(b_data)
     try:
         sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print('socket')
+        #print('socket')
         sock.connect((network.REMOTE_HOST, network.PORT_OF_BUSGPS))
-        print('connect')
+        #print('connect')
         sock.send(b_data)
-        print('send')
+        #print('send')
         sock.close()
     except:
         print('error')
@@ -80,8 +81,6 @@ def busDataClient():
     
     data=constructData(bus_id, line, stream, lng, lat)
     
-    print(data)
-    
     sendDataTCP(data)
     print('exit')
     return
@@ -102,29 +101,26 @@ def switchByArg(arr):
         print(USE_DATA)
         b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
         sendDataTCP(b_data)
-        print(b_data)
     elif arg== NO_HEAD:
         print(NO_HEAD)
         b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
-        sendDataTCP(b_data[1:])
-        print(b_data[1:])
+        b_data[0]=0
+        sendDataTCP(b_data)
     elif arg==NO_END:
         print(NO_END)
         b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
-        sendDataTCP(b_data[:-1])
-        print(b_data[:-1])
+        b_data[-1]=0
+        sendDataTCP(b_data)
     elif arg==LEN_ERR:
         print(LEN_ERR)
         b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
         b_data+=b'x'
         sendDataTCP(b_data)
-        print(b_data)
     elif arg==CHK_ERR:
         print(CHK_ERR)
         b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
         b_data[-2]^=1
         sendDataTCP(b_data)
-        print(b_data)
     return
 
 def readTestFile():
