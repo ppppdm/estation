@@ -223,7 +223,6 @@ at last return a linedist obj
 经纬度预先处理过(东经为正,西经为负,北纬为正,南纬为负)
 
 '''
-import math
 
 
 '''
@@ -272,6 +271,8 @@ def insertPointToPath(point, pointarr):
     pointarr.insert(bias+1, point)
     
     return
+
+from math import sqrt
     
 #计算点C到线段AB的距离,点A,B,C中的值都是经纬度
 def distOfPointToLineSegment(pA, pB, pC):
@@ -291,7 +292,7 @@ def distOfPointToLineSegment(pA, pB, pC):
     if tmp < 0:
         x=0
     else:
-        x=math.sqrt(tmp) / (2 * a)
+        x=sqrt(tmp) / (2 * a)
     #print(x)
     
     #判断过点C作的垂线与直线AB的交点D是否在线段AB上
@@ -302,18 +303,23 @@ def distOfPointToLineSegment(pA, pB, pC):
     if tmp < 0:
         AD=0
     else:
-        AD=math.sqrt(tmp)
+        AD=sqrt(tmp)
     tmp=b**2-x**2
     if tmp < 0:
         BD=0
     else:
-        BD=math.sqrt(tmp)
+        BD=sqrt(tmp)
     
     if AD > a or BD > a:
         dist=min((b, c))
     else:
         dist=x
     return dist
+
+from math import sin
+from math import cos
+from math import acos
+from math import pi
 
 EARTH_RADIUS=6371.004 #单位km
 R=EARTH_RADIUS
@@ -329,7 +335,7 @@ def distOfPointToPoint(pA, pB):
     '''
     ##角C余弦值 = sin(LatA)*sin(LatB) + cos(LatA)*cos(LatB)*cos(MLonA-MLonB)
     '''
-    C=math.sin(latA)*math.sin(latB)+math.cos(latA)*math.cos(latB)*math.cos(lngA-lngB)
+    C=sin(latA)*sin(latB)+cos(latA)*cos(latB)*cos(lngA-lngB)
     
     '''
     ##注意:C的值被实际问题和计算精度影响,C的值是否在arcos的定义域取值范围内[-1,1]
@@ -339,7 +345,7 @@ def distOfPointToPoint(pA, pB):
     if C < -1:
         C=-1
     
-    dist=R*math.acos(C)*math.pi/180
+    dist=R*acos(C)*pi/180
     return dist
 
 #################################################################
