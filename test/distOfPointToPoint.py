@@ -8,8 +8,8 @@ R=EARTH_RADIUS
 
 #计算点A和点B的球面距离,点A,B的值是经纬度
 def distOfPointToPoint(pA, pB):
-    lngA, latA=float(pA[0]), float(pA[1])
-    lngB, latB=float(pB[0]), float(pB[1])
+    lngA, latA=float(pA[0])*pi/180, float(pA[1])*pi/180
+    lngB, latB=float(pB[0])*pi/180, float(pB[1])*pi/180
     
     #预处理
     #北纬取90-纬度值(90- Latitude)，南纬取90+纬度值(90+Latitude)
