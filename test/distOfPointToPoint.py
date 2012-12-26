@@ -28,7 +28,7 @@ def distOfPointToPoint(pA, pB):
     if C < -1:
         C=-1
     
-    dist=R*acos(C)*pi/180
+    dist=R*acos(C)
     return dist
 
 #####################################################
