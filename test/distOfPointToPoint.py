@@ -23,9 +23,12 @@ def distOfPointToPoint(pA, pB):
     '''
     ##注意:C的值被实际问题和计算精度影响,C的值是否在arcos的定义域取值范围内[-1,1]
     '''
+    #print('%1.30f'%C)
     if C > 1:
+        print('C>1')
         C=1
     if C < -1:
+        print('C<-1')
         C=-1
     
     dist=R*acos(C)

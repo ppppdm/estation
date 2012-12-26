@@ -326,8 +326,9 @@ R=EARTH_RADIUS
 
 #计算点A和点B的球面距离,点A,B的值是经纬度
 def distOfPointToPoint(pA, pB):
-    lngA, latA=float(pA[0]), float(pA[1])
-    lngB, latB=float(pB[0]), float(pB[1])
+    lngA, latA=float(pA[0])*pi/180, float(pA[1])*pi/180
+    lngB, latB=float(pB[0])*pi/180, float(pB[1])*pi/180
+    
     #预处理
     #北纬取90-纬度值(90- Latitude)，南纬取90+纬度值(90+Latitude)
     #这里都是北纬,也没有南北纬信息用于处理,以后可能会添加
@@ -340,12 +341,15 @@ def distOfPointToPoint(pA, pB):
     '''
     ##注意:C的值被实际问题和计算精度影响,C的值是否在arcos的定义域取值范围内[-1,1]
     '''
+    #print('%1.30f'%C)
     if C > 1:
+        print('C>1')
         C=1
     if C < -1:
+        print('C<-1')
         C=-1
     
-    dist=R*acos(C)*pi/180
+    dist=R*acos(C)
     return dist
 
 #################################################################
