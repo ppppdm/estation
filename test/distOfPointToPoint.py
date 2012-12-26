@@ -1,27 +1,28 @@
+# -*- coding: gbk -*-
 from math import sin
 from math import cos
 from math import acos
 from math import pi
 
-EARTH_RADIUS=6371.004 #å•ä½km
+EARTH_RADIUS=6371.004 #µ¥Î»km
 R=EARTH_RADIUS
 
-#è®¡ç®—ç‚¹Aå’Œç‚¹Bçš„çƒé¢è·ç¦»,ç‚¹A,Bçš„å€¼æ˜¯ç»çº¬åº¦
+#¼ÆËãµãAºÍµãBµÄÇòÃæ¾àÀë,µãA,BµÄÖµÊÇ¾­Î³¶È
 def distOfPointToPoint(pA, pB):
     lngA, latA=float(pA[0])*pi/180, float(pA[1])*pi/180
     lngB, latB=float(pB[0])*pi/180, float(pB[1])*pi/180
     
-    #é¢„å¤„ç†
-    #åŒ—çº¬å–90-çº¬åº¦å€¼(90- Latitude)ï¼Œå—çº¬å–90+çº¬åº¦å€¼(90+Latitude)
-    #è¿™é‡Œéƒ½æ˜¯åŒ—çº¬,ä¹Ÿæ²¡æœ‰å—åŒ—çº¬ä¿¡æ¯ç”¨äºŽå¤„ç†,ä»¥åŽå¯èƒ½ä¼šæ·»åŠ 
+    #Ô¤´¦Àí
+    #±±Î³È¡90-Î³¶ÈÖµ(90- Latitude)£¬ÄÏÎ³È¡90+Î³¶ÈÖµ(90+Latitude)
+    #ÕâÀï¶¼ÊÇ±±Î³,Ò²Ã»ÓÐÄÏ±±Î³ÐÅÏ¢ÓÃÓÚ´¦Àí,ÒÔºó¿ÉÄÜ»áÌí¼Ó
     
     '''
-    ##è§’Cä½™å¼¦å€¼ = sin(LatA)*sin(LatB) + cos(LatA)*cos(LatB)*cos(MLonA-MLonB)
+    ##½ÇCÓàÏÒÖµ = sin(LatA)*sin(LatB) + cos(LatA)*cos(LatB)*cos(MLonA-MLonB)
     '''
     C=sin(latA)*sin(latB)+cos(latA)*cos(latB)*cos(lngA-lngB)
     
     '''
-    ##æ³¨æ„:Cçš„å€¼è¢«å®žé™…é—®é¢˜å’Œè®¡ç®—ç²¾åº¦å½±å“,Cçš„å€¼æ˜¯å¦åœ¨arcosçš„å®šä¹‰åŸŸå–å€¼èŒƒå›´å†…[-1,1]
+    ##×¢Òâ:CµÄÖµ±»Êµ¼ÊÎÊÌâºÍ¼ÆËã¾«¶ÈÓ°Ïì,CµÄÖµÊÇ·ñÔÚarcosµÄ¶¨ÒåÓòÈ¡Öµ·¶Î§ÄÚ[-1,1]
     '''
     #print('%1.30f'%C)
     if C > 1:
