@@ -421,8 +421,29 @@ def updateLineBus(lineTable, lineDistTable, lineBusTable, busInfoTable, busInfo)
     return
 
 ###############################################
+class busCalculate:
+    def __init__(self):
+        self.linestable=None
+        self.linedisttable=None
+        self.linebustable=None
+        self.businfotable=None
+        
+        self.linestable=lineDistTable()
+        self.linestable.read_from_file('linedist.txt')
+        
+        self.linedisttable=lineDistTable()
+        self.linedisttable.read_from_file('linedist.txt')
+        
+        self.linebustable=lineBusTable()
+        self.linebustable.read_from_file('linebus.txt')
+        
+        self.businfotable=busInfoTable()
+        return
+    
+    def calculateBusPosition(self, businfo):
+        return
 
-
+###############################################
 
 if __name__=='__main__':
     from testBusFile import bus

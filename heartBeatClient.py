@@ -8,15 +8,15 @@ import socket
 import network
 import random
 
-HOST = socket.gethostbyname(socket.gethostname()) #'pdm1987.vicp.cc'
+##HOST = socket.gethostbyname(socket.gethostname()) #'pdm1987.vicp.cc'
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST,network.PORT_OF_HEARTBEAT))
+s.connect((network.REMOTE_HOST,network.PORT_OF_HEARTBEAT))
 a=random.randint(1, 9999)
 stra=str(a)
 print(stra)
-print(bytes(stra))
-s.sendall(bytes(stra))
+print(bytes(stra, 'gbk'))
+s.sendall(bytes(stra, 'gbk'))
 ##data = s.recv(1024)
 ##print('Received', repr(data)+'##')
 s.close()
