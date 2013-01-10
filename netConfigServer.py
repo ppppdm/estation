@@ -180,9 +180,9 @@ def netConfigServer(pool):
             if arr[0]=='2':
                 send_text(int(arr[2]), arr[3],arr[4], arr[5], No,  pool)
             if arr[0]=='3':
-                 send_clear_text(int(arr[2]), No, pool)
+                send_clear_text(int(arr[2]), No, pool)
             if arr[0]=='4':
-                 send_speed(int(arr[2]), int(arr[3]), int(arr[4]), No, pool)
+                send_speed(int(arr[2]), int(arr[3]), int(arr[4]), No, pool)
         conn.close()
     return
 
