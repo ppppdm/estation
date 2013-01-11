@@ -59,7 +59,7 @@ def createBusStopList(stoplist):
     return
 
 def getSerialNumber(name, line, stream):
-    i=0
+    i=1
     for stop in BUSSTOPLIST:
         if stop.name==name:
             for l in stop.lines:
@@ -153,6 +153,7 @@ if __name__=='__main__':
     
     print(getSerialNumber('市公交调度中心', '202', '下行'))
     print(getSerialNumber('市公交调度中心', '202', '上行'))
+    print(getSerialNumber('实验小学黄河分校', '302', '下行'))
     print(getStopInfoByName('市公交调度中心'))
     print(getLineTotalNum(23))
     print(getLineNoInStop(23, '402'))

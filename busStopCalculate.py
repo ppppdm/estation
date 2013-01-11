@@ -160,25 +160,25 @@ if __name__=='__main__':
     lbt=lineBusTable()
     lbt.read_from_dist_file('linedist.txt')
     
-    bi2=busInfo(7132, ['302', '下行'], 118.222567, 33.954176)
+    bi2=busInfo(7132, ['302', '下行'], 118.203804, 33.957656)
     bi3=busInfo(7133, ['302', '下行'], 118.292437, 33.95726)
     
     busCalculate.updateLineBus(lt, ldt, lbt,bit,bi2)
     busCalculate.updateLineBus(lt, ldt, lbt,bit,bi3)
-    
+    '''
     for i in lbt.table[0]:
         print(i.buses)
-    
-    linebus=lbt.table[0]
+    '''
+    linebus=lbt.table[1]
     lsb = updateLineStopBus(linebus, bit)
-    
+    '''
     for i in lsb:
         print(i.toString())
-    
+    '''
     readBusStopTable('stopTable.txt', BUSSTOPLIST)
     
     for i in lsb:
-        print(i.toString()) 
+        #print(i.toString()) 
         print(stopTable.getSerialNumber(i.name,'302','下行'))
     
     print('exit')
