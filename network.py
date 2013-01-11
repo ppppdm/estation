@@ -34,6 +34,10 @@ PORT_OF_BUSSTOP=2003
 HOST_OF_NETCONFIG=HOST
 #port of net config estation
 PORT_OF_NETCONFIG=2004
+#host of net config estation
+HOST_OF_INFOSENDING=HOST
+#port of net config estation
+PORT_OF_INFOSENDING=2005
 
 #tcp port of LED
 TCP_PORT_OF_LED=8777

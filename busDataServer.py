@@ -90,6 +90,7 @@ def pretreatData(b_data):
     bus=busInfo()
     bus.readDataPackage(b_data[1:BUS_DATA_LEN-2])
     return bus
+###########################################
 
 class handleBusData(threading.Thread):
     def __init__(self, conn, addr, cal_handle):
