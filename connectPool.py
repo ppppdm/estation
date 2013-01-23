@@ -27,6 +27,9 @@ class connectPool:
         self.pool[num]=coon
         return
     
+    def clear(self):
+        self.pool.clear()
+    
     def getConn(self, num):
         try:
             return self.pool.pop(num)
@@ -56,17 +59,27 @@ class conncetList():
         return
 
 if __name__=='__main__':
-    a, b=1, 's'
-    pool=connectPool()
-    pool.addConn(a, b)
-    pool.printPool()
-    a, b=2,'c'
-    pool.addConn(a,b)
-    pool.printPool()
-    print(pool.getConn(2))
-    print(pool.getConn(3))
-    pool.printPool()
-
-    cl=conncetList()
-    print(cl.get(0))
-    print(cl.set(0, 'x'))
+    def test_connectPool():
+        pool=connectPool()
+        ##test addConn
+        a, b=1, 's'
+        pool.addConn(a, b)
+        pool.printPool()
+        a, b=2,'c'
+        pool.addConn(a,b)
+        pool.printPool()
+        
+        ##test getConn
+        print(pool.getConn(2))
+        print(pool.getConn(2))
+        print(pool.getConn(3))
+        pool.printPool()
+        return
+    
+    def test_connetList():
+        cl=conncetList()
+        print(cl.get(0))
+        print(cl.set(0, 'x'))
+        return
+    
+    test_connectPool()
