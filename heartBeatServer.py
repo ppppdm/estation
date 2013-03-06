@@ -61,8 +61,6 @@ class heartBeatServer(threading.Thread):
 ###########################################
 
 if __name__=='__main__':
-    #from maintainIP import maintainIP
-    #from table_IP import table_IP
     from connectPool import connectPool
     import netConfigServer
     import time
@@ -72,11 +70,7 @@ if __name__=='__main__':
     '''
     
     def test():
-        #iptable=table_IP()
-        #mip=maintainIP(iptable)
         pool=connectPool()
-        #conn=None
-        #_thread.start_new_thread(handleConnect, (conn, pool))
         _thread.start_new_thread(netConfigServer.netConfigServer, (pool, ))
         
         heartbeatserver=heartBeatServer(pool)

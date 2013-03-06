@@ -189,11 +189,7 @@ def netConfigServer(pool):
 
 if __name__=='__main__':
     print('test')
-    #from table_busStop import table_busStop
-    #from table_IP import table_IP
     from connectPool import connectPool
-    #ip_table=table_IP()
-    #ip_table.readFromFile()
     #eNo=1
     pool=connectPool()
     #busstop_table=table_busStop()
