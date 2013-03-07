@@ -386,8 +386,7 @@ def updateTheLine(position, lineDist, lineIndex, lineBusTable, lineTable, busInf
     bus_cal=busInfo_cal(busId, newline, newstation, position[1])
     busInfoTable.update(bus_cal)
     
-    #third get all station need update sending informateion and add to stationInfo
-    ##call stationInfo func
+    #third get all station need update sending informateion
     updateLineStopBus(line, busInfoTable)
     return
 '''
