@@ -22,31 +22,6 @@ from globalValues import BUS_DATA_LEN
 from globalValues import BUS_DATA_HEAD
 from globalValues import BUS_DATA_END
 
-
-##########################################
-FILENAME='busData.txt'
-file=None
-
-
-def write_to_file(businfo):
-    try:
-        file=open(FILENAME, 'w')
-    except IOError:
-        print('open file error')
-    else:
-        print('open file ok')
-    s=''
-    s+=businfo.id+'\t'+str(businfo.lineName)+'\t'+str(businfo.lng)+'\t'+str(businfo.lat)+'\n'
-    file.write(s)
-    file.flush()
-    file.close()
-    return
-
-def printRet(businfo):
-    s=businfo.id+'\t'+str(businfo.lineName)+'\t'+str(businfo.lng)+'\t'+str(businfo.lat)
-    print(s)
-###########################################
-
 '''
 判断数据完整性和校验,的正确性和数据有效性
 返回值0代表出错,1代表正确
@@ -119,6 +94,7 @@ class busDataServer(threading.Thread):
         return
     
     def run(self):
+        print('busDataServer Start!')
         sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.bind((network.HOST_OF_BUSGPS, network.PORT_OF_BUSGPS))
         sock.listen(1)
@@ -133,7 +109,3 @@ class busDataServer(threading.Thread):
         self.running=False
         for t in self.thread_arr:
             t.join()
-
-if __name__=='__main__':
-    busdataserver=busDataServer(printRet)
-    busdataserver.start()

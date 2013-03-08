@@ -6,8 +6,8 @@
 # test_busDataClient.py
 # 
 '''
-import sys
-sys.path.append("..")
+import parentPath
+parentPath.impt()
 from net import busDataClient
 
 
