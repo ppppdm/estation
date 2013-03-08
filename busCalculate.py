@@ -42,6 +42,13 @@ elemOfLineBus:
 
 from busStopCalculate import updateLineStopBus
 
+# Global variables for bus Calculte
+LINE_STATION_COORDINATE = list()
+
+
+# Must init below global variables when use this model
+
+
 class busInfo:
     def __init__(self, id=None, lineName=None, lng=None, lat=None):
         self.id=id
@@ -440,6 +447,13 @@ class busCalculate:
         return
     
     def calculateBusPosition(self, businfo):
+        print('This function no test')
+        # get line name
+        line_name = businfo.getLineName()
+        # get line from linedistTable by line name
+        bias = self.linestable.getIndexByFullName(line_name)
+        line = self.linedisttable.index(bias)
+        busPositionCalculate(line, businfo)
         return
 
 ###############################################

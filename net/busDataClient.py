@@ -33,7 +33,7 @@ def sendDataTCP(b_data):
         sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #print('socket')
         sock.connect((network.REMOTE_HOST, network.PORT_OF_BUSGPS))
-        #print('connect')
+        print('connect to', network.REMOTE_HOST, network.PORT_OF_BUSGPS)
         sock.send(b_data)
         #print('send')
         sock.close()

@@ -8,8 +8,10 @@
 # And watch the estation system whether work well.
 '''
 
+import os
 import sys
-sys.path.append('..')
+parent_path = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(parent_path)
 
 from net import busDataClient
 
