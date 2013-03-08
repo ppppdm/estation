@@ -8,8 +8,10 @@
 # also need test_busDataClient run together.
 '''
 
-import parentPath
-parentPath.impt()
+import os
+import sys
+parent_path = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(parent_path)
 from net import busDataServer
 
 ##########################################
