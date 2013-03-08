@@ -15,7 +15,7 @@
 class realStationDT:
     def __init__(self, l_names, l_st_nums):
         self.l_names = l_names
-        self.l_st_nums = l_st_nums
+        self.l_st_nums = l_st_nums # station numbers of every bus line
         self.lines = list()
         for st_num in l_st_nums:
             bus_line = list()
@@ -60,6 +60,23 @@ if __name__=='__main__':
     print(real_staton_dt.getOneLine('1'))
     print(real_staton_dt.getOneLine('202'))
     
-    def dofunc(positions, station_numbers):
+    def extendPosition(positions, station_numbers):
         # assume that position have already sorted
-        return
+        # distanceCount
+        line = list()
+        distanceCount = 0
+        j = 0
+        for i in range(station_numbers):
+            if j < len(positions) and positions[j] == i:
+                distanceCount = 0
+                j = j + 1
+            line.append(distanceCount)
+            distanceCount = distanceCount + 1
+        return line
+    
+    line_bus_pos = [1, 3]
+    ll = extendPosition(line_bus_pos, 4)
+    print(ll)
+    
+    ll = real_staton_dt.updateLine('305', line_bus_pos, extendPosition)
+    real_staton_dt.print()
