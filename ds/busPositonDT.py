@@ -1,7 +1,7 @@
 #  -*- conding: gbk -*-
 # auther : pdm
 # email : ppppdm@gmail.com
-
+#
 #   busPositionDT.py
 #   This file define the class busPostionDT.
 # The class busPositionDT store the bus position after calculated.
@@ -25,7 +25,7 @@
 #
 #   Care: Though two update at one busPosittionUnit at the same time could 
 # hanppen, we still sync when update one busPositionUnit. This is for safe.
-
+#
 # And also define the class busPositionUnit.
 # The class have three members:
 # bus_id, line_name, bus_pos

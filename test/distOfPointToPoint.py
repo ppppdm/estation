@@ -62,3 +62,7 @@ def readTestFile():
 if __name__=='__main__':
     readTestFile()
     print('test')
+    import sys
+    sys.path.append("..")
+    import testBusFile
+    help(testBusFile)

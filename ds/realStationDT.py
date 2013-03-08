@@ -1,7 +1,7 @@
 # -*- coding: gbk -*-
 # auther : pdm
 # email : ppppdm@gmail.com
-
+#
 # realStationDT.py
 # This file define class realStationDT which store the distance or
 # station count bus to the station in all bus line.
@@ -23,7 +23,7 @@ class realStationDT:
                 bus_line.append(i)
             self.lines.append(bus_line)
     
-    def print(self):
+    def printObj(self):
         print(self.l_names)
         print(self.lines)
     
@@ -49,12 +49,13 @@ class realStationDT:
         # we don't do anything as don't know the line station numbers
         return
 
+# for test
 if __name__=='__main__':
     print(__file__+' test')
     line_names = ['1', '2', '305']
     line_st_nums = [3, 4, 5]
     real_staton_dt = realStationDT(line_names, line_st_nums)
-    real_staton_dt.print()
+    real_staton_dt.printObj()
     
     #
     print(real_staton_dt.getOneLine('1'))
@@ -79,4 +80,4 @@ if __name__=='__main__':
     print(ll)
     
     ll = real_staton_dt.updateLine('305', line_bus_pos, extendPosition)
-    real_staton_dt.print()
+    real_staton_dt.printObj()

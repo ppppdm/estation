@@ -37,8 +37,8 @@ def sendDataTCP(b_data):
         sock.send(b_data)
         #print('send')
         sock.close()
-    except:
-        print('error')
+    except Exception as e:
+        print('Error!', e)
     return
 
 def constructData(id, line, stream, lng, lat):
@@ -71,78 +71,3 @@ def constructData(id, line, stream, lng, lat):
     data[-2]=crc_check(data[1:-2])
     data[-1]=BUS_DATA_END
     return data
-
-def busDataClient():
-    bus_id=str(7023)
-    line='303'
-    stream='上行'
-    lng=str(70922263)
-    lat=str(20374106)
-    
-    data=constructData(bus_id, line, stream, lng, lat)
-    
-    sendDataTCP(data)
-    print('exit')
-    return
-
-#################TEST####################
-from globalValues import USE_DATA
-from globalValues import NO_HEAD
-from globalValues import NO_END
-from globalValues import LEN_ERR
-from globalValues import CHK_ERR
-
-TEST_FILE='test/busGPS_test.txt'
-
-def switchByArg(arr):
-    arg=arr[0]
-    b_data=b''
-    if arg==USE_DATA:
-        print(USE_DATA)
-        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
-        sendDataTCP(b_data)
-    elif arg== NO_HEAD:
-        print(NO_HEAD)
-        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
-        b_data[0]=0
-        sendDataTCP(b_data)
-    elif arg==NO_END:
-        print(NO_END)
-        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
-        b_data[-1]=0
-        sendDataTCP(b_data)
-    elif arg==LEN_ERR:
-        print(LEN_ERR)
-        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
-        b_data+=b'x'
-        sendDataTCP(b_data)
-    elif arg==CHK_ERR:
-        print(CHK_ERR)
-        b_data=constructData(arr[1], arr[2], arr[3], arr[4], arr[5])
-        b_data[-2]^=1
-        sendDataTCP(b_data)
-    return
-
-def readTestFile():
-    '''从文件中读取测试数据并构造要发送的数据'''
-    file =open(TEST_FILE, 'r')
-    while True:
-        ss=file.readline()
-        ss=ss.strip('\n')
-        if ss=='':
-            break
-        arr=ss.split('\t')
-        switchByArg(arr)
-    file.close()
-    return
-#########################################
-
-if __name__=='__main__':
-    import os
-    try:
-        test=os.environ['TEST_GPS']
-    except KeyError:
-        test=0
-    if test:
-        readTestFile()
-    busDataClient()
