@@ -39,7 +39,7 @@ elemOfLineBus:
     2.根据公交车号,从该站点删除一辆公交车
     
 '''
-
+import codecs
 from busStopCalculate import updateLineStopBus
 from lineDistance import lineDistTable
 
@@ -180,11 +180,11 @@ class lineBusTable:
         return
     
     def read_from_file(self, filename):
-        file=open(filename, 'r')
+        file=codecs.open(filename, 'r', 'gbk')
         #读取的是linedist的文件,格式:lng  lat dist    标识  ...
         while True:
             line=file.readline()
-            line=line.rstrip('\n')
+            line=line.rstrip('\r\n')
             if line=='':
                 break
             else:
