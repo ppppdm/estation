@@ -39,5 +39,14 @@ def printRet(businfo):
 ###########################################
 
 if __name__=='__main__':
+    # simple test
+    '''
     busdataserver=busDataServer.busDataServer(printRet)
+    busdataserver.start()
+    '''
+    
+    # test with busPosition calculate
+    import busCalculate
+    bc = busCalculate.busCalculate()
+    busdataserver=busDataServer.busDataServer(bc.calculateBusPosition)
     busdataserver.start()

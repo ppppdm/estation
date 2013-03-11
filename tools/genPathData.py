@@ -103,3 +103,14 @@ if __name__=='__main__':
     writeLineStop(tasks)
     writeLinePath(tasks)
     print('Done')
+    
+    '''
+    # test for newline in diff codecs
+    import codecs
+    f = codecs.open(LINEPATH_FILE, 'r', 'gb2312')
+    #f = open(LINEPATH_FILE, 'r',)
+    ss = f.readline()
+    # for win sys strip('\r\n')
+    arr = ss.strip('\r\n').split('\t')
+    print(arr)
+    '''

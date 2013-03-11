@@ -20,27 +20,27 @@ linepath.txt 格式如下:
     lng1 lat1 lng2 lat2 [ ... ]
     
 '''
-
+import codecs
 
 class fileTable:
     def __init__(self):
         self.table=[]
     
     def read_from_file(self, filename):
-        file=open(filename, 'r')
+        file=codecs.open(filename, 'r', 'gbk')
         while True:
             s=file.readline()
             if s=='':
                 break
             else:
-                s=s.rstrip('\n')
+                s=s.rstrip('\r\n')
                 arr=s.split('\t')
                 self.insertLine(arr)
         file.close()
         return
         
     def write_to_file(self, filename, flags):
-        file=open(filename, flags)
+        file=codecs.open(filename, flags, 'gbk')
         for i in self.table:
             self.writeLine(file, i)
         file.close()
@@ -200,7 +200,7 @@ class lineDistTable(fileTable):
         return
     
     def writeOneLine(self, filename, i):
-        file=open(filename, 'w')
+        file=codecs.open(filename, 'w', 'gbk')
         line=self.index(i)
         s=''
         
@@ -236,7 +236,7 @@ def insertLineStopToPath(stop,  path):
     pointarr=[]
     #init: set path point to pointarr
     for i in path:
-        print(i)
+        #print(i)
         point=elemOfLineDist(i[0], i[1])
         pointarr.append(point)
     
@@ -263,7 +263,7 @@ def insertPointToPath(point, pointarr):
         pB=pointarr[i+1].getCoordinate()
         pC=point.getCoordinate()
         dist=distOfPointToLineSegment(pA, pB, pC)
-        print(dist)
+        #print(dist)
         
         if dist<min:
             min=dist
@@ -356,10 +356,15 @@ def distOfPointToPoint(pA, pB):
 
 if __name__=='__main__':
     print('test')
+    '''
+    # test ft write_to_file
     ft = fileTable()
     ft.read_from_file('lines.txt')
     ft.write_to_file('tmp.txt',  'w')
+    '''
     
+    '''
+    # test lt write_to_file 
     lt=linesTable()
     lt.read_from_file('lines.txt')
     print(lt.getNum())
@@ -368,39 +373,58 @@ if __name__=='__main__':
         print(lt.getLineName(i))
         print(lt.getLineUpOrLow(i))
     lt.write_to_file('tmp1.txt', 'w')
+    '''
+    
     
     lst=lineStopTable()
     lst.read_from_file('linestop.txt')
+    '''
     for i in range(lst.getNum()):
         print(lst.getOneLineNum(i))
         print(lst.index(i))
         for j in range(lst.getOneLineNum(i)):
             print(lst.getOneStop(lst.index(i), j))
+    '''
     lst.write_to_file('tmp2.txt', 'w')
+    
     
     lp = linePathTable()
     lp.read_from_file('linepath.txt')
+    '''
     for i in range(lp.getNum()):
         print(len(lp.index(i)))
         print(lp.index(i))
+    '''
     lp.write_to_file('tmp3.txt', 'w')
+    '''
+    '''
     
+    '''
     ##########################################
     #need test insertLineStopToPath
     ldt=lineDistTable()
     oneline=insertLineStopToPath(lst.index(0), lp.index(0))
     ldt.insertOneLine(oneline)
     ldt.write_to_file('linedist.txt', 'w')
+    '''
     
+    
+    '''
     print(ldt.getNum())
     for i in range(ldt.getNum()):
         filename='line_'+str(i)+'.txt'
         ldt.writeOneLine(filename, i)
+    '''
     
+    # test ldt func write_to_file
+    '''
     ldt2=lineDistTable()
     ldt2.read_from_file('linedist.txt')
     ldt2.write_to_file('tmp4.txt', 'w')
+    '''
     
+    
+    # calcute line dist and wite to file
     print('test for calculat all line dist')
     ldt3=lineDistTable()
     print(lst.getNum())
@@ -408,9 +432,13 @@ if __name__=='__main__':
         line=insertLineStopToPath(lst.index(i), lp.index(i))
         ldt3.insertOneLine(line)
     ldt3.write_to_file('linedist.txt', 'w')
+    '''
+    '''
     
+    '''
+    # write each line in ldt3 files
     for i in range(ldt3.getNum()):
         filename='line_'+str(i)+'.txt'
         ldt3.writeOneLine(filename, i)
-    
+    '''
     print('exit')

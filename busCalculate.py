@@ -41,6 +41,7 @@ elemOfLineBus:
 '''
 
 from busStopCalculate import updateLineStopBus
+from lineDistance import lineDistTable
 
 # Global variables for bus Calculte
 LINE_STATION_COORDINATE = list()
@@ -460,7 +461,6 @@ class busCalculate:
 
 if __name__=='__main__':
     from testBusFile import bus
-    from lineDistance import lineDistTable
     from lineDistance import linesTable
     print('test')
     bus1=bus()
