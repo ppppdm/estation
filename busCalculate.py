@@ -42,6 +42,7 @@ elemOfLineBus:
 import codecs
 from busStopCalculate import updateLineStopBus
 from lineDistance import lineDistTable
+from lineDistance import linesTable
 
 # Global variables for bus Calculte
 LINE_STATION_COORDINATE = list()
@@ -435,8 +436,8 @@ class busCalculate:
         self.linebustable=None
         self.businfotable=None
         
-        self.linestable=lineDistTable()
-        self.linestable.read_from_file('linedist.txt')
+        self.linestable=linesTable()
+        self.linestable.read_from_file('lines.txt')
         
         self.linedisttable=lineDistTable()
         self.linedisttable.read_from_file('linedist.txt')
@@ -454,14 +455,17 @@ class busCalculate:
         # get line from linedistTable by line name
         bias = self.linestable.getIndexByFullName(line_name)
         line = self.linedisttable.index(bias)
-        busPositionCalculate(line, businfo)
+        pos = busPositionCalculate(line, businfo)
+        print(pos)
+        
+        # need call updateLineBus
+        updateLineBus(self.linestable, self.linedisttable, self.linebustable, self.businfotable, businfo)
         return
 
 ###############################################
 
 if __name__=='__main__':
     from testBusFile import bus
-    from lineDistance import linesTable
     print('test')
     bus1=bus()
     bus1.readFromFile('busone.txt')
