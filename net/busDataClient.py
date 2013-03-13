@@ -22,13 +22,14 @@
 
 import socket
 import network
+import threading
 from globalValues import BUS_DATA_LEN
 from globalValues import BUS_DATA_HEAD
 from globalValues import BUS_DATA_END
 from utils import crc_check
 
 def sendDataTCP(b_data):
-    print(b_data)
+    #print(b_data)
     try:
         sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #print('socket')
@@ -38,7 +39,7 @@ def sendDataTCP(b_data):
         #print('send')
         sock.close()
     except Exception as e:
-        print('Error!', e)
+        print('Error!', e, 'in thread', threading.currentThread().ident)
     return
 
 def constructData(id, line, stream, lng, lat):

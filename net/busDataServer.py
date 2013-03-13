@@ -97,7 +97,7 @@ class busDataServer(threading.Thread):
         print('busDataServer Start!')
         sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.bind((network.HOST_OF_BUSGPS, network.PORT_OF_BUSGPS))
-        sock.listen(1)
+        sock.listen(30)
         print('busDataServer listen to', network.HOST_OF_BUSGPS, network.PORT_OF_BUSGPS)
         while self.running:
             conn, addr=sock.accept()
