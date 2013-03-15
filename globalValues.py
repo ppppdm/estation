@@ -47,3 +47,25 @@ LEN_OF_CODE_LINE=0x1
 LEN_OF_CODE_CLEAR_TEXT=0x1
 LEN_OF_CODE_SPEED=0x3
 LEN_OF_CODE_CLEAR=0x0
+
+from lineDistance import lineDistTable
+from lineDistance import linesTable
+from ds.busPositionDT import busPositionDT
+
+linedist = lineDistTable()
+lines = linesTable()
+bus_pos_dt = busPositionDT()
+
+def initalGlobalValues():
+    
+    global bus_pos_dt
+    global linedist
+    global lines
+    
+    # init line data struct
+    lines.read_from_file('lines.txt')
+    linedist.read_from_file('linedist.txt')
+    
+    # init Intermediate data struct
+    return
+

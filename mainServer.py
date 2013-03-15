@@ -10,10 +10,23 @@
 '''
 from connectPool import connectPool
 from busCalculate import busCalculate
-from busDataServer  import busDataServer
+from net.busDataServer  import busDataServer
 from heartBeatServer import heartBeatServer
 from infoSendingServer import infoSendingServer
 
+from globalValues import bus_pos_dt
+
+
+def init():
+    bus_pos_dt
+    
+    
+    #bus_pos_dt.insertNewBus(7704, ('2', 'ÏÂÐÐ'), 5)
+    bus_pos_dt.print()
+    return
+
+from globalValues import initalGlobalValues
+initalGlobalValues()
 
 
 def mainServer():
@@ -36,4 +49,5 @@ def mainServer():
 
 
 if __name__=='__main__':
-    mainServer()
+    init()
+    #mainServer()
