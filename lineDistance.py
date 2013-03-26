@@ -27,17 +27,20 @@ class fileTable:
         self.table=[]
     
     def read_from_file(self, filename):
-        file=codecs.open(filename, 'r', 'gbk')
-        while True:
-            s=file.readline()
-            if s=='':
-                break
-            else:
-                s=s.rstrip('\r\n')
-                arr=s.split('\t')
-                self.insertLine(arr)
-        file.close()
-        return
+        try:
+            file=codecs.open(filename, 'r', 'gbk')
+            while True:
+                s=file.readline()
+                if s=='':
+                    break
+                else:
+                    s=s.rstrip('\r\n')
+                    arr=s.split('\t')
+                    self.insertLine(arr)
+            file.close()
+            return
+        except :
+            print('file open error')
         
     def write_to_file(self, filename, flags):
         file=codecs.open(filename, flags, 'gbk')
