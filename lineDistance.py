@@ -135,13 +135,15 @@ class linePathTable(fileTable):
 
 
 NOT_STATION='-1'
+NOT_REAL=-1
 
 class elemOfLineDist:
-    def __init__(self, lng, lat, dist=0, stationId=NOT_STATION):
+    def __init__(self, lng, lat, dist=0, stationId=NOT_STATION, realPos=NOT_REAL):
         self.lng=lng
         self.lat=lat
         self.dist=dist
         self.isStaion=stationId
+        self.realPos=int(realPos)
         return
     
     def getLng(self):
@@ -156,6 +158,9 @@ class elemOfLineDist:
     def getStationId(self):
         return self.isStaion
     
+    def getRealPos(self):
+        return self.realPos
+    
     def getCoordinate(self):
         return (self.lng, self.lat)
     
@@ -164,15 +169,15 @@ class elemOfLineDist:
     
     def printElem(self):
         s=''
-        s+=str(self.lng)+'\t'+str(self.lat)+'\t'+str(self.dist)+'\t'+str(self.isStaion)
+        s+=str(self.lng)+'\t'+str(self.lat)+'\t'+str(self.dist)+'\t'+str(self.isStaion)+str(self.realPos)
         print(s)
     
 # elemOfLineDist lng1 lat1 dist1 站标识 lng2 lat2 dist2 站标识 [ ... ]
 class lineDistTable(fileTable):
     def insertLineWithArr(self, arr):
         line=[]
-        for i in range(0, len(arr), 4):
-            elem=elemOfLineDist(arr[i], arr[i+1], float(arr[i+2]), arr[i+3])
+        for i in range(0, len(arr), 5):
+            elem=elemOfLineDist(arr[i], arr[i+1], float(arr[i+2]), arr[i+3], arr[i+4])
             line.append(elem)
         self.table.append(line)
         return
@@ -184,8 +189,8 @@ class lineDistTable(fileTable):
     def insertLine(self, arr):
         line=[]
         print(len(arr))
-        for i in range(0, len(arr), 4):
-            elem=elemOfLineDist(arr[i], arr[i+1], float(arr[i+2]), arr[i+3])
+        for i in range(0, len(arr), 5):
+            elem=elemOfLineDist(arr[i], arr[i+1], float(arr[i+2]), arr[i+3], arr[i+4])
             line.append(elem)
         self.table.append(line)
         return
@@ -193,7 +198,7 @@ class lineDistTable(fileTable):
     def writeLine(self, file, arr):
         s=''
         for elem in arr:
-            s+=elem.getLng()+'\t'+elem.getLat()+'\t'+str(elem.getDist())+'\t'+elem.getStationId()+'\t'
+            s+=elem.getLng()+'\t'+elem.getLat()+'\t'+str(elem.getDist())+'\t'+elem.getStationId()+'\t'+str(elem.getRealPos())+'\t'
         s=s.rstrip('\t')
         s+='\n'
         file.write(s)
@@ -205,7 +210,7 @@ class lineDistTable(fileTable):
         s=''
         
         for elem in line:
-            s+='['+elem.getLng()+','+elem.getLat()+','+str(elem.getDist())+',\"'+elem.getStationId()+'\"],'+'\n'
+            s+='['+elem.getLng()+','+elem.getLat()+','+str(elem.getDist())+',\"'+elem.getStationId()+'\",'+str(elem.getRealPos())+'],'+'\n'
         file.write(s)
         file.close()
 
@@ -242,9 +247,11 @@ def insertLineStopToPath(stop,  path):
     
     #first: insert point
     #stop element: name lng lat
+    real_pos = 0
     for i in stop:
         print(i)
-        point=elemOfLineDist(i[1], i[2], 0, i[0])
+        point=elemOfLineDist(i[1], i[2], 0, i[0], real_pos)
+        real_pos+=1
         insertPointToPath(point, pointarr)
         
     #second: calculate distence
@@ -435,10 +442,10 @@ if __name__=='__main__':
     '''
     '''
     
-    '''
+    
     # write each line in ldt3 files
     for i in range(ldt3.getNum()):
         filename='line_'+str(i)+'.txt'
         ldt3.writeOneLine(filename, i)
-    '''
+    
     print('exit')
