@@ -169,8 +169,14 @@ class elemOfLineDist:
     
     def printElem(self):
         s=''
-        s+=str(self.lng)+'\t'+str(self.lat)+'\t'+str(self.dist)+'\t'+str(self.isStaion)+str(self.realPos)
+        s+=str(self.lng)+'\t'+str(self.lat)+'\t'+str(self.dist)+'\t'+str(self.isStaion)+'\t'+str(self.realPos)
         print(s)
+    
+    def isRealStation(self):
+        if self.realPos == -1:
+            return False
+        else:
+            return True
     
 # elemOfLineDist lng1 lat1 dist1 站标识 lng2 lat2 dist2 站标识 [ ... ]
 class lineDistTable(fileTable):
@@ -188,7 +194,7 @@ class lineDistTable(fileTable):
     
     def insertLine(self, arr):
         line=[]
-        print(len(arr))
+        #print(len(arr))
         for i in range(0, len(arr), 5):
             elem=elemOfLineDist(arr[i], arr[i+1], float(arr[i+2]), arr[i+3], arr[i+4])
             line.append(elem)

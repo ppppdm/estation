@@ -47,6 +47,12 @@ if __name__=='__main__':
     ldt = lineDistance.lineDistTable()
     ldt.read_from_file(LINE_FILE)
     
+    # test virtual2real
+    line = ldt.index(0)
+    for st in line:
+        st.printElem()
+    vPos = 10
+    print(virtual2real(10, line))
     
     #real_bus_pos = []
     #real_bus_pos = oneLineBusesVirtul2Real()
