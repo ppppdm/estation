@@ -36,6 +36,15 @@ class stationArriveInfo:
 # This function setOneLineStationArriveInfo() use busLine info and the bus 
 # position info to set the stations in this line bus arrive info.
 # The realBusPos should be sorted increas before.
+# @ primary
+# @ args
+#       lineName     : line name
+#       lineDirt     : line direction
+#       lineStations : list of station name [sorted by line direction before]
+#       realBusPos   : list of bus posititon [ sorted by line direction before]
+# @ return 
+#       stations     : list of the number of station of the first and the second bus, will 
+#                      arrive, to the station
 def setOneLineStationArriveInfo(lineName, lineDirt, lineStations, realBusPos):
     stations = []
     i, j=0, 0
