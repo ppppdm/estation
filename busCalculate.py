@@ -450,7 +450,7 @@ class busCalculate:
     
     def calculateBusPosition(self, businfo):
         print('This function no test')
-        '''
+        
         # get line name
         line_name = businfo.getLineName()
         # get line from linedistTable by line name
@@ -458,9 +458,9 @@ class busCalculate:
         line = self.linedisttable.index(bias)
         pos = busPositionCalculate(line, businfo)
         print(pos)
-        '''
+        ''''''
         # call updateLineBus
-        updateLineBus(self.linestable, self.linedisttable, self.linebustable, self.businfotable, businfo)
+        #updateLineBus(self.linestable, self.linedisttable, self.linebustable, self.businfotable, businfo)
         return
 
 ###############################################

@@ -14,6 +14,12 @@ parent_path = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(parent_path)
 from net import busDataServer
 
+import logging
+logging.basicConfig(level=logging.DEBUG, format="%(created)-15s %(msecs)d %(levelname)8s %(thread)d %(name)s %(message)s")
+logHandle                = logging.FileHandler('log.txt')
+log                      = logging.getLogger(__name__)
+log.addHandler(logHandle)
+
 ##########################################
 FILENAME='busData.txt'
 file=None
@@ -36,6 +42,12 @@ def write_to_file(businfo):
 def printRet(businfo):
     s=businfo.id+'\t'+str(businfo.lineName)+'\t'+str(businfo.lng)+'\t'+str(businfo.lat)
     print(s)
+
+def logRet(businfo):
+    s=businfo.id+'\t'+str(businfo.lineName)+'\t'+str(businfo.lng)+'\t'+str(businfo.lat)
+    log.debug(s)
+    return
+
 ###########################################
 
 if __name__=='__main__':
@@ -48,5 +60,9 @@ if __name__=='__main__':
     # test with busPosition calculate
     import busCalculate
     bc = busCalculate.busCalculate()
-    busdataserver=busDataServer.busDataServer(bc.calculateBusPosition)
+    #busdataserver=busDataServer.busDataServer(bc.calculateBusPosition)
+    #busdataserver=busDataServer.busDataServer(logRet)
+    import test_calculateBusPosition
+    busdataserver=busDataServer.busDataServer(test_calculateBusPosition.calculateBusPosition)
+    
     busdataserver.start()

@@ -17,3 +17,5 @@ estation
 	globalValues.py    全局定义的常量
 	network.py         网络主机和端口定义
 	ds/stationBusInfo.py	由一条线路上所有车辆的位置计算该条线路所有站的最近次近到站站数
+	ds/busPosition_V2R.py 将公交车在虚拟线路上的位置转为实际线路所在的位置
+	ds/busPositionDT.py 提供将公交车位置储存，更新和取出。类似数据库。

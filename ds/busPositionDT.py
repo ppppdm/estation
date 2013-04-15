@@ -1,4 +1,4 @@
-#  -*- conding: gbk -*-
+#  -*- coding: gbk -*-
 # auther : pdm
 # email : ppppdm@gmail.com
 #
@@ -35,9 +35,9 @@ import threading
 # We define busPositionDT to be a sub class of list
 class busPositionDT(list):
     lock = threading.Lock()
-    def print(self):
+    def printDT(self):
         for unit in self:
-            unit.print()
+            unit.printUnit()
 
     
     # insert a bus position after calculated
@@ -112,7 +112,7 @@ class busPositionUnit:
         self.lock.release()
         return
     
-    def print(self):
+    def printUnit(self):
         print(self.bus_id, self.line_name, self.bus_pos)
 
 
@@ -123,25 +123,25 @@ if __name__=='__main__':
     bus_position_dt = busPositionDT()
     #bus_position_dt.print()
     
-    # test update
-    bus_position_dt.updateBusPosition(7701, ('1', '涓婅'), 1)
-    bus_position_dt.updateBusPosition(7702, ('1', '涓婅'), 2)
-    bus_position_dt.updateBusPosition(7703, ('1', '涓婅'), 3)
+
+    bus_position_dt.updateBusPosition(7701, ('1', '上行'), 1)
+    bus_position_dt.updateBusPosition(7702, ('1', '上行'), 2)
+    bus_position_dt.updateBusPosition(7703, ('1', '上行'), 3)
     
-    bus_position_dt.print()
+    bus_position_dt.printDT()
     
     # test get
-    print(bus_position_dt.getOneLineBusPos(('1', '涓婅')))
+    print(bus_position_dt.getOneLineBusPos(('1', '上行')))
     
     # test busPositionUnit
     bus_pos_unit = busPositionUnit(7701, '1', 1)
-    bus_pos_unit.print()
+    bus_pos_unit.printUnit()
     
     # test isHave insertNew delete
     print('have bus 7702', bus_position_dt.isHaveBus(7702))
     print('have bus 7704', bus_position_dt.isHaveBus(7704))
     
-    bus_position_dt.insertNewBus(7704, ('2', '涓嬭'), 5)
+    bus_position_dt.insertNewBus(7704, ('2', '下行'), 5)
     
     print('delet bus 7706', bus_position_dt.deleteBus(7706))
     print('delet bus 7704', bus_position_dt.deleteBus(7704))

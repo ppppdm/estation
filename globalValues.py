@@ -56,16 +56,21 @@ linedist = lineDistTable()
 lines = linesTable()
 bus_pos_dt = busPositionDT()
 
-def initalGlobalValues():
-    
-    global bus_pos_dt
-    global linedist
-    global lines
-    
-    # init line data struct
-    lines.read_from_file('lines.txt')
-    linedist.read_from_file('linedist.txt')
-    
-    # init Intermediate data struct
-    return
+# init line data struct
+lines.read_from_file('lines.txt')
+linedist.read_from_file('linedist.txt')
+
+# init logging
+import logging
+LOG_FILE   = 'log.txt'
+LOG_LEVEL  = logging.DEBUG
+LOG_FORMAT = "%(created)-15s %(msecs)d %(levelname)8s %(thread)d %(name)s %(message)s"
+logging.basicConfig(filename = LOG_FILE, 
+                    level    = LOG_LEVEL, 
+                    format   = LOG_FORMAT)
+
+log = logging.getLogger(__name__)
+
+# init 
+
 

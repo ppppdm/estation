@@ -24,6 +24,15 @@ def virtual_2_real(vPos, line):
             break
     return rPos
 
+# Using for transform one line vitrual postions
+def oneLineBusesVirtual2Real(vPosList, line):
+    realBusesPostion = []
+    for vPos in vPosList:
+        rPos = virtual_2_real(vPos, line)
+        realBusesPostion.append(rPos)
+    return realBusesPostion
+
+
 if __name__=='__main__':
     print(__file__, 'test')
     import lineDistance
@@ -34,4 +43,6 @@ if __name__=='__main__':
     vPos = 10
     line = ldt.index(0)
     print(virtual_2_real(10, line))
+    
+    print(oneLineBusesVirtual2Real([10,16], line))
     

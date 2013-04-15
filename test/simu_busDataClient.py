@@ -14,6 +14,8 @@ parent_path = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(parent_path)
 
 from net import busDataClient
+import coor_2_gps
+import time
 
 
 def simu_busDataClient():
@@ -29,6 +31,40 @@ def simu_busDataClient():
     print('exit')
     return
 
+def simu_busDataClientByFile(filename):
+    bus_id=str(7023)
+    line='303'
+    stream='иопп'
+    try:
+        file = open(filename, 'r')
+        gps_datas = getFileData(file)
+        file.close()
+        
+            # second send data
+        
+        for pos in gps_datas:
+            lng = coor_2_gps.coordinate2GPS(pos[0])
+            lat = coor_2_gps.coordinate2GPS(pos[1])
+            data = busDataClient.constructData(bus_id, line, stream, lng, lat)
+            busDataClient.sendDataTCP(data)
+            time.sleep(1)
+            ''''''
+    except Exception as e:
+            print(e)
+    return
+
+def getFileData(file):
+    datas = []
+    while True:
+        ss = file.readline()
+        ss = ss.strip('\n')
+        if ss == '':
+            break
+        pos = ss.split(',')
+        #print(pos)
+        datas.append(pos)
+    return datas
 
 if __name__=='__main__':
-    simu_busDataClient()
+    #simu_busDataClient()
+    simu_busDataClientByFile('busone.txt')
