@@ -27,7 +27,7 @@ sys.path.append(parent_path)
 LINE_FILE = '..\linedist.txt'
 
 
-def oneLineBusesVirtul2Real(lineBuses, line):
+def oneLineBusesVirtual2Real(lineBuses, line):
     realBusesPostion = []
     for bus in lineBuses:
         rPos = virtual2real(bus.vPos, line)
