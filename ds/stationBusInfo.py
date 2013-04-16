@@ -24,28 +24,29 @@ class busDis:
         self.bus_stauts = bus_stauts
 
 class stationArriveInfo:
-    def __init__(self, name, line, line_dir, s_bus):
+    def __init__(self, name, line, s_bus):
         self.name = name
         self.line = line
-        self.line_dir = line_dir
         self.s_bus = s_bus
     
     def toString(self):
-        return str(self.name)+', '+str(self.line)+', '+str(self.line_dir)+', '+str(self.s_bus)
+        return str(self.name)+', '+str(self.line)+', '+str(self.s_bus)
 
 # This function setOneLineStationArriveInfo() use busLine info and the bus 
 # position info to set the stations in this line bus arrive info.
 # The realBusPos should be sorted increas before.
 # @ primary
 # @ args
-#       lineName     : line name
-#       lineDirt     : line direction
+#       lineName     : line num and line direction
 #       lineStations : list of station name [sorted by line direction before]
 #       realBusPos   : list of bus posititon [ sorted by line direction before]
 # @ return 
 #       stations     : list of the number of station of the first and the second bus, will 
 #                      arrive, to the station
-def setOneLineStationArriveInfo(lineName, lineDirt, lineStations, realBusPos):
+# @ mark
+#       line direction should be one of '上行','下行'. The line num and line direction unique 
+#       identify one line. 
+def setOneLineStationArriveInfo(lineName, lineStations, realBusPos):
     stations = []
     i, j=0, 0
     # for not over index of realBusPos append a infinity to realBusPos
@@ -58,7 +59,7 @@ def setOneLineStationArriveInfo(lineName, lineDirt, lineStations, realBusPos):
         # now I use calculate at once
         # if have distance may use Accumulate
         buses = [arriveStCount(realBusPos, j, i, 1), arriveStCount(realBusPos, j, i, 2)]
-        stai = stationArriveInfo(st[0], lineName, lineDirt, buses)
+        stai = stationArriveInfo(st[0], lineName, buses)
         stations.append(stai)
         i+=1
     return stations
@@ -96,7 +97,7 @@ if __name__=='__main__':
     print(line)
     
     #print(line_stations)
-    sac = setOneLineStationArriveInfo(line[0], line[1], line_stations, [4, 20, 28])
+    sac = setOneLineStationArriveInfo(line, line_stations, [4, 20, 28])
     for i in sac:
         print(i.toString())
     

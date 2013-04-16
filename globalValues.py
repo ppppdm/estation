@@ -50,15 +50,18 @@ LEN_OF_CODE_CLEAR=0x0
 
 from lineDistance import lineDistTable
 from lineDistance import linesTable
+from lineDistance import lineStopTable
 from ds.busPositionDT import busPositionDT
 
 linedist = lineDistTable()
 lines = linesTable()
+linestop = lineStopTable()
 bus_pos_dt = busPositionDT()
 
 # init line data struct
 lines.read_from_file('lines.txt')
 linedist.read_from_file('linedist.txt')
+linestop.read_from_file('linestop.txt')
 
 # init logging
 import logging
