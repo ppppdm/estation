@@ -52,11 +52,13 @@ from lineDistance import lineDistTable
 from lineDistance import linesTable
 from lineDistance import lineStopTable
 from ds.busPositionDT import busPositionDT
+import UserControlInfoTable
 
 linedist = lineDistTable()
 lines = linesTable()
 linestop = lineStopTable()
 bus_pos_dt = busPositionDT()
+user_info_table = UserControlInfoTable
 
 # init line data struct
 lines.read_from_file('lines.txt')
@@ -77,3 +79,5 @@ log = logging.getLogger(__name__)
 # init 
 
 
+if __name__=='__main__':
+    print(__file__, 'test')

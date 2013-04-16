@@ -38,6 +38,10 @@ PORT_OF_NETCONFIG=2004
 HOST_OF_INFOSENDING=HOST
 #port of net config estation
 PORT_OF_INFOSENDING=2005
+#host of recive bus user control infomation
+HOST_OF_USERCONTROL=HOST
+#port of recive bus user control infomation
+PORT_OF_USERCONTROL=2006
 
 #tcp port of LED
 TCP_PORT_OF_LED=8777
