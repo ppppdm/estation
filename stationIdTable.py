@@ -1,4 +1,7 @@
 # -*- coding: gbk -*-
+# auther : pdm
+# email : ppppdm@gmail
+
 import readBusLine
 
 BUSSTOPLIST=list()

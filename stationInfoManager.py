@@ -49,7 +49,17 @@ class stationInfoManager(threading.Thread):
                 for st in sbi:
                     #print(st)
                     print(st.toString())
-                # 
+                    
+                    # get station info user setting from UserControlInfoTable
+                    newInfo = globalValues.user_info_table.query(st.name, st.line)
+                    if None == newInfo:
+                        # do nothing
+                        pass
+                    else :
+                        # set station info to newInfo.info
+                        st.buses = newInfo.info
+                    
+                    # get station id from station_id table
                 
                 time.sleep(1)
         except:
