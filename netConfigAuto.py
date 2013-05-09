@@ -49,13 +49,16 @@ def autoRun():
     for i in auto_run_demo:
         netConfigNet(i)
         time.sleep(3)
-        
-    for i in auto_run_list:
-        netConfigNet(i)
-        time.sleep(5)
+    i=0
+    while i < 10:
+        for i in auto_run_list:
+            netConfigNet(i)
+            time.sleep(5)
+        i+=1
 
 if __name__=='__main__':
-    netSend()
     
-    if sys.argv[1] == 'a':
+    if len(sys.argv) > 1:
         autoRun()
+    else:
+        netSend()
