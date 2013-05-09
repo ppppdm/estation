@@ -77,6 +77,6 @@ if __name__=='__main__':
         heartbeatserver.start()
         
         time.sleep(30)
-        heartbeatserver.stop()
+        #heartbeatserver.stop()
     test()
     
